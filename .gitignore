@@ -36,3 +36,10 @@ Thumbs.db
 
 # Logs
 *.log
+
+# SQLite databases - PDF OCR App
+pdf_ocr_database.db
+
+# Temporary files - PDF processing
+/tmp/
+temp/
