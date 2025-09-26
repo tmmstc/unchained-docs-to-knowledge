@@ -12,6 +12,7 @@ import pytesseract
 import pdf2image
 import tempfile
 import traceback
+import re
 
 # Database configuration
 DATABASE_PATH = "pdf_ocr_database.db"
@@ -28,6 +29,8 @@ def init_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             filename TEXT NOT NULL,
             extracted_text TEXT,
+            word_count INTEGER,
+            character_length INTEGER,
             created_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     """
@@ -37,19 +40,44 @@ def init_database():
     conn.close()
 
 
+def calculate_text_metrics(text):
+    """Calculate word count and character length for extracted text"""
+    if not text:
+        return 0, 0
+
+    # Character length (including whitespace and punctuation)
+    character_length = len(text)
+
+    # Word count - split by whitespace and filter out empty strings
+    # This properly handles multiple spaces, tabs, newlines, and punctuation
+    words = re.findall(r"\b\w+\b", text)
+    word_count = len(words)
+
+    return word_count, character_length
+
+
 def save_extracted_text(filename, extracted_text):
-    """Save extracted text to SQLite database"""
+    """Save extracted text to SQLite database with metrics"""
     try:
+        # Calculate metrics
+        word_count, character_length = calculate_text_metrics(extracted_text)
+
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
 
         cursor.execute(
             """
-            INSERT INTO pdf_extracts (filename, extracted_text,
-                                    created_timestamp)
-            VALUES (?, ?, ?)
+            INSERT INTO pdf_extracts (filename, extracted_text, word_count,
+                                    character_length, created_timestamp)
+            VALUES (?, ?, ?, ?, ?)
         """,
-            (filename, extracted_text, datetime.datetime.now()),
+            (
+                filename,
+                extracted_text,
+                word_count,
+                character_length,
+                datetime.datetime.now(),
+            ),
         )
 
         conn.commit()
@@ -73,9 +101,7 @@ def extract_text_from_pdf(pdf_path):
             for i, image in enumerate(images):
                 # Extract text from each page using Tesseract
                 page_text = pytesseract.image_to_string(image, lang="eng")
-                extracted_text += (
-                    f"\n--- Page {i+1} ---\n{page_text}\n"
-                )
+                extracted_text += f"\n--- Page {i+1} ---\n{page_text}\n"
 
             return extracted_text.strip()
 
@@ -101,7 +127,7 @@ def display_database_records():
 
         cursor.execute(
             """
-            SELECT filename, created_timestamp,
+            SELECT filename, created_timestamp, word_count, character_length,
                    SUBSTR(extracted_text, 1, 200) || '...' as preview
             FROM pdf_extracts
             ORDER BY created_timestamp DESC
@@ -114,9 +140,20 @@ def display_database_records():
 
         if records:
             st.subheader("Recent Processed Files")
-            for filename, timestamp, preview in records:
+            for (
+                filename,
+                timestamp,
+                word_count,
+                character_length,
+                preview,
+            ) in records:
                 with st.expander(f"{filename} - {timestamp}"):
-                    st.text(preview)
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.metric("Word Count", word_count or 0)
+                    with col2:
+                        st.metric("Characters", character_length or 0)
+                    st.text_area("Preview:", preview, height=100)
         else:
             st.info("No processed files found in database.")
 
@@ -150,9 +187,7 @@ def main():
         pdf_files = get_pdf_files_from_directory(directory_path)
 
         if pdf_files:
-            st.success(
-                f"Found {len(pdf_files)} PDF files in the directory"
-            )
+            st.success(f"Found {len(pdf_files)} PDF files")
 
             # Display found PDF files
             with st.expander("PDF Files Found"):
@@ -178,16 +213,14 @@ def main():
                         # Save to database
                         if save_extracted_text(filename, extracted_text):
                             successful_processes += 1
-                            st.success(f"✅ Successfully processed: {filename}")
+                            st.success(f"✅ Processed: {filename}")
                         else:
                             failed_processes += 1
                             st.error(f"❌ Database save failed: {filename}")
 
                     except Exception as e:
                         failed_processes += 1
-                        st.error(
-                            f"❌ Processing failed for {filename}: {str(e)}"
-                        )
+                        st.error(f"❌ Failed for {filename}: {str(e)}")
                         with st.expander(f"Error details for {filename}"):
                             st.code(traceback.format_exc())
 
@@ -205,9 +238,7 @@ def main():
             st.warning("No PDF files found in the specified directory")
 
     elif directory_path:
-        st.error(
-            "Directory does not exist. Please enter a valid directory path."
-        )
+        st.error("Directory does not exist. Please enter a valid path.")
 
     # Database viewer section
     st.header("Database Records")
@@ -217,11 +248,28 @@ def main():
     try:
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
+
+        # Get total records
         cursor.execute("SELECT COUNT(*) FROM pdf_extracts")
         total_records = cursor.fetchone()[0]
+
+        # Get total words and characters
+        cursor.execute(
+            "SELECT SUM(word_count), SUM(character_length) FROM pdf_extracts"
+        )
+        total_words, total_chars = cursor.fetchone()
+
         conn.close()
 
-        st.metric("Total Processed Files", total_records)
+        # Display metrics in columns
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Total Processed Files", total_records)
+        with col2:
+            st.metric("Total Words Extracted", total_words or 0)
+        with col3:
+            st.metric("Total Characters Extracted", total_chars or 0)
+
     except Exception as e:
         st.error(f"Error getting database statistics: {str(e)}")
 
