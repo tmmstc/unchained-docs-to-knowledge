@@ -4,10 +4,16 @@ Tests for FastAPI endpoints.
 
 from fastapi.testclient import TestClient
 from app.main import app
-import tempfile
-import os
+from app.database import init_database
+import pytest
 
 client = TestClient(app)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_database():
+    """Setup database for tests."""
+    init_database()
 
 
 def test_read_root():

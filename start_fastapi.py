@@ -5,18 +5,36 @@ Simple script to start just the FastAPI server for testing.
 
 import subprocess
 import sys
+import logging
 from pathlib import Path
+
+# Configure logging for startup script
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+
+logger = logging.getLogger(__name__)
 
 def main():
     """Start FastAPI server."""
-    print("🚀 Starting FastAPI backend on http://localhost:8000")
+    logger.info("🚀 Initializing FastAPI backend startup")
+    logger.info("Target URL: http://localhost:8000")
+    logger.info("Host: 127.0.0.1")
+    logger.info("Port: 8000")
+    logger.info("Reload mode: enabled")
     
     venv_python = Path("venv/Scripts/python.exe")
     if not venv_python.exists():
-        print("❌ Virtual environment not found. Run: py -m venv venv")
+        logger.error("❌ Virtual environment not found at: %s", venv_python)
+        logger.error("Please run: py -m venv venv")
         return 1
     
+    logger.info("✅ Virtual environment found at: %s", venv_python)
+    
     try:
+        logger.info("📡 Starting uvicorn server...")
         # Start FastAPI server
         subprocess.run([
             str(venv_python), 
@@ -27,10 +45,10 @@ def main():
             "--port", "8000"
         ], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"❌ Error starting FastAPI: {e}")
+        logger.error("❌ Error starting FastAPI: %s", e)
         return 1
     except KeyboardInterrupt:
-        print("\n🛑 FastAPI server stopped")
+        logger.info("\n🛑 FastAPI server stopped by user")
         return 0
 
 if __name__ == "__main__":
