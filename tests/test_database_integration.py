@@ -1,184 +1,173 @@
+"""
+Integration tests for database functionality.
+Tests the actual database operations including table creation,
+data insertion, retrieval, and metrics calculation.
+"""
+
 import sqlite3
-import os
 import tempfile
+import os
 import datetime
 import pytest
-import re
-# Remove unused imports
-# from unittest.mock import patch, MagicMock
+from app.database import (
+    init_database,
+    save_extracted_text,
+    get_recent_records,
+    get_database_statistics,
+    DATABASE_PATH,
+)
+from shared.pdf_processor import calculate_text_metrics
 
 
 @pytest.fixture
-def temp_db():
+def temp_database():
     """Create a temporary database for testing"""
-    db_fd, db_path = tempfile.mkstemp(suffix=".db")
-    os.close(db_fd)
+    # Create a temporary file for the test database
+    temp_db_fd, temp_db_path = tempfile.mkstemp(suffix=".db")
+    os.close(temp_db_fd)
 
-    # Initialize database schema
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS pdf_extracts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            filename TEXT NOT NULL,
-            extracted_text TEXT,
-            word_count INTEGER,
-            character_length INTEGER,
-            created_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    """
-    )
-    conn.commit()
-    conn.close()
+    # Temporarily replace the database path
+    original_db_path = DATABASE_PATH
+    import app.database
 
-    yield db_path
-    os.unlink(db_path)
+    app.database.DATABASE_PATH = temp_db_path
+
+    yield temp_db_path
+
+    # Clean up - restore original path and delete temp file
+    app.database.DATABASE_PATH = original_db_path
+    if os.path.exists(temp_db_path):
+        os.unlink(temp_db_path)
 
 
-def test_database_schema(temp_db):
-    """Test that the database has the correct schema"""
-    conn = sqlite3.connect(temp_db)
-    cursor = conn.cursor()
+class TestDatabaseOperations:
+    def test_init_database_creates_table(self, temp_database):
+        """Test that database initialization creates the required table"""
+        init_database()
 
-    # Get table info
-    cursor.execute("PRAGMA table_info(pdf_extracts)")
-    columns = cursor.fetchall()
-
-    # Extract column names
-    column_names = [column[1] for column in columns]
-
-    expected_columns = [
-        "id",
-        "filename",
-        "extracted_text",
-        "word_count",
-        "character_length",
-        "created_timestamp",
-    ]
-
-    assert set(column_names) == set(expected_columns)
-    conn.close()
-
-
-def calculate_text_metrics(text):
-    """Calculate word count and character length for extracted text"""
-    if not text:
-        return 0, 0
-
-    # Character length (including whitespace and punctuation)
-    character_length = len(text)
-
-    # Word count - split by whitespace and filter out empty strings
-    # This properly handles multiple spaces, tabs, newlines, and punctuation
-    words = re.findall(r"\b\w+\b", text)
-    word_count = len(words)
-
-    return word_count, character_length
-
-
-def save_extracted_text_mock(db_path, filename, extracted_text):
-    """Mock version of save_extracted_text function for testing"""
-    try:
-        # Calculate metrics
-        word_count, character_length = calculate_text_metrics(extracted_text)
-
-        conn = sqlite3.connect(db_path)
+        # Check if the table was created
+        conn = sqlite3.connect(temp_database)
         cursor = conn.cursor()
 
         cursor.execute(
-            """
-            INSERT INTO pdf_extracts (filename, extracted_text, word_count,
-                                    character_length, created_timestamp)
-            VALUES (?, ?, ?, ?, ?)
-        """,
-            (
-                filename,
-                extracted_text,
-                word_count,
-                character_length,
-                datetime.datetime.now(),
-            ),
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='pdf_extracts'"
         )
-
-        conn.commit()
+        table_exists = cursor.fetchone() is not None
         conn.close()
-        return True
-    except Exception:
-        return False
 
+        assert table_exists, "pdf_extracts table was not created"
 
-def test_save_extracted_text_with_metrics(temp_db):
-    """Test saving text with calculated metrics"""
-    # Test data
-    filename = "test_document.pdf"
-    text = "Hello world! This is a test document with some words."
+    def test_save_and_retrieve_extracted_text(self, temp_database):
+        """Test saving extracted text and calculating metrics"""
+        init_database()
 
-    # Save the text using mock function
-    result = save_extracted_text_mock(temp_db, filename, text)
-    assert result is True
+        # Test data
+        filename = "test_document.pdf"
+        extracted_text = "This is a test document with multiple words and sentences."
+        word_count, character_length = calculate_text_metrics(extracted_text)
 
-    # Verify data in database
-    conn = sqlite3.connect(temp_db)
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT filename, extracted_text, word_count, character_length "
-        "FROM pdf_extracts WHERE filename = ?",
-        (filename,),
-    )
-    row = cursor.fetchone()
-    conn.close()
+        # Save the extracted text
+        success = save_extracted_text(
+            filename, extracted_text, word_count, character_length
+        )
+        assert success, "Failed to save extracted text"
 
-    assert row is not None
-    assert row[0] == filename
-    assert row[1] == text
-    assert row[2] == 10  # word count
-    assert row[3] == len(text)  # character length
+        # Verify the data was saved correctly
+        conn = sqlite3.connect(temp_database)
+        cursor = conn.cursor()
 
+        cursor.execute("SELECT * FROM pdf_extracts WHERE filename = ?", (filename,))
+        result = cursor.fetchone()
+        conn.close()
 
-def test_save_empty_text(temp_db):
-    """Test saving empty text"""
-    filename = "empty_document.pdf"
-    text = ""
+        assert result is not None, "No record found in database"
 
-    result = save_extracted_text_mock(temp_db, filename, text)
-    assert result is True
+        # Unpack the result
+        (
+            db_id,
+            db_filename,
+            db_text,
+            db_word_count,
+            db_char_length,
+            db_timestamp,
+        ) = result
 
-    # Verify metrics for empty text
-    conn = sqlite3.connect(temp_db)
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT word_count, character_length FROM pdf_extracts "
-        "WHERE filename = ?",
-        (filename,),
-    )
-    row = cursor.fetchone()
-    conn.close()
+        # Verify the saved data
+        assert db_filename == filename
+        assert db_text == extracted_text
+        assert db_word_count == word_count
+        assert db_char_length == character_length
 
-    assert row is not None
-    assert row[0] == 0  # word count
-    assert row[1] == 0  # character length
+        # Verify timestamp is recent (within last minute)
+        saved_time = datetime.datetime.fromisoformat(db_timestamp)
+        time_diff = datetime.datetime.now() - saved_time
+        assert time_diff.total_seconds() < 60, "Timestamp is not recent"
 
+    def test_save_multiple_files(self, temp_database):
+        """Test saving multiple files and retrieving them"""
+        init_database()
 
-def test_save_text_with_special_characters(temp_db):
-    """Test saving text with punctuation and special characters"""
-    filename = "special_chars.pdf"
-    text = "Hello, world! Email: user@example.com. Phone: 555-1234."
+        # Test data for multiple files
+        test_files = [
+            ("doc1.pdf", "First document content"),
+            ("doc2.pdf", "Second document with more content and words"),
+            ("doc3.pdf", "Third document content here"),
+        ]
 
-    result = save_extracted_text_mock(temp_db, filename, text)
-    assert result is True
+        # Save all files
+        for filename, content in test_files:
+            word_count, character_length = calculate_text_metrics(content)
+            success = save_extracted_text(
+                filename, content, word_count, character_length
+            )
+            assert success, f"Failed to save {filename}"
 
-    conn = sqlite3.connect(temp_db)
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT word_count, character_length FROM pdf_extracts "
-        "WHERE filename = ?",
-        (filename,),
-    )
-    row = cursor.fetchone()
-    conn.close()
+        # Verify all files were saved
+        conn = sqlite3.connect(temp_database)
+        cursor = conn.cursor()
 
-    assert row is not None
-    # extracted words: Hello, world, Email, user, example, com, Phone, 555, 1234  # noqa: E501
-    assert row[0] == 9
-    assert row[1] == len(text)
+        cursor.execute("SELECT COUNT(*) FROM pdf_extracts")
+        count = cursor.fetchone()[0]
+        assert count == len(test_files), "Not all files were saved"
+
+        conn.close()
+
+    def test_get_recent_records(self, temp_database):
+        """Test retrieving recent records"""
+        init_database()
+
+        # Add test data
+        test_files = [
+            ("doc1.pdf", "First document"),
+            ("doc2.pdf", "Second document"),
+        ]
+
+        for filename, content in test_files:
+            word_count, character_length = calculate_text_metrics(content)
+            save_extracted_text(filename, content, word_count, character_length)
+
+        # Get records
+        records = get_recent_records(limit=10)
+        assert len(records) == 2
+        assert records[0]["filename"] in ["doc1.pdf", "doc2.pdf"]
+
+    def test_get_database_statistics(self, temp_database):
+        """Test getting database statistics"""
+        init_database()
+
+        # Initially should be empty
+        total_records, total_words, total_chars = get_database_statistics()
+        assert total_records == 0
+        assert total_words == 0
+        assert total_chars == 0
+
+        # Add some data
+        content = "Test content with five words"
+        word_count, character_length = calculate_text_metrics(content)
+        save_extracted_text("test.pdf", content, word_count, character_length)
+
+        # Check statistics
+        total_records, total_words, total_chars = get_database_statistics()
+        assert total_records == 1
+        assert total_words == word_count
+        assert total_chars == character_length

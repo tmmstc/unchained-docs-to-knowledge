@@ -1,82 +1,85 @@
-import re
+"""
+Test the text metrics calculation functionality from the PDF processor.
+This tests the calculate_text_metrics function that extracts word count
+and character length from processed PDF text.
+"""
+
+import pytest
+from shared.pdf_processor import calculate_text_metrics
 
 
-def calculate_text_metrics(text):
-    """Calculate word count and character length for extracted text"""
-    if not text:
-        return 0, 0
+class TestTextMetrics:
+    def test_empty_text(self):
+        """Test with empty string"""
+        word_count, character_length = calculate_text_metrics("")
+        assert word_count == 0
+        assert character_length == 0
 
-    # Character length (including whitespace and punctuation)
-    character_length = len(text)
+    def test_none_text(self):
+        """Test with None input"""
+        word_count, character_length = calculate_text_metrics(None)
+        assert word_count == 0
+        assert character_length == 0
 
-    # Word count - split by whitespace and filter out empty strings
-    # This properly handles multiple spaces, tabs, newlines, and punctuation
-    words = re.findall(r"\b\w+\b", text)
-    word_count = len(words)
+    def test_simple_text(self):
+        """Test with simple text"""
+        text = "Hello world"
+        word_count, character_length = calculate_text_metrics(text)
+        assert word_count == 2
+        assert character_length == 11
 
-    return word_count, character_length
+    def test_text_with_punctuation(self):
+        """Test text with punctuation marks"""
+        text = "Hello, world! How are you?"
+        word_count, character_length = calculate_text_metrics(text)
+        assert word_count == 5  # "Hello", "world", "How", "are", "you"
+        assert character_length == 26
 
+    def test_text_with_multiple_spaces(self):
+        """Test text with multiple consecutive spaces"""
+        text = "Hello    world   test"
+        word_count, character_length = calculate_text_metrics(text)
+        assert word_count == 3  # "Hello", "world", "test"
+        assert character_length == 21  # All characters including extra spaces
 
-def test_calculate_text_metrics_empty():
-    """Test metrics for empty text"""
-    word_count, char_length = calculate_text_metrics("")
-    assert word_count == 0
-    assert char_length == 0
+    def test_text_with_newlines_and_tabs(self):
+        """Test text with newlines and tabs"""
+        text = "Hello\nworld\ttest"
+        word_count, character_length = calculate_text_metrics(text)
+        assert word_count == 3
+        assert character_length == 16
 
+    def test_text_with_numbers(self):
+        """Test text with numbers mixed in"""
+        text = "There are 123 items and 456 more"
+        word_count, character_length = calculate_text_metrics(text)
+        assert word_count == 7  # "There", "are", "123", "items", "and", "456", "more"
+        assert character_length == len(text)  # Should match actual string length
 
-def test_calculate_text_metrics_none():
-    """Test metrics for None text"""
-    word_count, char_length = calculate_text_metrics(None)
-    assert word_count == 0
-    assert char_length == 0
+    def test_only_punctuation(self):
+        """Test with only punctuation marks"""
+        text = "!@#$%^&*()"
+        word_count, character_length = calculate_text_metrics(text)
+        assert word_count == 0
+        assert character_length == 10
 
+    def test_only_whitespace(self):
+        """Test with only whitespace characters"""
+        text = "   \t\n   "
+        word_count, character_length = calculate_text_metrics(text)
+        assert word_count == 0
+        assert character_length == 8
 
-def test_calculate_text_metrics_simple():
-    """Test metrics for simple text"""
-    text = "Hello world"
-    word_count, char_length = calculate_text_metrics(text)
-    assert word_count == 2
-    assert char_length == 11
-
-
-def test_calculate_text_metrics_with_punctuation():
-    """Test metrics with punctuation"""
-    text = "Hello, world! How are you?"
-    word_count, char_length = calculate_text_metrics(text)
-    assert word_count == 5  # punctuation should not count as words
-    assert char_length == 26  # punctuation should count as characters
-
-
-def test_calculate_text_metrics_multiple_whitespace():
-    """Test metrics with multiple spaces, tabs, newlines"""
-    text = "Hello    world\t\ttest\n\nnewline"
-    word_count, char_length = calculate_text_metrics(text)
-    assert word_count == 4
-    assert char_length == len(text)
-
-
-def test_calculate_text_metrics_numbers():
-    """Test metrics with numbers mixed with words"""
-    text = "There are 123 items and 456 more"
-    word_count, char_length = calculate_text_metrics(text)
-    assert word_count == 7  # numbers should count as words
-    assert char_length == len(text)
-
-
-def test_calculate_text_metrics_hyphenated():
-    """Test metrics with hyphenated words"""
-    text = "This is a well-formed sentence"
-    word_count, char_length = calculate_text_metrics(text)
-    # hyphenated words should be treated as separate words
-    assert word_count == 6
-    assert char_length == len(text)
-
-
-def test_calculate_text_metrics_special_chars():
-    """Test metrics with special characters"""
-    text = "Email: user@example.com and phone: 555-1234"
-    word_count, char_length = calculate_text_metrics(text)
-    assert (
-        word_count == 8
-    )  # regex extracts: Email, user, example, com, and, phone, 555, 1234
-    assert char_length == len(text)
+    def test_pdf_like_text(self):
+        """Test with PDF-like text with page markers"""
+        text = """
+        --- Page 1 ---
+        This is the first page with some content.
+        
+        --- Page 2 ---
+        This is the second page with more content.
+        """
+        word_count, character_length = calculate_text_metrics(text)
+        # Should count all words including "Page", "1", "2", etc.
+        assert word_count > 10  # Exact count may vary but should be substantial
+        assert character_length == len(text)

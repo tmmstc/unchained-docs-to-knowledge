@@ -43,3 +43,6 @@ pdf_ocr_database.db
 # Temporary files - PDF processing
 /tmp/
 temp/
+
+# FastAPI/Uvicorn
+.env

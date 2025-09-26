@@ -53,7 +53,7 @@ class ServiceRunner:
             
             venv_python = Path("venv/Scripts/python.exe")
             process = subprocess.Popen(
-                [str(venv_python), "-m", "streamlit", "run", "streamlit_app.py"],
+                [str(venv_python), "-m", "streamlit", "run", "frontend/streamlit_app.py"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True
