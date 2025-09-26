@@ -9,3 +9,10 @@ pytesseract
 Pillow
 pdf2image
 requests
+protobuf
+gitpython
+tenacity
+toml
+tornado
+watchdog
+pydeck
