@@ -124,7 +124,7 @@ python run_both.py
 
 **Start Streamlit frontend only:**
 ```bash
-.\venv\Scripts\python.exe -m streamlit run frontend/streamlit_app.py --server.port 8501
+.\venv\Scripts\python.exe -m streamlit run frontend/streamlit_app.py --server.address 0.0.0.0 --server.port 8501
 ```
 
 ## API Endpoints
