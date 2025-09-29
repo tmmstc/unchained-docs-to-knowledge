@@ -1,0 +1,1296 @@
+python run_both.py
+🌟 Starting FastAPI + Streamlit Development Environment
+📝 Press Ctrl+C to stop both services
+
+🚀 Starting FastAPI backend on http://localhost:8000
+[FastAPI] INFO:     Will watch for changes in these directories: ['C:\\Users\\Ed\\OneDrive\\unchained']
+[FastAPI] INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[FastAPI] INFO:     Started reloader process [7312] using StatReload
+[FastAPI] INFO:     Started server process [5460]
+[FastAPI] INFO:     Waiting for application startup.
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f680' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+[FastAPI] await app(scope, self.receive, self.send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+[FastAPI] await self.lifespan(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+[FastAPI] async with self.lifespan_context(app) as maybe_state:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 214, in __aenter__
+[FastAPI] return await anext(self.gen)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 33, in lifespan
+[FastAPI] logger.info("\U0001f680 Starting PDF OCR Processing API")
+[FastAPI] Message: '\U0001f680 Starting PDF OCR Processing API'
+[FastAPI] Arguments: ()
+[FastAPI] 2025-09-29 10:48:00,966 - app.main - INFO - Application version: 1.0.0
+[FastAPI] 2025-09-29 10:48:00,966 - app.main - INFO - Initializing database...
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode characters in position 48-49: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+[FastAPI] await app(scope, self.receive, self.send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+[FastAPI] await self.lifespan(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+[FastAPI] async with self.lifespan_context(app) as maybe_state:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 214, in __aenter__
+[FastAPI] return await anext(self.gen)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 38, in lifespan
+[FastAPI] init_database()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 30, in init_database
+[FastAPI] logger.info("\U0001f5c4\ufe0f Initializing SQLite database")
+[FastAPI] Message: '\U0001f5c4\ufe0f Initializing SQLite database'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode characters in position 48-49: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+[FastAPI] await app(scope, self.receive, self.send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+[FastAPI] await self.lifespan(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+[FastAPI] async with self.lifespan_context(app) as maybe_state:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 214, in __aenter__
+[FastAPI] return await anext(self.gen)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 38, in lifespan
+[FastAPI] init_database()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 31, in init_database
+[FastAPI] logger.info(f"\U0001f5c4\ufe0f Database location: {DATABASE_PATH}")
+[FastAPI] Message: '\U0001f5c4\ufe0f Database location: pdf_ocr_database.db'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 48: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+[FastAPI] await app(scope, self.receive, self.send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+[FastAPI] await self.lifespan(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+[FastAPI] async with self.lifespan_context(app) as maybe_state:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 214, in __aenter__
+[FastAPI] return await anext(self.gen)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 38, in lifespan
+[FastAPI] init_database()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 49, in init_database
+[FastAPI] logger.info("\u2705 Database schema initialized successfully")
+[FastAPI] Message: '\u2705 Database schema initialized successfully'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+[FastAPI] await app(scope, self.receive, self.send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+[FastAPI] await self.lifespan(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+[FastAPI] async with self.lifespan_context(app) as maybe_state:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 214, in __aenter__
+[FastAPI] return await anext(self.gen)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 39, in lifespan
+[FastAPI] logger.info("\u2705 Database initialized successfully")
+[FastAPI] Message: '\u2705 Database initialized successfully'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f31f' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+[FastAPI] await app(scope, self.receive, self.send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+[FastAPI] await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+[FastAPI] await self.lifespan(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+[FastAPI] async with self.lifespan_context(app) as maybe_state:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 214, in __aenter__
+[FastAPI] return await anext(self.gen)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 44, in lifespan
+[FastAPI] logger.info("\U0001f31f FastAPI application startup complete")
+[FastAPI] Message: '\U0001f31f FastAPI application startup complete'
+[FastAPI] Arguments: ()
+[FastAPI] INFO:     Application startup complete.
+🎨 Starting Streamlit frontend on http://localhost:8501
+[Streamlit]
+[Streamlit] You can now view your Streamlit app in your browser.
+[Streamlit]
+[Streamlit] URL: http://0.0.0.0:8501
+[Streamlit]
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f31f' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 28, in <module>
+[Streamlit] logger.info("\U0001f31f Streamlit PDF OCR Frontend starting up")
+[Streamlit] Message: '\U0001f31f Streamlit PDF OCR Frontend starting up'
+[Streamlit] Arguments: ()
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f517' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 29, in <module>
+[Streamlit] logger.info(f"\U0001f517 Backend URL configured: {BACKEND_URL}")
+[Streamlit] Message: '\U0001f517 Backend URL configured: http://localhost:8000'
+[Streamlit] Arguments: ()
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4f1' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 30, in <module>
+[Streamlit] logger.info("\U0001f4f1 Application: PDF OCR processing with FastAPI backend integration")
+[Streamlit] Message: '\U0001f4f1 Application: PDF OCR processing with FastAPI backend integration'
+[Streamlit] Arguments: ()
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f3e0' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 137, in main
+[Streamlit] logger.info("\U0001f3e0 Main application page loaded")
+[Streamlit] Message: '\U0001f3e0 Main application page loaded'
+[Streamlit] Arguments: ()
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f3a8' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 138, in main
+[Streamlit] logger.info("\U0001f3a8 Setting up page configuration")
+[Streamlit] Message: '\U0001f3a8 Setting up page configuration'
+[Streamlit] Arguments: ()
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f50d' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 147, in main
+[Streamlit] logger.info("\U0001f50d Testing backend connectivity...")
+[Streamlit] Message: '\U0001f50d Testing backend connectivity...'
+[Streamlit] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e5' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 403, in run_asgi
+[FastAPI] result = await app(  # type: ignore[func-returns-value]
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+[FastAPI] await self.app(scope, receive, _send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
+[FastAPI] response = await self.dispatch_func(request, call_next)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 61, in log_requests
+[FastAPI] logger.info(
+[FastAPI] Message: '\U0001f4e5 Incoming request: GET / from 127.0.0.1'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f3e0' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 84, in read_root
+[FastAPI] logger.info("\U0001f3e0 Root endpoint accessed")
+[FastAPI] Message: '\U0001f3e0 Root endpoint accessed'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e4' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 403, in run_asgi
+[FastAPI] result = await app(  # type: ignore[func-returns-value]
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+[FastAPI] await self.app(scope, receive, _send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
+[FastAPI] response = await self.dispatch_func(request, call_next)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 73, in log_requests
+[FastAPI] logger.info(
+[FastAPI] Message: '\U0001f4e4 Response: 200 for GET / (0.028s)'
+[FastAPI] Arguments: ()
+[FastAPI] INFO:     127.0.0.1:50000 - "GET / HTTP/1.1" 200 OK
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\u2705' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 153, in main
+[Streamlit] logger.info("\u2705 Backend API connection successful")
+[Streamlit] Message: '\u2705 Backend API connection successful'
+[Streamlit] Arguments: ()
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4cb' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 251, in main
+[Streamlit] logger.info("\U0001f4cb Loading database records section")
+[Streamlit] Message: '\U0001f4cb Loading database records section'
+[Streamlit] Arguments: ()
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4cb' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 252, in main
+[Streamlit] display_database_records()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 118, in display_database_records
+[Streamlit] records = get_records_from_backend()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 81, in get_records_from_backend
+[Streamlit] logger.info(f"\U0001f4cb Requesting {limit} records from backend")
+[Streamlit] Message: '\U0001f4cb Requesting 10 records from backend'
+[Streamlit] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e5' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 403, in run_asgi
+[FastAPI] result = await app(  # type: ignore[func-returns-value]
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+[FastAPI] await self.app(scope, receive, _send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
+[FastAPI] response = await self.dispatch_func(request, call_next)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 61, in log_requests
+[FastAPI] logger.info(
+[FastAPI] Message: '\U0001f4e5 Incoming request: GET /records from 127.0.0.1'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4cb' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 138, in get_records
+[FastAPI] logger.info(f"\U0001f4cb Retrieving {limit} recent records")
+[FastAPI] Message: '\U0001f4cb Retrieving 10 recent records'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4cb' in position 48: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 141, in get_records
+[FastAPI] records = get_recent_records(limit=limit)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 108, in get_recent_records
+[FastAPI] logger.info(f"\U0001f4cb Retrieving {limit} recent records from database")
+[FastAPI] Message: '\U0001f4cb Retrieving 10 recent records from database'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4cb' in position 48: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 141, in get_records
+[FastAPI] records = get_recent_records(limit=limit)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 127, in get_recent_records
+[FastAPI] logger.info(f"\U0001f4cb Retrieved {len(records)} records from database")
+[FastAPI] Message: '\U0001f4cb Retrieved 0 records from database'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4cb' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 142, in get_records
+[FastAPI] logger.info(f"\U0001f4cb Retrieved {len(records)} records from database")
+[FastAPI] Message: '\U0001f4cb Retrieved 0 records from database'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e4' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[Streamlit] --- Logging error ---
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[Streamlit] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4cb' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 252, in main
+[Streamlit] display_database_records()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 118, in display_database_records
+[Streamlit] records = get_records_from_backend()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 89, in get_records_from_backend
+[Streamlit] logger.info(f"\U0001f4cb Received {len(records)} records from backend")
+[Streamlit] Message: '\U0001f4cb Received 0 records from backend'
+[Streamlit] Arguments: ()
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4ca' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 255, in main
+[Streamlit] logger.info("\U0001f4ca Loading database statistics section")
+[Streamlit] Message: '\U0001f4ca Loading database statistics section'
+[FastAPI] return self._bootstrap(parent_sentinel)
+[Streamlit] Arguments: ()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[Streamlit] --- Logging error ---
+[FastAPI] self.run()
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4ca' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 256, in main
+[Streamlit] stats = get_stats_from_backend()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 99, in get_stats_from_backend
+[Streamlit] logger.info("\U0001f4ca Requesting statistics from backend")
+[Streamlit] Message: '\U0001f4ca Requesting statistics from backend'
+[Streamlit] Arguments: ()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 403, in run_asgi
+[FastAPI] result = await app(  # type: ignore[func-returns-value]
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+[FastAPI] await self.app(scope, receive, _send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
+[FastAPI] response = await self.dispatch_func(request, call_next)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 73, in log_requests
+[FastAPI] logger.info(
+[FastAPI] Message: '\U0001f4e4 Response: 200 for GET /records (0.022s)'
+[FastAPI] Arguments: ()
+[FastAPI] INFO:     127.0.0.1:50002 - "GET /records?limit=10 HTTP/1.1" 200 OK
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e5' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 403, in run_asgi
+[FastAPI] result = await app(  # type: ignore[func-returns-value]
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+[FastAPI] await self.app(scope, receive, _send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
+[FastAPI] response = await self.dispatch_func(request, call_next)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 61, in log_requests
+[FastAPI] logger.info(
+[FastAPI] Message: '\U0001f4e5 Incoming request: GET /stats from 127.0.0.1'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4ca' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 157, in get_stats
+[FastAPI] logger.info("\U0001f4ca Retrieving database statistics")
+[FastAPI] Message: '\U0001f4ca Retrieving database statistics'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4ca' in position 48: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 160, in get_stats
+[FastAPI] total_records, total_words, total_chars = get_database_statistics()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 142, in get_database_statistics
+[FastAPI] logger.info("\U0001f4ca Retrieving database statistics")
+[FastAPI] Message: '\U0001f4ca Retrieving database statistics'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4ca' in position 48: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 160, in get_stats
+[FastAPI] total_records, total_words, total_chars = get_database_statistics()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 159, in get_database_statistics
+[FastAPI] logger.info(
+[FastAPI] Message: '\U0001f4ca Database statistics: 0 records, 0 words, 0 characters'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4ca' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[FastAPI] self._bootstrap_inner()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[FastAPI] self.run()
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 976, in run
+[FastAPI] result = context.run(func, *args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 161, in get_stats
+[FastAPI] logger.info(
+[FastAPI] Message: '\U0001f4ca Statistics: 0 records, 0 words, 0 characters'
+[FastAPI] Arguments: ()
+[FastAPI] --- Logging error ---
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[FastAPI] stream.write(msg + self.terminator)
+[FastAPI] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[FastAPI] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[FastAPI] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[FastAPI] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e4' in position 44: character maps to <undefined>
+[FastAPI] Call stack:
+[FastAPI] File "<string>", line 1, in <module>
+[FastAPI] from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=7312, pipe_handle=740)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+[FastAPI] exitcode = _main(fd, parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\spawn.py", line 135, in _main
+[FastAPI] return self._bootstrap(parent_sentinel)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313, in _bootstrap
+[FastAPI] self.run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108, in run
+[FastAPI] self._target(*self._args, **self._kwargs)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[FastAPI] target(sockets=sockets)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+[FastAPI] return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 195, in run
+[FastAPI] return runner.run(main)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+[FastAPI] return self._loop.run_until_complete(task)
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+[FastAPI] self.run_forever()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+[FastAPI] self._run_once()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2050, in _run_once
+[FastAPI] handle._run()
+[FastAPI] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+[FastAPI] self._context.run(self._callback, *self._args)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 403, in run_asgi
+[FastAPI] result = await app(  # type: ignore[func-returns-value]
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+[FastAPI] return await self.app(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\fastapi\applications.py", line 1082, in __call__
+[FastAPI] await super().__call__(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+[FastAPI] await self.middleware_stack(scope, receive, send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+[FastAPI] await self.app(scope, receive, _send)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
+[FastAPI] response = await self.dispatch_func(request, call_next)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 73, in log_requests
+[FastAPI] logger.info(
+[FastAPI] Message: '\U0001f4e4 Response: 200 for GET /stats (0.007s)'
+[FastAPI] Arguments: ()
+[FastAPI] INFO:     127.0.0.1:50004 - "GET /stats HTTP/1.1" 200 OK
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4ca' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 269, in <module>
+[Streamlit] main()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 256, in main
+[Streamlit] stats = get_stats_from_backend()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 105, in get_stats_from_backend
+[Streamlit] logger.info(
+[Streamlit] Message: '\U0001f4ca Backend statistics: 0 records, 0 words, 0 chars'
+[Streamlit] Arguments: ()
