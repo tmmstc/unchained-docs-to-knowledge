@@ -27,8 +27,8 @@ def get_db_connection():
 
 def init_database():
     """Initialize SQLite database with required schema."""
-    logger.info("🗄️ Initializing SQLite database")
-    logger.info(f"🗄️ Database location: {DATABASE_PATH}")
+    logger.info("Initializing SQLite database")
+    logger.info(f"Database location: {DATABASE_PATH}")
 
     try:
         with get_db_connection() as conn:
@@ -46,9 +46,9 @@ def init_database():
             """
             )
             conn.commit()
-            logger.info("✅ Database schema initialized successfully")
+            logger.info("Database schema initialized successfully")
     except Exception as e:
-        logger.error(f"❌ Database initialization failed: {e}")
+        logger.error(f"Database initialization failed: {e}")
         raise
 
 
@@ -67,8 +67,8 @@ def save_extracted_text(
     Returns:
         True if successful, False otherwise
     """
-    logger.info(f"💾 Saving extracted text to database: {filename}")
-    logger.info(f"📊 Text metrics: {word_count} words, {character_length} characters")
+    logger.info(f"Saving extracted text to database: {filename}")
+    logger.info(f"Text metrics: {word_count} words, {character_length} characters")
 
     try:
         with get_db_connection() as conn:
@@ -88,10 +88,10 @@ def save_extracted_text(
                 ),
             )
             conn.commit()
-        logger.info(f"✅ Successfully saved to database: {filename}")
+        logger.info(f"Successfully saved to database: {filename}")
         return True
     except Exception as e:
-        logger.error(f"❌ Database save error for {filename}: {e}")
+        logger.error(f"Database save error for {filename}: {e}")
         return False
 
 
@@ -105,7 +105,7 @@ def get_recent_records(limit: int = 10) -> List[Dict]:
     Returns:
         List of database records as dictionaries
     """
-    logger.info(f"📋 Retrieving {limit} recent records from database")
+    logger.info(f"Retrieving {limit} recent records from database")
 
     try:
         with get_db_connection() as conn:
@@ -124,11 +124,11 @@ def get_recent_records(limit: int = 10) -> List[Dict]:
             columns = [desc[0] for desc in cursor.description]
             records = cursor.fetchall()
 
-            logger.info(f"📋 Retrieved {len(records)} records from database")
+            logger.info(f"Retrieved {len(records)} records from database")
             return [dict(zip(columns, record)) for record in records]
 
     except Exception as e:
-        logger.error(f"❌ Error retrieving records: {e}")
+        logger.error(f"Error retrieving records: {e}")
         raise
 
 
@@ -139,7 +139,7 @@ def get_database_statistics() -> Tuple[int, int, int]:
     Returns:
         Tuple of (total_records, total_words, total_characters)
     """
-    logger.info("📊 Retrieving database statistics")
+    logger.info("Retrieving database statistics")
 
     try:
         with get_db_connection() as conn:
@@ -157,12 +157,12 @@ def get_database_statistics() -> Tuple[int, int, int]:
             total_words, total_chars = result if result else (0, 0)
 
             logger.info(
-                f"📊 Database statistics: {total_records} records, "
+                f"Database statistics: {total_records} records, "
                 f"{total_words or 0} words, {total_chars or 0} characters"
             )
 
             return total_records, total_words or 0, total_chars or 0
 
     except Exception as e:
-        logger.error(f"❌ Error retrieving statistics: {e}")
+        logger.error(f"Error retrieving statistics: {e}")
         raise
