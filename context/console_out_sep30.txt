@@ -1,0 +1,83 @@
+  & 'c:\Users\Ed\OneDrive\unchained\venv\Scripts\python.exe' 'c:\Users\Ed\.vscode\extensions\ms-python.debugpy-2025.10.0-win32-arm64\bundled\libs\debugpy\launcher' '49777' '--' 'c:\Users\Ed\OneDrive\unchained\run_both.py' 
+Starting FastAPI + Streamlit Development Environment
+Press Ctrl+C to stop both services
+
+Starting FastAPI backend on http://localhost:8000
+[FastAPI] INFO:     Will watch for changes in these directories: ['C:\\Users\\Ed\\OneDrive\\unchained']
+[FastAPI] INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[FastAPI] INFO:     Started reloader process [5320] using StatReload
+[FastAPI] INFO:     Started server process [2108]
+[FastAPI] INFO:     Waiting for application startup.
+[FastAPI] 2025-09-30 16:18:08,320 - app.main - INFO - Starting PDF OCR Processing API
+[FastAPI] 2025-09-30 16:18:08,320 - app.main - INFO - Application version: 1.0.0
+[FastAPI] 2025-09-30 16:18:08,320 - app.main - INFO - Initializing database...
+[FastAPI] 2025-09-30 16:18:08,320 - app.database - INFO - Initializing SQLite database
+[FastAPI] 2025-09-30 16:18:08,320 - app.database - INFO - Database location: pdf_ocr_database.db
+[FastAPI] 2025-09-30 16:18:08,330 - app.database - INFO - Database schema initialized successfully
+[FastAPI] 2025-09-30 16:18:08,330 - app.main - INFO - Database initialized successfully
+[FastAPI] 2025-09-30 16:18:08,330 - app.main - INFO - FastAPI application startup complete
+[FastAPI] INFO:     Application startup complete.
+Starting Streamlit frontend on http://localhost:8501
+[Streamlit] 
+[Streamlit] You can now view your Streamlit app in your browser.
+[Streamlit]
+[Streamlit] URL: http://0.0.0.0:8501
+[Streamlit]
+[Streamlit] 2025-09-30 16:18:18,957 - __main__ - INFO - Streamlit PDF OCR Frontend starting up
+[Streamlit] 2025-09-30 16:18:18,957 - __main__ - INFO - Backend URL configured: http://localhost:8000
+[Streamlit] 2025-09-30 16:18:18,957 - __main__ - INFO - Application: PDF OCR processing with FastAPI backend integration
+[Streamlit] 2025-09-30 16:18:18,957 - __main__ - INFO - Main application page loaded
+[Streamlit] 2025-09-30 16:18:18,957 - __main__ - INFO - Setting up page configuration
+[Streamlit] 2025-09-30 16:18:19,224 - __main__ - INFO - Testing backend connectivity...
+[FastAPI] 2025-09-30 16:18:21,319 - app.main - INFO - Incoming request: GET / from 127.0.0.1
+[FastAPI] 2025-09-30 16:18:21,322 - app.main - INFO - Root endpoint accessed
+[FastAPI] 2025-09-30 16:18:21,323 - app.main - INFO - Response: 200 for GET / (0.003s)
+[FastAPI] INFO:     127.0.0.1:49833 - "GET / HTTP/1.1" 200 OK
+[Streamlit] 2025-09-30 16:18:21,325 - __main__ - INFO - Backend API connection successful
+[Streamlit] 2025-09-30 16:18:21,331 - __main__ - INFO - Loading database records section
+[Streamlit] 2025-09-30 16:18:21,331 - __main__ - INFO - Requesting 10 records from backend
+[FastAPI] 2025-09-30 16:18:23,359 - app.main - INFO - Incoming request: GET /records from 127.0.0.1
+[FastAPI] 2025-09-30 16:18:23,362 - app.main - INFO - Retrieving 10 recent records
+[FastAPI] 2025-09-30 16:18:23,362 - app.database - INFO - Retrieving 10 recent records from database
+[FastAPI] 2025-09-30 16:18:23,385 - app.database - ERROR - Error retrieving records: no such column: summary
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 129, in get_recent_records
+[FastAPI] cursor.execute(
+[FastAPI] ~~~~~~~~~~~~~~^
+[FastAPI] """
+[FastAPI] ^^^
+[FastAPI] ...<8 lines>...
+[FastAPI] (limit,),
+[FastAPI] ^^^^^^^^^
+[FastAPI] )
+[FastAPI] ^
+[FastAPI] sqlite3.OperationalError: no such column: summary
+[FastAPI] 2025-09-30 16:18:23,391 - app.main - ERROR - Error retrieving records: no such column: summary
+[FastAPI] Traceback (most recent call last):
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\main.py", line 170, in get_records
+[FastAPI] records = get_recent_records(limit=limit)
+[FastAPI] File "C:\Users\Ed\OneDrive\unchained\app\database.py", line 129, in get_recent_records
+[FastAPI] cursor.execute(
+[FastAPI] ~~~~~~~~~~~~~~^[Streamlit] 2025-09-30 16:18:23,395 - __main__ - ERROR - Error fetching records from backend: 500 Server Error: Internal Server Error for url: http://localhost:8000/records?limit=10
+[Streamlit] 2025-09-30 16:18:23,397 - __main__ - INFO - Loading database statistics section
+[FastAPI] """
+[FastAPI] ^^^
+
+[Streamlit] 2025-09-30 16:18:23,397 - __main__ - INFO - Requesting statistics from backend
+[FastAPI] ...<8 lines>...
+[FastAPI] (limit,),
+[FastAPI] ^^^^^^^^^
+[FastAPI] )
+[FastAPI] ^
+[FastAPI] sqlite3.OperationalError: no such column: summary
+[FastAPI] 2025-09-30 16:18:23,393 - app.main - INFO - Response: 500 for GET /records (0.034s)
+[FastAPI] INFO:     127.0.0.1:49835 - "GET /records?limit=10 HTTP/1.1" 500 Internal Server Error
+[FastAPI] 2025-09-30 16:18:25,462 - app.main - INFO - Incoming request: GET /stats from 127.0.0.1
+[FastAPI] 2025-09-30 16:18:25,463 - app.main - INFO - Retrieving database statistics
+[FastAPI] 2025-09-30 16:18:25,463 - app.database - INFO - Retrieving database statistics
+[FastAPI] 2025-09-30 16:18:25,467 - app.database - INFO - Database statistics: 4 records, 43306 words, 272892 characters
+[FastAPI] 2025-09-30 16:18:25,468 - app.main - INFO - Statistics: 4 records, 43306 words, 272892 characters
+[FastAPI] 2025-09-30 16:18:25,470 - app.main - INFO - Response: 200 for GET /stats (0.007s)
+[Streamlit] 2025-09-30 16:18:25,470 - __main__ - INFO - Backend statistics: 4 records, 43306 words, 272892 chars
+[FastAPI] INFO:     127.0.0.1:49837 - "GET /stats HTTP/1.1" 200 OK
+
