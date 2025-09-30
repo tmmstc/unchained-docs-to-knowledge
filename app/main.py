@@ -50,7 +50,9 @@ async def lifespan(app: FastAPI):
     logger.info("FastAPI application shutting down")
 
 
-app = FastAPI(title="PDF OCR Processing API", version="1.0.0", lifespan=lifespan)
+app = FastAPI(
+    title="PDF OCR Processing API", version="1.0.0", lifespan=lifespan
+)
 
 
 @app.middleware("http")
@@ -58,22 +60,19 @@ async def log_requests(request: Request, call_next):
     """Log all HTTP requests and responses."""
     start_time = time.time()
 
-    # Log incoming request
+    client_host = request.client.host if request.client else 'unknown'
     logger.info(
         f"Incoming request: {request.method} {request.url.path} "
-        f"from {request.client.host if request.client else 'unknown'}"
+        f"from {client_host}"
     )
 
-    # Process request
     response = await call_next(request)
 
-    # Calculate processing time
     process_time = time.time() - start_time
 
-    # Log response
     logger.info(
-        f"Response: {response.status_code} for {request.method} {request.url.path} "
-        f"({process_time:.3f}s)"
+        f"Response: {response.status_code} for "
+        f"{request.method} {request.url.path} ({process_time:.3f}s)"
     )
 
     return response
@@ -101,7 +100,7 @@ async def process_pdf(request: PDFProcessRequest):
     logger.info(f"Processing PDF: {request.filename}")
     logger.info(
         f"PDF metrics: {request.word_count} words, "
-        f"{request.character_length} characters"
+        f"{request.character_length} chars"
     )
 
     summary = None
@@ -126,14 +125,20 @@ async def process_pdf(request: PDFProcessRequest):
             logger.info(f"Successfully saved PDF: {request.filename}")
             response_data = {
                 "success": True,
-                "message": f"Successfully processed {request.filename}",
+                "message": (
+                    f"Successfully processed {request.filename}"
+                ),
             }
             if summary:
                 response_data["summary"] = summary
             return response_data
         else:
-            logger.error(f"Database save failed for: {request.filename}")
-            raise HTTPException(status_code=500, detail="Failed to save to database")
+            logger.error(
+                f"Database save failed for: {request.filename}"
+            )
+            raise HTTPException(
+                status_code=500, detail="Failed to save to database"
+            )
     except Exception as e:
         logger.error(f"Error processing PDF {request.filename}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -153,11 +158,21 @@ def get_records(limit: int = 10):
     logger.info(f"Retrieving {limit} recent records")
 
     try:
+        if limit < 1:
+            logger.warning(
+                f"Invalid limit value: {limit}, using default 10"
+            )
+            limit = 10
+        elif limit > 1000:
+            logger.warning(f"Limit too high: {limit}, capping at 1000")
+            limit = 1000
+
         records = get_recent_records(limit=limit)
         logger.info(f"Retrieved {len(records)} records from database")
+        logger.debug(f"Records data: {records}")
         return records
     except Exception as e:
-        logger.error(f"Error retrieving records: {e}")
+        logger.error(f"Error retrieving records: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
 

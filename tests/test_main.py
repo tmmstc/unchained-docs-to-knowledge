@@ -71,6 +71,21 @@ def test_get_records_with_limit():
     assert len(records) <= 5
 
 
+def test_get_records_with_limit_10():
+    """Test the records retrieval endpoint with limit=10."""
+    response = client.get("/records?limit=10")
+    assert response.status_code == 200
+    records = response.json()
+    assert isinstance(records, list)
+    assert len(records) <= 10
+    for record in records:
+        assert "id" in record
+        assert "filename" in record
+        assert "created_timestamp" in record
+        assert "word_count" in record
+        assert "character_length" in record
+
+
 def test_get_stats():
     """Test the statistics endpoint."""
     response = client.get("/stats")

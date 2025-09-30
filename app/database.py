@@ -18,7 +18,8 @@ DATABASE_PATH = "pdf_ocr_database.db"
 @contextmanager
 def get_db_connection():
     """Context manager for database connections."""
-    conn = sqlite3.connect(DATABASE_PATH)
+    conn = sqlite3.connect(DATABASE_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
+    conn.row_factory = sqlite3.Row
     try:
         yield conn
     finally:
@@ -74,17 +75,21 @@ def save_extracted_text(
         True if successful, False otherwise
     """
     logger.info(f"Saving extracted text to database: {filename}")
-    logger.info(f"Text metrics: {word_count} words, {character_length} characters")
+    logger.info(
+        f"Text metrics: {word_count} words, {character_length} characters"
+    )
     if summary:
         logger.info(f"Summary length: {len(summary)} characters")
 
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
+            timestamp = datetime.datetime.now().isoformat()
             cursor.execute(
                 """
-                INSERT INTO pdf_extracts (filename, extracted_text, word_count,
-                                        character_length, summary, created_timestamp)
+                INSERT INTO pdf_extracts (filename, extracted_text,
+                                        word_count, character_length,
+                                        summary, created_timestamp)
                 VALUES (?, ?, ?, ?, ?, ?)
             """,
                 (
@@ -93,14 +98,16 @@ def save_extracted_text(
                     word_count,
                     character_length,
                     summary,
-                    datetime.datetime.now(),
+                    timestamp,
                 ),
             )
             conn.commit()
         logger.info(f"Successfully saved to database: {filename}")
         return True
     except Exception as e:
-        logger.error(f"Database save error for {filename}: {e}")
+        logger.error(
+            f"Database save error for {filename}: {e}", exc_info=True
+        )
         return False
 
 
@@ -121,7 +128,8 @@ def get_recent_records(limit: int = 10) -> List[Dict]:
             cursor = conn.cursor()
             cursor.execute(
                 """
-                SELECT id, filename, created_timestamp, word_count, character_length,
+                SELECT id, filename, created_timestamp, word_count,
+                       character_length,
                        SUBSTR(extracted_text, 1, 200) || '...' as preview,
                        summary
                 FROM pdf_extracts
@@ -131,14 +139,31 @@ def get_recent_records(limit: int = 10) -> List[Dict]:
                 (limit,),
             )
 
-            columns = [desc[0] for desc in cursor.description]
             records = cursor.fetchall()
-
             logger.info(f"Retrieved {len(records)} records from database")
-            return [dict(zip(columns, record)) for record in records]
+
+            result = []
+            for record in records:
+                record_dict = dict(record)
+                if record_dict.get('created_timestamp'):
+                    try:
+                        ts = record_dict['created_timestamp']
+                        if isinstance(ts, str):
+                            record_dict['created_timestamp'] = (
+                                datetime.datetime.fromisoformat(ts)
+                            )
+                    except (ValueError, TypeError) as e:
+                        rec_id = record_dict.get('id')
+                        logger.warning(
+                            f"Error parsing timestamp for "
+                            f"record {rec_id}: {e}"
+                        )
+                result.append(record_dict)
+
+            return result
 
     except Exception as e:
-        logger.error(f"Error retrieving records: {e}")
+        logger.error(f"Error retrieving records: {e}", exc_info=True)
         raise
 
 
@@ -155,13 +180,12 @@ def get_database_statistics() -> Tuple[int, int, int]:
         with get_db_connection() as conn:
             cursor = conn.cursor()
 
-            # Get total records
             cursor.execute("SELECT COUNT(*) FROM pdf_extracts")
             total_records = cursor.fetchone()[0]
 
-            # Get total words and characters
             cursor.execute(
-                "SELECT SUM(word_count), SUM(character_length) FROM pdf_extracts"
+                "SELECT SUM(word_count), SUM(character_length) "
+                "FROM pdf_extracts"
             )
             result = cursor.fetchone()
             total_words, total_chars = result if result else (0, 0)
