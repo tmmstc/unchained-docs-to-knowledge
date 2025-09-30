@@ -5,12 +5,15 @@ A modular full-stack application for extracting text from PDF files using Tesser
 ## Features
 
 - **PDF Text Extraction**: Extract text from PDF files using Tesseract OCR
+- **AI Summarization**: Automatic document summarization using OpenAI-compatible LLM APIs
+- **Intelligent Chunking**: Handle large documents exceeding 8k tokens with smart text splitting
 - **Batch Processing**: Process multiple PDF files from a directory
-- **Database Storage**: Store extracted text with metrics in SQLite database
+- **Database Storage**: Store extracted text with metrics and summaries in SQLite database
 - **Web Interface**: User-friendly Streamlit frontend
 - **REST API**: FastAPI backend with comprehensive endpoints
 - **Text Metrics**: Calculate word count and character length
 - **Real-time Processing**: Live progress tracking and error handling
+- **Flexible Configuration**: Environment-based configuration for different LLM providers
 
 ## Architecture
 
@@ -21,7 +24,8 @@ The application follows a modular architecture with separate packages:
 │   ├── __init__.py
 │   ├── main.py         # FastAPI application and routes
 │   ├── database.py     # Database operations
-│   └── models.py       # Pydantic models
+│   ├── models.py       # Pydantic models
+│   └── summarizer.py   # Document summarization with chunking
 ├── frontend/           # Streamlit frontend
 │   ├── __init__.py
 │   └── streamlit_app.py
@@ -29,7 +33,8 @@ The application follows a modular architecture with separate packages:
 │   ├── __init__.py
 │   └── pdf_processor.py # PDF processing and OCR logic
 ├── tests/              # Test suite
-└── requirements.txt
+├── requirements.txt
+└── .env.example        # Environment configuration template
 ```
 
 ## Requirements
@@ -99,6 +104,21 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
+### 5. Configure Environment Variables (Optional)
+For AI summarization features, create a `.env` file in the project root:
+
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit .env with your settings
+OPENAI_API_BASE_URL=https://api.openai.com/v1
+OPENAI_API_KEY=your-api-key-here
+SUMMARIZATION_MODEL=gpt-3.5-turbo
+```
+
+**Note:** Summarization is optional. If no API key is configured, the application will fall back to truncated text previews.
+
 ## Usage
 
 ### Quick Start - Run Both Services
@@ -130,9 +150,39 @@ python run_both.py
 ## API Endpoints
 
 - `GET /` - API status and health check
-- `POST /process-pdf` - Store extracted PDF text and metrics
-- `GET /records?limit=10` - Retrieve recent processing records
+- `POST /process-pdf` - Store extracted PDF text, metrics, and optional summary
+  - Parameters:
+    - `filename`: PDF file name
+    - `extracted_text`: Extracted text content
+    - `word_count`: Number of words
+    - `character_length`: Character count
+    - `generate_summary`: Boolean (optional, default: true)
+- `GET /records?limit=10` - Retrieve recent processing records (includes summaries)
 - `GET /stats` - Get database statistics
+
+## Document Summarization
+
+The application includes intelligent document summarization:
+
+- **Automatic Chunking**: Documents exceeding 8k tokens are automatically split into manageable chunks
+- **Smart Text Splitting**: Preserves paragraph and sentence boundaries when chunking
+- **OpenAI-Compatible**: Works with OpenAI API or any compatible provider (e.g., Azure OpenAI, local models)
+- **Fallback Mode**: If no API key is configured, provides truncated text previews
+- **Configurable Models**: Specify model via `SUMMARIZATION_MODEL` environment variable
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `OPENAI_API_BASE_URL` | API endpoint URL | `https://api.openai.com/v1` |
+| `OPENAI_API_KEY` | API authentication key | (empty) |
+| `SUMMARIZATION_MODEL` | Model to use for summarization | `gpt-3.5-turbo` |
+
+### Token Limits
+
+- **Max tokens per chunk**: 8,000 tokens (~32,000 characters)
+- **Summary max tokens**: 500 tokens per chunk
+- **Token estimation**: ~4 characters per token
 
 ## Development
 

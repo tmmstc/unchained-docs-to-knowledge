@@ -14,6 +14,7 @@ class PDFProcessRequest(BaseModel):
     extracted_text: str
     word_count: int
     character_length: int
+    generate_summary: Optional[bool] = True
 
 
 class PDFRecord(BaseModel):
@@ -26,6 +27,7 @@ class PDFRecord(BaseModel):
     character_length: int
     created_timestamp: datetime
     preview: Optional[str] = None
+    summary: Optional[str] = None
 
 
 class DatabaseStats(BaseModel):

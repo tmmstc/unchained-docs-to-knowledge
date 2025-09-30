@@ -89,6 +89,7 @@ class TestDatabaseOperations:
             db_text,
             db_word_count,
             db_char_length,
+            db_summary,
             db_timestamp,
         ) = result
 

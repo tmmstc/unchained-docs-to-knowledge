@@ -41,6 +41,7 @@ def init_database():
                     extracted_text TEXT,
                     word_count INTEGER,
                     character_length INTEGER,
+                    summary TEXT,
                     created_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             """
@@ -53,7 +54,11 @@ def init_database():
 
 
 def save_extracted_text(
-    filename: str, extracted_text: str, word_count: int, character_length: int
+    filename: str,
+    extracted_text: str,
+    word_count: int,
+    character_length: int,
+    summary: str = None,
 ) -> bool:
     """
     Save extracted text to SQLite database with metrics.
@@ -63,12 +68,15 @@ def save_extracted_text(
         extracted_text: The extracted text content
         word_count: Number of words in the text
         character_length: Character count including spaces/punctuation
+        summary: Summary of the document text
 
     Returns:
         True if successful, False otherwise
     """
     logger.info(f"Saving extracted text to database: {filename}")
     logger.info(f"Text metrics: {word_count} words, {character_length} characters")
+    if summary:
+        logger.info(f"Summary length: {len(summary)} characters")
 
     try:
         with get_db_connection() as conn:
@@ -76,14 +84,15 @@ def save_extracted_text(
             cursor.execute(
                 """
                 INSERT INTO pdf_extracts (filename, extracted_text, word_count,
-                                        character_length, created_timestamp)
-                VALUES (?, ?, ?, ?, ?)
+                                        character_length, summary, created_timestamp)
+                VALUES (?, ?, ?, ?, ?, ?)
             """,
                 (
                     filename,
                     extracted_text,
                     word_count,
                     character_length,
+                    summary,
                     datetime.datetime.now(),
                 ),
             )
@@ -113,7 +122,8 @@ def get_recent_records(limit: int = 10) -> List[Dict]:
             cursor.execute(
                 """
                 SELECT id, filename, created_timestamp, word_count, character_length,
-                       SUBSTR(extracted_text, 1, 200) || '...' as preview
+                       SUBSTR(extracted_text, 1, 200) || '...' as preview,
+                       summary
                 FROM pdf_extracts
                 ORDER BY created_timestamp DESC
                 LIMIT ?

@@ -30,12 +30,29 @@ def test_process_pdf():
         "extracted_text": "This is test text",
         "word_count": 4,
         "character_length": 17,
+        "generate_summary": False,
     }
 
     response = client.post("/process-pdf", json=test_data)
     assert response.status_code == 200
     assert response.json()["success"] is True
     assert "test.pdf" in response.json()["message"]
+
+
+def test_process_pdf_with_summary():
+    """Test the PDF processing endpoint with summary generation."""
+    test_data = {
+        "filename": "test_summary.pdf",
+        "extracted_text": "This is a longer test text that should be summarized.",
+        "word_count": 10,
+        "character_length": 54,
+        "generate_summary": True,
+    }
+
+    response = client.post("/process-pdf", json=test_data)
+    assert response.status_code == 200
+    assert response.json()["success"] is True
+    assert "test_summary.pdf" in response.json()["message"]
 
 
 def test_get_records():

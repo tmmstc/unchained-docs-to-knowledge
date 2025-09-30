@@ -15,6 +15,7 @@ from .database import (
     get_database_statistics,
 )
 from .models import PDFProcessRequest, PDFRecord, DatabaseStats
+from .summarizer import summarize_document
 
 # Configure logging
 logging.basicConfig(
@@ -86,9 +87,10 @@ def read_root():
 
 
 @app.post("/process-pdf", response_model=dict)
-def process_pdf(request: PDFProcessRequest):
+async def process_pdf(request: PDFProcessRequest):
     """
     Store extracted PDF text and metrics in the database.
+    Optionally generates summary if requested.
 
     Args:
         request: PDF processing request with filename, text, and metrics
@@ -102,20 +104,33 @@ def process_pdf(request: PDFProcessRequest):
         f"{request.character_length} characters"
     )
 
+    summary = None
+    if request.generate_summary and request.extracted_text:
+        logger.info(f"Generating summary for: {request.filename}")
+        try:
+            summary = await summarize_document(request.extracted_text)
+            logger.info(f"Summary generated: {len(summary)} characters")
+        except Exception as e:
+            logger.error(f"Error generating summary: {e}")
+
     try:
         success = save_extracted_text(
             filename=request.filename,
             extracted_text=request.extracted_text,
             word_count=request.word_count,
             character_length=request.character_length,
+            summary=summary,
         )
 
         if success:
             logger.info(f"Successfully saved PDF: {request.filename}")
-            return {
+            response_data = {
                 "success": True,
                 "message": f"Successfully processed {request.filename}",
             }
+            if summary:
+                response_data["summary"] = summary
+            return response_data
         else:
             logger.error(f"Database save failed for: {request.filename}")
             raise HTTPException(status_code=500, detail="Failed to save to database")
