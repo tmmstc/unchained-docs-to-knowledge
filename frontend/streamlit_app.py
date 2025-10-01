@@ -17,7 +17,7 @@ from shared.pdf_processor import extract_text_from_pdf, calculate_text_metrics
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler(sys.stdout)]
+    handlers=[logging.StreamHandler(sys.stdout)],
 )
 
 logger = logging.getLogger(__name__)
@@ -54,12 +54,12 @@ def save_extracted_text_to_backend(
     extracted_text: str,
     word_count: int,
     character_length: int,
+    generate_summary: bool = True,
 ) -> bool:
     """Save extracted text to backend via API."""
     logger.info(f"Sending PDF data to backend: {filename}")
-    logger.info(
-        f"Data size: {word_count} words, {character_length} characters"
-    )
+    logger.info(f"Data size: {word_count} words, {character_length} characters")
+    logger.info(f"Generate summary: {generate_summary}")
 
     try:
         response = requests.post(
@@ -69,6 +69,7 @@ def save_extracted_text_to_backend(
                 "extracted_text": extracted_text,
                 "word_count": word_count,
                 "character_length": character_length,
+                "generate_summary": generate_summary,
             },
             timeout=30,
         )
@@ -130,14 +131,14 @@ def display_database_records():
     if records:
         st.subheader("Recent Processed Files")
         for record in records:
-            with st.expander(
-                f"{record['filename']} - {record['created_timestamp']}"
-            ):
+            with st.expander(f"{record['filename']} - {record['created_timestamp']}"):
                 col1, col2 = st.columns(2)
                 with col1:
                     st.metric("Word Count", record["word_count"] or 0)
                 with col2:
                     st.metric("Characters", record["character_length"] or 0)
+                if record.get("summary"):
+                    st.text_area("Summary:", record["summary"], height=150)
                 if record.get("preview"):
                     st.text_area("Preview:", record["preview"], height=100)
     else:
@@ -149,9 +150,7 @@ def main():
     logger.info("Main application page loaded")
     logger.info("Setting up page configuration")
 
-    st.set_page_config(
-        page_title="PDF OCR Processor", page_icon="📄", layout="wide"
-    )
+    st.set_page_config(page_title="PDF OCR Processor", page_icon="📄", layout="wide")
 
     st.title("📄 PDF OCR Text Extractor")
     st.markdown(
@@ -195,11 +194,19 @@ def main():
                 for pdf_file in pdf_files:
                     st.text(os.path.basename(pdf_file))
 
+            # Summarization control
+            st.subheader("Summarization Options")
+            generate_summary = st.checkbox(
+                "Generate AI summaries for processed files",
+                value=True,
+                help="Use OpenAI to generate summaries of extracted text. "
+                "Requires OPENAI_API_KEY environment variable.",
+            )
+
             # Process files button
             if st.button("Process All PDF Files", type="primary"):
                 logger.info(
-                    f"Starting batch processing of "
-                    f"{len(pdf_files)} PDF files"
+                    f"Starting batch processing of " f"{len(pdf_files)} PDF files"
                 )
                 progress_bar = st.progress(0)
                 status_text = st.empty()
@@ -211,8 +218,7 @@ def main():
                     filename = os.path.basename(pdf_file)
                     status_text.text(f"Processing: {filename}")
                     logger.info(
-                        f"Processing file {i+1}/{len(pdf_files)}: "
-                        f"{filename}"
+                        f"Processing file {i+1}/{len(pdf_files)}: " f"{filename}"
                     )
 
                     try:
@@ -235,20 +241,15 @@ def main():
                             extracted_text,
                             word_count,
                             character_length,
+                            generate_summary,
                         ):
                             successful_processes += 1
-                            logger.info(
-                                f"Successfully processed: {filename}"
-                            )
+                            logger.info(f"Successfully processed: {filename}")
                             st.success(f"Processed: {filename}")
                         else:
                             failed_processes += 1
-                            logger.error(
-                                f"Backend save failed for: {filename}"
-                            )
-                            st.error(
-                                f"Backend save failed: {filename}"
-                            )
+                            logger.error(f"Backend save failed for: {filename}")
+                            st.error(f"Backend save failed: {filename}")
 
                     except Exception as e:
                         failed_processes += 1
