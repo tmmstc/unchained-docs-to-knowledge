@@ -49,3 +49,10 @@ temp/
 
 # Selenium WebDriver
 .wdm/
+
+# Playwright
+test-results/
+playwright-report/
+.playwright/
+*_test.db
+pdf_ocr_database_test.db
