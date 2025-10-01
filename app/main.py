@@ -200,3 +200,102 @@ def get_stats():
     except Exception as e:
         logger.error(f"Error retrieving statistics: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/records/no-summary", response_model=List[PDFRecord])
+def get_records_without_summary(limit: int = 100):
+    """
+    Get records that don't have summaries yet.
+
+    Args:
+        limit: Maximum number of records to return
+
+    Returns:
+        List of PDF records without summaries
+    """
+    logger.info(f"Retrieving up to {limit} records without summaries")
+
+    try:
+        from .database import get_records_without_summary
+
+        if limit < 1:
+            logger.warning(f"Invalid limit value: {limit}, using default 100")
+            limit = 100
+        elif limit > 1000:
+            logger.warning(f"Limit too high: {limit}, capping at 1000")
+            limit = 1000
+
+        records = get_records_without_summary(limit=limit)
+        logger.info(
+            f"Retrieved {len(records)} records without summaries"
+        )
+        return records
+    except Exception as e:
+        logger.error(f"Error retrieving records without summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/records/{record_id}/summary")
+async def update_record_summary(record_id: int, generate: bool = True):
+    """
+    Update the summary for a specific document record.
+
+    Args:
+        record_id: ID of the record to update
+        generate: Whether to generate a new summary
+
+    Returns:
+        Success status and updated summary
+    """
+    logger.info(f"Updating summary for record ID: {record_id}")
+
+    try:
+        from .database import get_record_by_id, update_record_summary
+
+        record = get_record_by_id(record_id)
+        if not record:
+            logger.warning(f"Record not found: {record_id}")
+            raise HTTPException(status_code=404, detail="Record not found")
+
+        if not generate:
+            raise HTTPException(
+                status_code=400,
+                detail="Generate parameter must be True"
+            )
+
+        if not record.get("extracted_text"):
+            logger.warning(
+                f"No extracted text for record {record_id}"
+            )
+            raise HTTPException(
+                status_code=400,
+                detail="No extracted text available for summarization"
+            )
+
+        logger.info(f"Generating summary for record {record_id}")
+        summary = await summarize_document(record["extracted_text"])
+
+        success = update_record_summary(record_id, summary)
+        if success:
+            logger.info(
+                f"Successfully updated summary for record {record_id}"
+            )
+            return {
+                "success": True,
+                "message": "Summary updated successfully",
+                "summary": summary,
+            }
+        else:
+            logger.error(
+                f"Failed to update summary for record {record_id}"
+            )
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to update summary"
+            )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating summary for record {record_id}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

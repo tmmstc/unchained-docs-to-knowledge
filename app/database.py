@@ -212,3 +212,146 @@ def get_database_statistics() -> Tuple[int, int, int]:
     except Exception as e:
         logger.error(f"Error retrieving statistics: {e}")
         raise
+
+
+def get_records_without_summary(limit: int = 100) -> List[Dict]:
+    """
+    Get records that don't have summaries yet.
+
+    Args:
+        limit: Maximum number of records to return
+
+    Returns:
+        List of database records without summaries
+    """
+    logger.info(f"Retrieving up to {limit} records without summaries")
+
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT id, filename, created_timestamp, word_count,
+                       character_length,
+                       SUBSTR(extracted_text, 1, 200) || '...' as preview,
+                       summary
+                FROM pdf_extracts
+                WHERE summary IS NULL OR summary = ''
+                ORDER BY created_timestamp DESC
+                LIMIT ?
+            """,
+                (limit,),
+            )
+
+            records = cursor.fetchall()
+            logger.info(
+                f"Retrieved {len(records)} records without summaries"
+            )
+
+            result = []
+            for record in records:
+                record_dict = dict(record)
+                if record_dict.get('created_timestamp'):
+                    try:
+                        ts = record_dict['created_timestamp']
+                        if isinstance(ts, str):
+                            record_dict['created_timestamp'] = (
+                                datetime.datetime.fromisoformat(ts)
+                            )
+                    except (ValueError, TypeError) as e:
+                        rec_id = record_dict.get('id')
+                        logger.warning(
+                            f"Error parsing timestamp for "
+                            f"record {rec_id}: {e}"
+                        )
+                result.append(record_dict)
+
+            return result
+
+    except Exception as e:
+        logger.error(
+            f"Error retrieving records without summary: {e}",
+            exc_info=True
+        )
+        raise
+
+
+def get_record_by_id(record_id: int) -> Dict:
+    """
+    Get a specific record by ID.
+
+    Args:
+        record_id: ID of the record to retrieve
+
+    Returns:
+        Dictionary containing the record data, or None if not found
+    """
+    logger.info(f"Retrieving record by ID: {record_id}")
+
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT id, filename, extracted_text, word_count,
+                       character_length, summary, created_timestamp
+                FROM pdf_extracts
+                WHERE id = ?
+            """,
+                (record_id,),
+            )
+
+            record = cursor.fetchone()
+            if record:
+                record_dict = dict(record)
+                logger.info(f"Found record: {record_dict['filename']}")
+                return record_dict
+            else:
+                logger.warning(f"Record not found: {record_id}")
+                return None
+
+    except Exception as e:
+        logger.error(f"Error retrieving record {record_id}: {e}")
+        raise
+
+
+def update_record_summary(record_id: int, summary: str) -> bool:
+    """
+    Update the summary for a specific record.
+
+    Args:
+        record_id: ID of the record to update
+        summary: The new summary text
+
+    Returns:
+        True if successful, False otherwise
+    """
+    logger.info(f"Updating summary for record ID: {record_id}")
+
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE pdf_extracts
+                SET summary = ?
+                WHERE id = ?
+            """,
+                (summary, record_id),
+            )
+            conn.commit()
+
+            if cursor.rowcount > 0:
+                logger.info(
+                    f"Successfully updated summary for record {record_id}"
+                )
+                return True
+            else:
+                logger.warning(f"No record found with ID: {record_id}")
+                return False
+
+    except Exception as e:
+        logger.error(
+            f"Error updating summary for record {record_id}: {e}"
+        )
+        return False
