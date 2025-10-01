@@ -11,13 +11,13 @@ import requests
 import logging
 import sys
 from typing import List
+from datetime import datetime
 from shared.pdf_processor import (
     extract_text_from_pdf,
     calculate_text_metrics,
     calculate_md5_hash,
 )
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -26,7 +26,6 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# FastAPI backend configuration
 BACKEND_URL = "http://localhost:8000"
 
 logger.info("Streamlit PDF OCR Frontend starting up")
@@ -133,38 +132,210 @@ def get_stats_from_backend() -> dict:
         }
 
 
-def display_database_records():
-    """Display recent records from the backend."""
-    records = get_records_from_backend()
+def shorten_hash(hash_str: str, prefix_length: int = 8) -> str:
+    """Shorten MD5 hash for display."""
+    if not hash_str:
+        return "N/A"
+    return hash_str[:prefix_length]
 
-    if records:
-        st.subheader("Recent Processed Files")
-        for record in records:
-            record_id = record.get("id", record.get("filename", ""))
-            with st.expander(
-                f"{record['filename']} - {record['created_timestamp']}", expanded=False
-            ):
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.metric("Word Count", record["word_count"] or 0)
-                with col2:
-                    st.metric("Characters", record["character_length"] or 0)
-                if record.get("summary"):
-                    st.text_area(
-                        "Summary:",
-                        record["summary"],
-                        height=150,
-                        key=f"summary_{record_id}_{record['created_timestamp']}",
-                    )
-                if record.get("preview"):
-                    st.text_area(
-                        "Preview:",
-                        record["preview"],
-                        height=100,
-                        key=f"preview_{record_id}_{record['created_timestamp']}",
-                    )
-    else:
+
+def display_database_records():
+    """Display records from the backend in a tabular format."""
+    records = get_records_from_backend(limit=100)
+
+    if not records:
         st.info("No processed files found in database.")
+        return
+
+    st.subheader("Database Records")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        filename_filter = st.text_input(
+            "Filter by filename",
+            placeholder="Enter text to filter...",
+            key="filename_filter"
+        )
+
+    with col2:
+        summary_filter = st.selectbox(
+            "Filter by summary",
+            options=["All", "With Summary", "Without Summary"],
+            key="summary_filter"
+        )
+
+    with col3:
+        sort_by = st.selectbox(
+            "Sort by",
+            options=["ID (Desc)", "ID (Asc)", "Filename", "Words (Desc)",
+                     "Chars (Desc)", "Date (Recent)"],
+            key="sort_by"
+        )
+
+    filtered_records = []
+    for record in records:
+        if filename_filter and filename_filter.lower() not in \
+                record.get("filename", "").lower():
+            continue
+
+        has_summary = bool(record.get("summary"))
+        if summary_filter == "With Summary" and not has_summary:
+            continue
+        if summary_filter == "Without Summary" and has_summary:
+            continue
+
+        filtered_records.append(record)
+
+    if sort_by == "ID (Desc)":
+        filtered_records.sort(key=lambda x: x.get("id", 0), reverse=True)
+    elif sort_by == "ID (Asc)":
+        filtered_records.sort(key=lambda x: x.get("id", 0))
+    elif sort_by == "Filename":
+        filtered_records.sort(key=lambda x: x.get("filename", ""))
+    elif sort_by == "Words (Desc)":
+        filtered_records.sort(key=lambda x: x.get("word_count", 0),
+                              reverse=True)
+    elif sort_by == "Chars (Desc)":
+        filtered_records.sort(key=lambda x: x.get("character_length", 0),
+                              reverse=True)
+
+    st.markdown(f"**Showing {len(filtered_records)} of "
+                f"{len(records)} records**")
+
+    st.markdown("### Records Table")
+
+    header_cols = st.columns([1, 1, 3, 1, 1, 2, 1])
+    with header_cols[0]:
+        st.markdown("**ID**")
+    with header_cols[1]:
+        st.markdown("**Hash**")
+    with header_cols[2]:
+        st.markdown("**Filename**")
+    with header_cols[3]:
+        st.markdown("**Words**")
+    with header_cols[4]:
+        st.markdown("**Chars**")
+    with header_cols[5]:
+        st.markdown("**Processed**")
+    with header_cols[6]:
+        st.markdown("**Summary**")
+
+    st.markdown("---")
+
+    for record in filtered_records:
+        created_dt = record.get("created_timestamp", "")
+        if isinstance(created_dt, str):
+            try:
+                created_dt = datetime.fromisoformat(
+                    created_dt.replace('Z', '+00:00')
+                )
+                created_str = created_dt.strftime("%Y-%m-%d %H:%M")
+            except Exception:
+                created_str = created_dt
+        else:
+            created_str = str(created_dt)
+
+        md5_hash = record.get("md5_hash")
+        has_summary = "Yes" if record.get("summary") else "No"
+
+        cols = st.columns([1, 1, 3, 1, 1, 2, 1])
+        with cols[0]:
+            st.text(str(record.get("id", "")))
+        with cols[1]:
+            st.text(shorten_hash(md5_hash))
+        with cols[2]:
+            st.text(record.get("filename", ""))
+        with cols[3]:
+            st.text(str(record.get("word_count", 0)))
+        with cols[4]:
+            st.text(str(record.get("character_length", 0)))
+        with cols[5]:
+            st.text(created_str)
+        with cols[6]:
+            st.text(has_summary)
+
+    st.markdown("---")
+    st.markdown("### View Record Details")
+    st.markdown(
+        "Enter a record ID to view full details including text and summary:"
+    )
+
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        selected_id = st.number_input(
+            "Record ID",
+            min_value=1,
+            step=1,
+            key="selected_record_id",
+            help="Enter the ID from the table above"
+        )
+
+    with col2:
+        if st.button("View Details", type="primary"):
+            selected_record = next(
+                (r for r in records if r.get("id") == selected_id), None
+            )
+
+            if selected_record:
+                st.markdown(f"#### Details for: {selected_record['filename']}")
+
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("Word Count",
+                              selected_record.get("word_count", 0))
+                with col2:
+                    st.metric(
+                        "Characters",
+                        selected_record.get("character_length", 0)
+                    )
+                with col3:
+                    st.metric(
+                        "Has Summary",
+                        "Yes" if selected_record.get("summary") else "No"
+                    )
+                with col4:
+                    full_hash = selected_record.get("md5_hash", "N/A")
+                    st.metric("Hash", shorten_hash(full_hash))
+
+                if full_hash != "N/A":
+                    with st.expander("View Full MD5 Hash"):
+                        st.code(full_hash)
+
+                extracted_text = selected_record.get("extracted_text", "")
+                if extracted_text:
+                    with st.expander("View Extracted Text", expanded=False):
+                        st.text_area(
+                            "Full Extracted Text",
+                            extracted_text,
+                            height=300,
+                            key=f"text_{selected_id}"
+                        )
+                else:
+                    preview = selected_record.get("preview", "")
+                    if preview:
+                        with st.expander("View Text Preview",
+                                         expanded=False):
+                            st.text_area(
+                                "Text Preview",
+                                preview,
+                                height=150,
+                                key=f"preview_{selected_id}"
+                            )
+
+                summary = selected_record.get("summary")
+                if summary:
+                    with st.expander("View Summary", expanded=True):
+                        st.text_area(
+                            "Summary",
+                            summary,
+                            height=200,
+                            key=f"summary_{selected_id}"
+                        )
+                else:
+                    st.info("No summary available for this record.")
+            else:
+                st.warning(f"No record found with ID {selected_id}")
 
 
 def main():
@@ -172,7 +343,8 @@ def main():
     logger.info("Main application page loaded")
     logger.info("Setting up page configuration")
 
-    st.set_page_config(page_title="PDF OCR Processor", page_icon="📄", layout="wide")
+    st.set_page_config(page_title="PDF OCR Processor", page_icon="📄",
+                       layout="wide")
 
     st.title("📄 PDF OCR Text Extractor")
     st.markdown(
@@ -182,7 +354,6 @@ def main():
 
     logger.info("Testing backend connectivity...")
 
-    # Check backend connectivity
     try:
         response = requests.get(f"{BACKEND_URL}/", timeout=5)
         if response.status_code == 200:
@@ -197,7 +368,6 @@ def main():
         st.error("Cannot connect to backend API. Please ensure it's running.")
         return
 
-    # Directory input section
     st.header("Select Directory")
     directory_path = st.text_input(
         "Enter directory path containing PDF files:",
@@ -211,12 +381,10 @@ def main():
         if pdf_files:
             st.success(f"Found {len(pdf_files)} PDF files")
 
-            # Display found PDF files
             with st.expander("PDF Files Found"):
                 for idx, pdf_file in enumerate(pdf_files):
                     st.text(os.path.basename(pdf_file))
 
-            # Summarization control
             st.subheader("Summarization Options")
             generate_summary = st.checkbox(
                 "Generate AI summaries for processed files",
@@ -225,10 +393,9 @@ def main():
                 "Requires OPENAI_API_KEY environment variable.",
             )
 
-            # Process files button
             if st.button("Process All PDF Files", type="primary"):
                 logger.info(
-                    f"Starting batch processing of " f"{len(pdf_files)} PDF files"
+                    f"Starting batch processing of {len(pdf_files)} PDF files"
                 )
                 progress_bar = st.progress(0)
                 status_text = st.empty()
@@ -241,19 +408,16 @@ def main():
                     filename = os.path.basename(pdf_file)
                     status_text.text(f"Processing: {filename}")
                     logger.info(
-                        f"Processing file {i+1}/{len(pdf_files)}: " f"{filename}"
+                        f"Processing file {i+1}/{len(pdf_files)}: {filename}"
                     )
 
                     try:
-                        # Calculate MD5 hash
                         logger.info(f"Calculating MD5 hash for: {filename}")
                         md5_hash = calculate_md5_hash(pdf_file)
 
-                        # Extract text from PDF
                         logger.info(f"Extracting text from: {filename}")
                         extracted_text = extract_text_from_pdf(pdf_file)
 
-                        # Calculate metrics
                         word_count, character_length = calculate_text_metrics(
                             extracted_text
                         )
@@ -262,7 +426,6 @@ def main():
                             f"{word_count} words, {character_length} chars"
                         )
 
-                        # Save to backend
                         result = save_extracted_text_to_backend(
                             filename,
                             extracted_text,
@@ -295,10 +458,8 @@ def main():
                         ):
                             st.code(traceback.format_exc())
 
-                    # Update progress
                     progress_bar.progress((i + 1) / len(pdf_files))
 
-                # Final status
                 status_text.text("Processing completed!")
                 logger.info(
                     f"Batch processing complete: "
@@ -320,16 +481,13 @@ def main():
         logger.warning(f"Invalid directory path: {directory_path}")
         st.error("Directory does not exist. Please enter a valid path.")
 
-    # Database viewer section
     st.header("Database Records")
     logger.info("Loading database records section")
     display_database_records()
 
-    # Database statistics
     logger.info("Loading database statistics section")
     stats = get_stats_from_backend()
 
-    # Display metrics in columns
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric("Total Processed Files", stats["total_records"])
