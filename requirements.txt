@@ -11,3 +11,5 @@ requests
 python-dotenv==1.0.0
 dotenv
 streamlit>=1.28.0
+selenium
+webdriver-manager

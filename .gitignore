@@ -46,3 +46,6 @@ temp/
 
 # FastAPI/Uvicorn
 .env
+
+# Selenium WebDriver
+.wdm/
