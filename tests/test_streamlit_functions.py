@@ -16,12 +16,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def test_calculate_text_metrics():
     """Test text metrics calculation function."""
-    # Import the function directly
+    # Import the function directly from the deprecated standalone app
     import importlib.util
     spec = importlib.util.spec_from_file_location(
         "streamlit_app",
         os.path.join(
             os.path.dirname(os.path.dirname(__file__)),
+            "deprecated",
             "streamlit_app.py"
         )
     )
@@ -57,6 +58,7 @@ def test_update_document_summary():
         "streamlit_app",
         os.path.join(
             os.path.dirname(os.path.dirname(__file__)),
+            "deprecated",
             "streamlit_app.py"
         )
     )

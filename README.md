@@ -121,28 +121,35 @@ SUMMARIZATION_MODEL=gpt-3.5-turbo
 
 ## Usage
 
-### Quick Start - Run Both Services
-```bash
-# Activate virtual environment if not already active
-.\venv\Scripts\activate
+### Quick Start - Run the Application
 
-# Run both FastAPI backend and Streamlit frontend
-python run_both.py
+**Single command to start both backend and frontend:**
+```bash
+python run.py
 ```
 
+This will automatically:
+- Verify your virtual environment setup
+- Start the FastAPI backend on http://localhost:8000
+- Start the Streamlit frontend on http://localhost:8501
+- Provide real-time logs from both services
+- Support graceful shutdown with Ctrl+C
+
 **Access the applications:**
-- **Streamlit Frontend**: http://localhost:8501
+- **Streamlit Frontend**: http://localhost:8501 (Main UI)
 - **FastAPI Backend**: http://localhost:8000
 - **API Documentation**: http://localhost:8000/docs
 
-### Individual Services
+### Individual Services (Advanced)
+
+If you need to run services separately for development:
 
 **Start FastAPI backend only:**
 ```bash
 .\venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-**Start Streamlit frontend only:**
+**Start Streamlit frontend only (backend must be running):**
 ```bash
 .\venv\Scripts\python.exe -m streamlit run frontend/streamlit_app.py --server.address 0.0.0.0 --server.port 8501
 ```
