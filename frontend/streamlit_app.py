@@ -140,16 +140,29 @@ def display_database_records():
     if records:
         st.subheader("Recent Processed Files")
         for record in records:
-            with st.expander(f"{record['filename']} - {record['created_timestamp']}"):
+            record_id = record.get("id", record.get("filename", ""))
+            with st.expander(
+                f"{record['filename']} - {record['created_timestamp']}", expanded=False
+            ):
                 col1, col2 = st.columns(2)
                 with col1:
                     st.metric("Word Count", record["word_count"] or 0)
                 with col2:
                     st.metric("Characters", record["character_length"] or 0)
                 if record.get("summary"):
-                    st.text_area("Summary:", record["summary"], height=150)
+                    st.text_area(
+                        "Summary:",
+                        record["summary"],
+                        height=150,
+                        key=f"summary_{record_id}_{record['created_timestamp']}",
+                    )
                 if record.get("preview"):
-                    st.text_area("Preview:", record["preview"], height=100)
+                    st.text_area(
+                        "Preview:",
+                        record["preview"],
+                        height=100,
+                        key=f"preview_{record_id}_{record['created_timestamp']}",
+                    )
     else:
         st.info("No processed files found in database.")
 
@@ -200,7 +213,7 @@ def main():
 
             # Display found PDF files
             with st.expander("PDF Files Found"):
-                for pdf_file in pdf_files:
+                for idx, pdf_file in enumerate(pdf_files):
                     st.text(os.path.basename(pdf_file))
 
             # Summarization control
@@ -277,7 +290,9 @@ def main():
                         failed_processes += 1
                         logger.error(f"Processing failed for {filename}: {e}")
                         st.error(f"Failed for {filename}: {str(e)}")
-                        with st.expander(f"Error details for {filename}"):
+                        with st.expander(
+                            f"Error details for {filename}", expanded=False
+                        ):
                             st.code(traceback.format_exc())
 
                     # Update progress
