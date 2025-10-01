@@ -14,6 +14,7 @@ from app.database import (
     save_extracted_text,
     get_recent_records,
     get_database_statistics,
+    check_duplicate_by_hash,
     DATABASE_PATH,
 )
 from shared.pdf_processor import calculate_text_metrics
@@ -89,7 +90,7 @@ class TestDatabaseOperations:
 
         assert result is not None, "No record found in database"
 
-        # Unpack the result
+        # Unpack the result (includes md5_hash column now)
         (
             db_id,
             db_filename,
@@ -98,6 +99,7 @@ class TestDatabaseOperations:
             db_char_length,
             db_summary,
             db_timestamp,
+            db_md5_hash,
         ) = result
 
         # Verify the saved data
@@ -187,3 +189,79 @@ class TestDatabaseOperations:
         assert total_records == 1
         assert total_words == word_count
         assert total_chars == character_length
+
+    def test_save_with_md5_hash(self, temp_database):
+        """Test saving text with MD5 hash"""
+        init_database()
+
+        filename = "test_hash.pdf"
+        extracted_text = "Test content with hash"
+        word_count, character_length = calculate_text_metrics(
+            extracted_text
+        )
+        md5_hash = "abc123def456"
+
+        success = save_extracted_text(
+            filename,
+            extracted_text,
+            word_count,
+            character_length,
+            md5_hash=md5_hash,
+        )
+        assert success
+
+        conn = sqlite3.connect(temp_database)
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT md5_hash FROM pdf_extracts WHERE filename = ?",
+            (filename,),
+        )
+        result = cursor.fetchone()
+        conn.close()
+
+        assert result is not None
+        assert result[0] == md5_hash
+
+    def test_check_duplicate_by_hash(self, temp_database):
+        """Test duplicate detection by MD5 hash"""
+        init_database()
+
+        test_hash = "unique_hash_12345"
+
+        is_duplicate = check_duplicate_by_hash(test_hash)
+        assert not is_duplicate
+
+        filename = "original.pdf"
+        extracted_text = "Original content"
+        word_count, character_length = calculate_text_metrics(
+            extracted_text
+        )
+
+        save_extracted_text(
+            filename,
+            extracted_text,
+            word_count,
+            character_length,
+            md5_hash=test_hash,
+        )
+
+        is_duplicate = check_duplicate_by_hash(test_hash)
+        assert is_duplicate
+
+    def test_duplicate_hash_constraint(self, temp_database):
+        """Test that duplicate hashes are prevented by unique constraint"""
+        init_database()
+
+        test_hash = "duplicate_test_hash"
+        content = "Test content"
+        word_count, character_length = calculate_text_metrics(content)
+
+        success1 = save_extracted_text(
+            "file1.pdf", content, word_count, character_length, md5_hash=test_hash
+        )
+        assert success1
+
+        success2 = save_extracted_text(
+            "file2.pdf", content, word_count, character_length, md5_hash=test_hash
+        )
+        assert not success2

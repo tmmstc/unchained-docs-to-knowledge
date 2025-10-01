@@ -559,7 +559,8 @@ def test_generate_summary_button_availability(browser, test_database):
                     By.XPATH, './/button[contains(text(), "Generate Summary")]'
                 )
                 pytest.fail(
-                    "Generate Summary button should not be visible for documents with summaries"
+                    "Generate Summary button should not be visible "
+                    "for documents with summaries"
                 )
             except NoSuchElementException:
                 pass

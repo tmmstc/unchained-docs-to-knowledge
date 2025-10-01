@@ -60,10 +60,73 @@ def init_database():
                 conn.commit()
                 logger.info("Database migration completed successfully")
 
+            if 'md5_hash' not in columns:
+                logger.info("Migrating database: adding md5_hash column")
+                cursor.execute(
+                    "ALTER TABLE pdf_extracts ADD COLUMN md5_hash TEXT"
+                )
+                conn.commit()
+                logger.info("md5_hash column added successfully")
+
+            cursor.execute(
+                """
+                SELECT name FROM sqlite_master
+                WHERE type='index' AND name='idx_md5_hash'
+            """
+            )
+            if not cursor.fetchone():
+                logger.info("Creating unique index on md5_hash column")
+                cursor.execute(
+                    """
+                    CREATE UNIQUE INDEX idx_md5_hash
+                    ON pdf_extracts(md5_hash)
+                """
+                )
+                conn.commit()
+                logger.info("Unique index on md5_hash created successfully")
+
             logger.info("Database schema initialized successfully")
     except Exception as e:
         logger.error(f"Database initialization failed: {e}")
         raise
+
+
+def check_duplicate_by_hash(md5_hash: str) -> bool:
+    """
+    Check if a document with the given MD5 hash already exists.
+
+    Args:
+        md5_hash: MD5 hash of the PDF file
+
+    Returns:
+        True if duplicate exists, False otherwise
+    """
+    logger.info(f"Checking for duplicate hash: {md5_hash}")
+
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT id, filename FROM pdf_extracts
+                WHERE md5_hash = ?
+            """,
+                (md5_hash,),
+            )
+            result = cursor.fetchone()
+
+            if result:
+                logger.info(
+                    f"Duplicate found: {result['filename']} (ID: {result['id']})"
+                )
+                return True
+            else:
+                logger.info("No duplicate found")
+                return False
+
+    except Exception as e:
+        logger.error(f"Error checking for duplicate hash: {e}")
+        return False
 
 
 def save_extracted_text(
@@ -72,6 +135,7 @@ def save_extracted_text(
     word_count: int,
     character_length: int,
     summary: str = None,
+    md5_hash: str = None,
 ) -> bool:
     """
     Save extracted text to SQLite database with metrics.
@@ -82,6 +146,7 @@ def save_extracted_text(
         word_count: Number of words in the text
         character_length: Character count including spaces/punctuation
         summary: Summary of the document text
+        md5_hash: MD5 hash of the PDF file
 
     Returns:
         True if successful, False otherwise
@@ -92,6 +157,8 @@ def save_extracted_text(
     )
     if summary:
         logger.info(f"Summary length: {len(summary)} characters")
+    if md5_hash:
+        logger.info(f"MD5 hash: {md5_hash}")
 
     try:
         with get_db_connection() as conn:
@@ -101,8 +168,8 @@ def save_extracted_text(
                 """
                 INSERT INTO pdf_extracts (filename, extracted_text,
                                         word_count, character_length,
-                                        summary, created_timestamp)
-                VALUES (?, ?, ?, ?, ?, ?)
+                                        summary, md5_hash, created_timestamp)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
                 (
                     filename,
@@ -110,6 +177,7 @@ def save_extracted_text(
                     word_count,
                     character_length,
                     summary,
+                    md5_hash,
                     timestamp,
                 ),
             )

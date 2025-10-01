@@ -8,6 +8,7 @@ import tempfile
 import re
 import logging
 import os
+import hashlib
 from typing import Tuple
 
 # Configure module logger
@@ -88,3 +89,30 @@ def calculate_text_metrics(text: str) -> Tuple[int, int]:
     )
 
     return word_count, character_length
+
+
+def calculate_md5_hash(pdf_path: str) -> str:
+    """
+    Calculate MD5 hash of a PDF file.
+
+    Args:
+        pdf_path: Path to the PDF file
+
+    Returns:
+        MD5 hash as hexadecimal string
+    """
+    logger.info(f"Calculating MD5 hash for: {os.path.basename(pdf_path)}")
+
+    try:
+        md5_hash = hashlib.md5()
+        with open(pdf_path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                md5_hash.update(chunk)
+
+        hash_value = md5_hash.hexdigest()
+        logger.info(f"MD5 hash calculated: {hash_value}")
+        return hash_value
+
+    except Exception as e:
+        logger.error(f"Error calculating MD5 hash for {pdf_path}: {e}")
+        raise

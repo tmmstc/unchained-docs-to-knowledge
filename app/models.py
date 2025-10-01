@@ -15,6 +15,7 @@ class PDFProcessRequest(BaseModel):
     word_count: int
     character_length: int
     generate_summary: Optional[bool] = True
+    md5_hash: Optional[str] = None
 
 
 class PDFRecord(BaseModel):

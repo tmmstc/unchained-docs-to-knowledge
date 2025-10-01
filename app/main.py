@@ -13,6 +13,7 @@ from .database import (
     save_extracted_text,
     get_recent_records,
     get_database_statistics,
+    check_duplicate_by_hash,
 )
 from .models import PDFProcessRequest, PDFRecord, DatabaseStats
 from .summarizer import summarize_document
@@ -103,6 +104,18 @@ async def process_pdf(request: PDFProcessRequest):
         f"{request.character_length} chars"
     )
 
+    if request.md5_hash:
+        logger.info(f"Checking for duplicate with hash: {request.md5_hash}")
+        if check_duplicate_by_hash(request.md5_hash):
+            logger.info(
+                f"Duplicate file detected, skipping: {request.filename}"
+            )
+            return {
+                "success": True,
+                "skipped": True,
+                "message": f"File {request.filename} already exists (duplicate)",
+            }
+
     summary = None
     if request.generate_summary and request.extracted_text:
         logger.info(f"Generating summary for: {request.filename}")
@@ -119,12 +132,14 @@ async def process_pdf(request: PDFProcessRequest):
             word_count=request.word_count,
             character_length=request.character_length,
             summary=summary,
+            md5_hash=request.md5_hash,
         )
 
         if success:
             logger.info(f"Successfully saved PDF: {request.filename}")
             response_data = {
                 "success": True,
+                "skipped": False,
                 "message": (
                     f"Successfully processed {request.filename}"
                 ),

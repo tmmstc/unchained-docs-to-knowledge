@@ -153,3 +153,48 @@ def test_update_nonexistent_record_summary():
         params={"generate": True}
     )
     assert response.status_code == 404
+
+
+def test_process_pdf_with_md5_hash():
+    """Test the PDF processing endpoint with MD5 hash."""
+    import uuid
+    test_data = {
+        "filename": "test_with_hash.pdf",
+        "extracted_text": "This is test text with hash",
+        "word_count": 6,
+        "character_length": 27,
+        "generate_summary": False,
+        "md5_hash": uuid.uuid4().hex,
+    }
+
+    response = client.post("/process-pdf", json=test_data)
+    assert response.status_code == 200
+    assert response.json()["success"] is True
+    assert response.json()["skipped"] is False
+
+
+def test_process_duplicate_pdf():
+    """Test that duplicate PDFs are detected and skipped."""
+    import uuid
+    test_hash = uuid.uuid4().hex
+
+    test_data = {
+        "filename": "original.pdf",
+        "extracted_text": "This is original text",
+        "word_count": 4,
+        "character_length": 21,
+        "generate_summary": False,
+        "md5_hash": test_hash,
+    }
+
+    response1 = client.post("/process-pdf", json=test_data)
+    assert response1.status_code == 200
+    assert response1.json()["success"] is True
+    assert response1.json()["skipped"] is False
+
+    test_data["filename"] = "duplicate.pdf"
+    response2 = client.post("/process-pdf", json=test_data)
+    assert response2.status_code == 200
+    assert response2.json()["success"] is True
+    assert response2.json()["skipped"] is True
+    assert "already exists" in response2.json()["message"]

@@ -11,7 +11,11 @@ import requests
 import logging
 import sys
 from typing import List
-from shared.pdf_processor import extract_text_from_pdf, calculate_text_metrics
+from shared.pdf_processor import (
+    extract_text_from_pdf,
+    calculate_text_metrics,
+    calculate_md5_hash,
+)
 
 # Configure logging
 logging.basicConfig(
@@ -55,11 +59,14 @@ def save_extracted_text_to_backend(
     word_count: int,
     character_length: int,
     generate_summary: bool = True,
-) -> bool:
+    md5_hash: str = None,
+) -> dict:
     """Save extracted text to backend via API."""
     logger.info(f"Sending PDF data to backend: {filename}")
     logger.info(f"Data size: {word_count} words, {character_length} characters")
     logger.info(f"Generate summary: {generate_summary}")
+    if md5_hash:
+        logger.info(f"MD5 hash: {md5_hash}")
 
     try:
         response = requests.post(
@@ -70,16 +77,18 @@ def save_extracted_text_to_backend(
                 "word_count": word_count,
                 "character_length": character_length,
                 "generate_summary": generate_summary,
+                "md5_hash": md5_hash,
             },
             timeout=30,
         )
         response.raise_for_status()
-        logger.info(f"Successfully sent {filename} to backend")
-        return True
+        result = response.json()
+        logger.info(f"Backend response for {filename}: {result}")
+        return result
     except Exception as e:
         logger.error(f"Backend API error for {filename}: {e}")
         st.error(f"Backend API error: {str(e)}")
-        return False
+        return {"success": False, "error": str(e)}
 
 
 def get_records_from_backend(limit: int = 10) -> List[dict]:
@@ -213,6 +222,7 @@ def main():
 
                 successful_processes = 0
                 failed_processes = 0
+                skipped_processes = 0
 
                 for i, pdf_file in enumerate(pdf_files):
                     filename = os.path.basename(pdf_file)
@@ -222,6 +232,10 @@ def main():
                     )
 
                     try:
+                        # Calculate MD5 hash
+                        logger.info(f"Calculating MD5 hash for: {filename}")
+                        md5_hash = calculate_md5_hash(pdf_file)
+
                         # Extract text from PDF
                         logger.info(f"Extracting text from: {filename}")
                         extracted_text = extract_text_from_pdf(pdf_file)
@@ -236,16 +250,24 @@ def main():
                         )
 
                         # Save to backend
-                        if save_extracted_text_to_backend(
+                        result = save_extracted_text_to_backend(
                             filename,
                             extracted_text,
                             word_count,
                             character_length,
                             generate_summary,
-                        ):
-                            successful_processes += 1
-                            logger.info(f"Successfully processed: {filename}")
-                            st.success(f"Processed: {filename}")
+                            md5_hash,
+                        )
+
+                        if result.get("success"):
+                            if result.get("skipped"):
+                                skipped_processes += 1
+                                logger.info(f"Skipped duplicate: {filename}")
+                                st.info(f"Skipped (duplicate): {filename}")
+                            else:
+                                successful_processes += 1
+                                logger.info(f"Successfully processed: {filename}")
+                                st.success(f"Processed: {filename}")
                         else:
                             failed_processes += 1
                             logger.error(f"Backend save failed for: {filename}")
@@ -266,11 +288,13 @@ def main():
                 logger.info(
                     f"Batch processing complete: "
                     f"{successful_processes} successful, "
+                    f"{skipped_processes} skipped, "
                     f"{failed_processes} failed"
                 )
                 st.success(
                     f"Processing complete! {successful_processes} "
-                    f"successful, {failed_processes} failed"
+                    f"successful, {skipped_processes} skipped (duplicates), "
+                    f"{failed_processes} failed"
                 )
 
         else:

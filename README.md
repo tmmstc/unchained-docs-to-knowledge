@@ -7,6 +7,7 @@ A modular full-stack application for extracting text from PDF files using Tesser
 - **PDF Text Extraction**: Extract text from PDF files using Tesseract OCR
 - **AI Summarization**: Automatic document summarization using OpenAI-compatible LLM APIs
 - **Intelligent Chunking**: Handle large documents exceeding 8k tokens with smart text splitting
+- **Duplicate Detection**: Automatic duplicate file detection using MD5 hash to prevent reprocessing
 - **Batch Processing**: Process multiple PDF files from a directory
 - **Database Storage**: Store extracted text with metrics and summaries in SQLite database
 - **Web Interface**: User-friendly Streamlit frontend
@@ -164,6 +165,12 @@ If you need to run services separately for development:
     - `word_count`: Number of words
     - `character_length`: Character count
     - `generate_summary`: Boolean (optional, default: true)
+    - `md5_hash`: MD5 hash of PDF file (optional, for duplicate detection)
+  - Returns:
+    - `success`: Boolean indicating processing success
+    - `skipped`: Boolean indicating if file was skipped as duplicate
+    - `message`: Status message
+    - `summary`: Generated summary (if applicable)
 - `GET /records?limit=10` - Retrieve recent processing records (includes summaries)
 - `GET /stats` - Get database statistics
 
@@ -176,6 +183,17 @@ The application includes intelligent document summarization:
 - **OpenAI-Compatible**: Works with OpenAI API or any compatible provider (e.g., Azure OpenAI, local models)
 - **Fallback Mode**: If no API key is configured, provides truncated text previews
 - **Configurable Models**: Specify model via `SUMMARIZATION_MODEL` environment variable
+
+## Duplicate File Detection
+
+The application automatically detects and prevents duplicate file processing:
+
+- **MD5 Hash Calculation**: Computes MD5 hash for each PDF file before processing
+- **Database Constraint**: Unique index on MD5 hash column prevents duplicate entries
+- **Smart Skipping**: Duplicate files are detected and skipped without OCR processing
+- **User Feedback**: Clear status messages indicate when files are skipped as duplicates
+- **Performance Benefit**: Avoids redundant OCR operations and database insertions
+- **Batch Processing**: Duplicate detection works seamlessly in batch operations
 
 ### Environment Variables
 
