@@ -48,6 +48,18 @@ def init_database():
             """
             )
             conn.commit()
+
+            cursor.execute("PRAGMA table_info(pdf_extracts)")
+            columns = [row[1] for row in cursor.fetchall()]
+
+            if 'summary' not in columns:
+                logger.info("Migrating database: adding summary column")
+                cursor.execute(
+                    "ALTER TABLE pdf_extracts ADD COLUMN summary TEXT"
+                )
+                conn.commit()
+                logger.info("Database migration completed successfully")
+
             logger.info("Database schema initialized successfully")
     except Exception as e:
         logger.error(f"Database initialization failed: {e}")
