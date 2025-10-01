@@ -43,7 +43,9 @@ def test_process_pdf_with_summary():
     """Test the PDF processing endpoint with summary generation."""
     test_data = {
         "filename": "test_summary.pdf",
-        "extracted_text": "This is a longer test text that should be summarized.",
+        "extracted_text": (
+            "This is a longer test text that should be summarized."
+        ),
         "word_count": 10,
         "character_length": 54,
         "generate_summary": True,
@@ -136,8 +138,7 @@ def test_update_record_summary():
         record_id = records[0]["id"]
 
         update_response = client.put(
-            f"/records/{record_id}/summary",
-            params={"generate": True}
+            f"/records/{record_id}/summary", params={"generate": True}
         )
         assert update_response.status_code == 200
         result = update_response.json()

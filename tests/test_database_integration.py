@@ -50,7 +50,8 @@ class TestDatabaseOperations:
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT name FROM sqlite_master WHERE type='table' AND name='pdf_extracts'"
+            "SELECT name FROM sqlite_master WHERE type='table' "
+            "AND name='pdf_extracts'"
         )
         table_exists = cursor.fetchone() is not None
         conn.close()
@@ -63,8 +64,12 @@ class TestDatabaseOperations:
 
         # Test data
         filename = "test_document.pdf"
-        extracted_text = "This is a test document with multiple words and sentences."
-        word_count, character_length = calculate_text_metrics(extracted_text)
+        extracted_text = (
+            "This is a test document with multiple words and sentences."
+        )
+        word_count, character_length = calculate_text_metrics(
+            extracted_text
+        )
 
         # Save the extracted text
         success = save_extracted_text(
@@ -76,7 +81,9 @@ class TestDatabaseOperations:
         conn = sqlite3.connect(temp_database)
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM pdf_extracts WHERE filename = ?", (filename,))
+        cursor.execute(
+            "SELECT * FROM pdf_extracts WHERE filename = ?", (filename,)
+        )
         result = cursor.fetchone()
         conn.close()
 
@@ -102,7 +109,9 @@ class TestDatabaseOperations:
         # Verify timestamp is recent (within last minute)
         saved_time = datetime.datetime.fromisoformat(db_timestamp)
         time_diff = datetime.datetime.now() - saved_time
-        assert time_diff.total_seconds() < 60, "Timestamp is not recent"
+        assert (
+            time_diff.total_seconds() < 60
+        ), "Timestamp is not recent"
 
     def test_save_multiple_files(self, temp_database):
         """Test saving multiple files and retrieving them"""
@@ -129,7 +138,9 @@ class TestDatabaseOperations:
 
         cursor.execute("SELECT COUNT(*) FROM pdf_extracts")
         count = cursor.fetchone()[0]
-        assert count == len(test_files), "Not all files were saved"
+        assert (
+            count == len(test_files)
+        ), "Not all files were saved"
 
         conn.close()
 
@@ -144,8 +155,12 @@ class TestDatabaseOperations:
         ]
 
         for filename, content in test_files:
-            word_count, character_length = calculate_text_metrics(content)
-            save_extracted_text(filename, content, word_count, character_length)
+            word_count, character_length = calculate_text_metrics(
+                content
+            )
+            save_extracted_text(
+                filename, content, word_count, character_length
+            )
 
         # Get records
         records = get_recent_records(limit=10)

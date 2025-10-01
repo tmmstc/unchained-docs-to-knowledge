@@ -13,7 +13,9 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-OPENAI_API_BASE_URL = os.getenv("OPENAI_API_BASE_URL", "https://api.openai.com/v1")
+OPENAI_API_BASE_URL = os.getenv(
+    "OPENAI_API_BASE_URL", "https://api.openai.com/v1"
+)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 MODEL_NAME = os.getenv("SUMMARIZATION_MODEL", "gpt-3.5-turbo")
 MAX_TOKENS_PER_CHUNK = 8000
@@ -60,9 +62,10 @@ def chunk_text(text: str, max_tokens: int = MAX_TOKENS_PER_CHUNK) -> List[str]:
                 sentences = paragraph.split(". ")
                 temp_chunk = ""
                 for sentence in sentences:
-                    temp_sentence = (
-                        temp_chunk + ". " + sentence if temp_chunk else sentence
-                    )
+                    if temp_chunk:
+                        temp_sentence = temp_chunk + ". " + sentence
+                    else:
+                        temp_sentence = sentence
                     if count_tokens(temp_sentence) <= max_tokens:
                         temp_chunk = temp_sentence
                     else:
@@ -93,7 +96,9 @@ async def summarize_chunk(chunk: str) -> str:
         Summary of the chunk
     """
     if not OPENAI_API_KEY:
-        logger.warning("OPENAI_API_KEY not set, returning truncated text as summary")
+        logger.warning(
+            "OPENAI_API_KEY not set, returning truncated text as summary"
+        )
         return chunk[:500] + "..." if len(chunk) > 500 else chunk
 
     try:
@@ -131,8 +136,8 @@ async def summarize_chunk(chunk: str) -> str:
             result = response.json()
             summary = result["choices"][0]["message"]["content"].strip()
             logger.info(
-                f"Successfully summarized chunk ({len(chunk)} chars -> "
-                f"{len(summary)} chars)"
+                f"Successfully summarized chunk "
+                f"({len(chunk)} chars -> {len(summary)} chars)"
             )
             return summary
     except Exception as e:
@@ -165,7 +170,10 @@ async def summarize_document(text: str) -> str:
         logger.info("Text within token limit, summarizing directly")
         return await summarize_chunk(text)
 
-    logger.info(f"Text exceeds {MAX_TOKENS_PER_CHUNK} tokens, chunking required")
+    logger.info(
+        f"Text exceeds {MAX_TOKENS_PER_CHUNK} tokens, "
+        f"chunking required"
+    )
     chunks = chunk_text(text, MAX_TOKENS_PER_CHUNK)
 
     chunk_summaries = []

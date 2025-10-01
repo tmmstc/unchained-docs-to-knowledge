@@ -27,8 +27,10 @@ def extract_text_from_pdf(pdf_path: str) -> str:
     Raises:
         Exception: If OCR processing fails
     """
-    logger.info(f"Starting OCR extraction for: {os.path.basename(pdf_path)}")
-    
+    logger.info(
+        f"Starting OCR extraction for: {os.path.basename(pdf_path)}"
+    )
+
     try:
         # Convert PDF to images
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -45,7 +47,10 @@ def extract_text_from_pdf(pdf_path: str) -> str:
                 page_text = pytesseract.image_to_string(image, lang="eng")
                 extracted_text += f"\n--- Page {i + 1} ---\n{page_text}\n"
 
-            logger.info(f"OCR extraction completed for: {os.path.basename(pdf_path)}")
+            logger.info(
+                f"OCR extraction completed for: "
+                f"{os.path.basename(pdf_path)}"
+            )
             return extracted_text.strip()
 
     except Exception as e:
@@ -64,7 +69,7 @@ def calculate_text_metrics(text: str) -> Tuple[int, int]:
         Tuple of (word_count, character_length)
     """
     logger.info("Calculating text metrics")
-    
+
     if not text:
         logger.info("Empty text - returning zero metrics")
         return 0, 0
@@ -76,7 +81,10 @@ def calculate_text_metrics(text: str) -> Tuple[int, int]:
     # This properly handles multiple spaces, tabs, newlines, and punctuation
     words = re.findall(r"\b\w+\b", text)
     word_count = len(words)
-    
-    logger.info(f"Metrics calculated: {word_count} words, {character_length} characters")
+
+    logger.info(
+        f"Metrics calculated: {word_count} words, "
+        f"{character_length} characters"
+    )
 
     return word_count, character_length

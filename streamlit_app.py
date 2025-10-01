@@ -21,7 +21,7 @@ import asyncio
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler(sys.stdout)]
+    handlers=[logging.StreamHandler(sys.stdout)],
 )
 
 logger = logging.getLogger(__name__)
@@ -32,6 +32,7 @@ DATABASE_PATH = "pdf_ocr_database.db"
 # Import summarizer
 try:
     from app.summarizer import summarize_document
+
     SUMMARIZER_AVAILABLE = True
 except ImportError:
     logger.warning("Summarizer module not available")
@@ -46,7 +47,7 @@ def init_database():
     """Initialize SQLite database with required schema"""
     logger.info("🗄️ Initializing SQLite database")
     logger.info(f"🗄️ Database location: {DATABASE_PATH}")
-    
+
     try:
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
@@ -64,13 +65,15 @@ def init_database():
             )
         """
         )
-        
+
         cursor.execute("PRAGMA table_info(pdf_extracts)")
         columns = [row[1] for row in cursor.fetchall()]
-        
+
         if 'summary' not in columns:
             logger.info("🔄 Migrating database: adding summary column")
-            cursor.execute("ALTER TABLE pdf_extracts ADD COLUMN summary TEXT")
+            cursor.execute(
+                "ALTER TABLE pdf_extracts ADD COLUMN summary TEXT"
+            )
             logger.info("✅ Database migration completed successfully")
 
         conn.commit()
@@ -100,12 +103,17 @@ def calculate_text_metrics(text):
 def save_extracted_text(filename, extracted_text, summary=None):
     """Save extracted text to SQLite database with metrics"""
     logger.info(f"💾 Saving extracted text for: {filename}")
-    
+
     try:
         # Calculate metrics
-        word_count, character_length = calculate_text_metrics(extracted_text)
-        logger.info(f"📊 Text metrics: {word_count} words, {character_length} characters")
-        
+        word_count, character_length = calculate_text_metrics(
+            extracted_text
+        )
+        logger.info(
+            f"📊 Text metrics: {word_count} words, "
+            f"{character_length} characters"
+        )
+
         if summary:
             logger.info(f"📝 Saving summary: {len(summary)} characters")
 
@@ -115,7 +123,8 @@ def save_extracted_text(filename, extracted_text, summary=None):
         cursor.execute(
             """
             INSERT INTO pdf_extracts (filename, extracted_text, word_count,
-                                    character_length, summary, created_timestamp)
+                                    character_length, summary,
+                                    created_timestamp)
             VALUES (?, ?, ?, ?, ?, ?)
         """,
             (
@@ -140,8 +149,10 @@ def save_extracted_text(filename, extracted_text, summary=None):
 
 def extract_text_from_pdf(pdf_path):
     """Extract text from PDF using Tesseract OCR"""
-    logger.info(f"🔍 Starting OCR extraction for: {os.path.basename(pdf_path)}")
-    
+    logger.info(
+        f"🔍 Starting OCR extraction for: {os.path.basename(pdf_path)}"
+    )
+
     try:
         # Convert PDF to images
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -158,7 +169,10 @@ def extract_text_from_pdf(pdf_path):
                 page_text = pytesseract.image_to_string(image, lang="eng")
                 extracted_text += f"\n--- Page {i+1} ---\n{page_text}\n"
 
-            logger.info(f"✅ OCR extraction completed for: {os.path.basename(pdf_path)}")
+            logger.info(
+                f"✅ OCR extraction completed for: "
+                f"{os.path.basename(pdf_path)}"
+            )
             return extracted_text.strip()
 
     except Exception as e:
@@ -169,41 +183,45 @@ def extract_text_from_pdf(pdf_path):
 def update_document_summary(record_id, summary):
     """Update the summary for a specific document record"""
     logger.info(f"💾 Updating summary for record ID: {record_id}")
-    
+
     try:
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
-        
+
         cursor.execute(
             """
             UPDATE pdf_extracts
             SET summary = ?
             WHERE id = ?
             """,
-            (summary, record_id)
+            (summary, record_id),
         )
-        
+
         conn.commit()
         conn.close()
-        logger.info(f"✅ Successfully updated summary for record ID: {record_id}")
+        logger.info(
+            f"✅ Successfully updated summary for record ID: {record_id}"
+        )
         return True
     except Exception as e:
-        logger.error(f"❌ Failed to update summary for record ID {record_id}: {e}")
+        logger.error(
+            f"❌ Failed to update summary for record ID {record_id}: {e}"
+        )
         return False
 
 
 def get_pdf_files_from_directory(directory_path):
     """Get all PDF files from the specified directory"""
     logger.info(f"📁 Scanning directory for PDF files: {directory_path}")
-    
+
     try:
         pdf_files = glob.glob(os.path.join(directory_path, "*.pdf"))
         logger.info(f"📄 Found {len(pdf_files)} PDF files in directory")
-        
+
         if pdf_files:
             for pdf_file in pdf_files:
                 logger.info(f"📄 - {os.path.basename(pdf_file)}")
-        
+
         return pdf_files
     except Exception as e:
         logger.error(f"❌ Error reading directory {directory_path}: {e}")
@@ -214,14 +232,15 @@ def get_pdf_files_from_directory(directory_path):
 def display_database_records():
     """Display recent records from the database"""
     logger.info("📋 Loading recent database records")
-    
+
     try:
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
 
         cursor.execute(
             """
-            SELECT id, filename, created_timestamp, word_count, character_length,
+            SELECT id, filename, created_timestamp, word_count,
+                   character_length,
                    SUBSTR(extracted_text, 1, 200) || '...' as preview,
                    summary, extracted_text
             FROM pdf_extracts
@@ -244,7 +263,7 @@ def display_database_records():
                 character_length,
                 preview,
                 summary,
-                extracted_text
+                extracted_text,
             ) in records:
                 with st.expander(f"{filename} - {timestamp}"):
                     col1, col2 = st.columns(2)
@@ -252,26 +271,46 @@ def display_database_records():
                         st.metric("Word Count", word_count or 0)
                     with col2:
                         st.metric("Characters", character_length or 0)
-                    
+
                     if summary:
                         st.markdown("**Summary:**")
                         st.write(summary)
                     else:
                         if SUMMARIZER_AVAILABLE and extracted_text:
-                            if st.button(f"Generate Summary", key=f"gen_summary_{record_id}"):
+                            if st.button(
+                                "Generate Summary",
+                                key=f"gen_summary_{record_id}",
+                            ):
                                 with st.spinner("Generating summary..."):
                                     try:
-                                        new_summary = asyncio.run(summarize_document(extracted_text))
-                                        update_document_summary(record_id, new_summary)
-                                        st.success("✅ Summary generated and saved!")
+                                        new_summary = asyncio.run(
+                                            summarize_document(extracted_text)
+                                        )
+                                        update_document_summary(
+                                            record_id, new_summary
+                                        )
+                                        st.success(
+                                            "✅ Summary generated and saved!"
+                                        )
                                         st.rerun()
                                     except Exception as e:
-                                        logger.error(f"❌ Failed to generate summary: {e}")
-                                        st.error(f"Failed to generate summary: {str(e)}")
+                                        logger.error(
+                                            f"❌ Failed to generate "
+                                            f"summary: {e}"
+                                        )
+                                        st.error(
+                                            f"Failed to generate "
+                                            f"summary: {str(e)}"
+                                        )
                         else:
                             st.info("No summary available")
-                    
-                    st.text_area("Preview:", preview, height=100, key=f"preview_{record_id}")
+
+                    st.text_area(
+                        "Preview:",
+                        preview,
+                        height=100,
+                        key=f"preview_{record_id}",
+                    )
         else:
             logger.info("📋 No records found in database")
             st.info("No processed files found in database.")
@@ -285,7 +324,7 @@ def main():
     """Main Streamlit application"""
     logger.info("🏠 Main application page loaded")
     logger.info("🎨 Setting up page configuration")
-    
+
     st.set_page_config(
         page_title="PDF OCR Processor", page_icon="📄", layout="wide"
     )
@@ -305,11 +344,12 @@ def main():
         "Enter directory path containing PDF files:",
         placeholder="C:/path/to/pdf/directory",
     )
-    
+
     enable_summarization = st.checkbox(
         "Enable summarization during processing",
         value=False,
-        help="Generate AI-powered summaries of extracted text (requires API key)"
+        help="Generate AI-powered summaries of extracted text "
+        "(requires API key)",
     )
 
     if directory_path and os.path.exists(directory_path):
@@ -326,7 +366,10 @@ def main():
 
             # Process files button
             if st.button("Process All PDF Files", type="primary"):
-                logger.info(f"🚀 Starting batch processing of {len(pdf_files)} PDF files")
+                logger.info(
+                    f"🚀 Starting batch processing of "
+                    f"{len(pdf_files)} PDF files"
+                )
                 progress_bar = st.progress(0)
                 status_text = st.empty()
 
@@ -336,39 +379,71 @@ def main():
                 for i, pdf_file in enumerate(pdf_files):
                     filename = os.path.basename(pdf_file)
                     status_text.text(f"Processing: {filename}")
-                    logger.info(f"🔄 Processing file {i+1}/{len(pdf_files)}: {filename}")
+                    logger.info(
+                        f"🔄 Processing file {i+1}/{len(pdf_files)}: "
+                        f"{filename}"
+                    )
 
                     try:
                         # Extract text from PDF
                         extracted_text = extract_text_from_pdf(pdf_file)
-                        
+
                         summary = None
-                        if enable_summarization and SUMMARIZER_AVAILABLE and extracted_text:
-                            status_text.text(f"Generating summary for: {filename}")
-                            logger.info(f"📝 Generating summary for: {filename}")
+                        if (
+                            enable_summarization
+                            and SUMMARIZER_AVAILABLE
+                            and extracted_text
+                        ):
+                            status_text.text(
+                                f"Generating summary for: {filename}"
+                            )
+                            logger.info(
+                                f"📝 Generating summary for: {filename}"
+                            )
                             try:
-                                summary = asyncio.run(summarize_document(extracted_text))
-                                logger.info(f"✅ Summary generated: {len(summary)} characters")
+                                summary = asyncio.run(
+                                    summarize_document(extracted_text)
+                                )
+                                logger.info(
+                                    f"✅ Summary generated: "
+                                    f"{len(summary)} characters"
+                                )
                             except Exception as e:
-                                logger.error(f"⚠️ Summarization failed for {filename}: {e}")
-                                st.warning(f"⚠️ Summarization failed for {filename}, continuing without summary")
+                                logger.error(
+                                    f"⚠️ Summarization failed for "
+                                    f"{filename}: {e}"
+                                )
+                                st.warning(
+                                    f"⚠️ Summarization failed for "
+                                    f"{filename}, continuing without summary"
+                                )
 
                         # Save to database
-                        if save_extracted_text(filename, extracted_text, summary):
+                        if save_extracted_text(
+                            filename, extracted_text, summary
+                        ):
                             successful_processes += 1
-                            logger.info(f"✅ Successfully processed: {filename}")
+                            logger.info(
+                                f"✅ Successfully processed: {filename}"
+                            )
                             success_msg = f"✅ Processed: {filename}"
                             if summary:
                                 success_msg += " (with summary)"
                             st.success(success_msg)
                         else:
                             failed_processes += 1
-                            logger.error(f"❌ Database save failed for: {filename}")
-                            st.error(f"❌ Database save failed: {filename}")
+                            logger.error(
+                                f"❌ Database save failed for: {filename}"
+                            )
+                            st.error(
+                                f"❌ Database save failed: {filename}"
+                            )
 
                     except Exception as e:
                         failed_processes += 1
-                        logger.error(f"❌ Processing failed for {filename}: {e}")
+                        logger.error(
+                            f"❌ Processing failed for {filename}: {e}"
+                        )
                         st.error(f"❌ Failed for {filename}: {str(e)}")
                         with st.expander(f"Error details for {filename}"):
                             st.code(traceback.format_exc())
@@ -379,7 +454,8 @@ def main():
                 # Final status
                 status_text.text("Processing completed!")
                 logger.info(
-                    f"📋 Batch processing complete: {successful_processes} successful, "
+                    f"📋 Batch processing complete: "
+                    f"{successful_processes} successful, "
                     f"{failed_processes} failed"
                 )
                 st.success(
@@ -388,7 +464,9 @@ def main():
                 )
 
         else:
-            logger.info(f"📁 No PDF files found in directory: {directory_path}")
+            logger.info(
+                f"📁 No PDF files found in directory: {directory_path}"
+            )
             st.warning("No PDF files found in the specified directory")
 
     elif directory_path:
@@ -412,7 +490,8 @@ def main():
 
         # Get total words and characters
         cursor.execute(
-            "SELECT SUM(word_count), SUM(character_length) FROM pdf_extracts"
+            "SELECT SUM(word_count), SUM(character_length) FROM "
+            "pdf_extracts"
         )
         total_words, total_chars = cursor.fetchone()
 

@@ -33,15 +33,15 @@ logger.info("Application: PDF OCR processing with FastAPI backend integration")
 def get_pdf_files_from_directory(directory_path: str) -> List[str]:
     """Get all PDF files from the specified directory."""
     logger.info(f"Scanning directory for PDF files: {directory_path}")
-    
+
     try:
         pdf_files = glob.glob(os.path.join(directory_path, "*.pdf"))
         logger.info(f"Found {len(pdf_files)} PDF files in directory")
-        
+
         if pdf_files:
             for pdf_file in pdf_files:
                 logger.info(f"- {os.path.basename(pdf_file)}")
-        
+
         return pdf_files
     except Exception as e:
         logger.error(f"Error reading directory {directory_path}: {e}")
@@ -50,12 +50,17 @@ def get_pdf_files_from_directory(directory_path: str) -> List[str]:
 
 
 def save_extracted_text_to_backend(
-    filename: str, extracted_text: str, word_count: int, character_length: int
+    filename: str,
+    extracted_text: str,
+    word_count: int,
+    character_length: int,
 ) -> bool:
     """Save extracted text to backend via API."""
     logger.info(f"Sending PDF data to backend: {filename}")
-    logger.info(f"Data size: {word_count} words, {character_length} characters")
-    
+    logger.info(
+        f"Data size: {word_count} words, {character_length} characters"
+    )
+
     try:
         response = requests.post(
             f"{BACKEND_URL}/process-pdf",
@@ -79,7 +84,7 @@ def save_extracted_text_to_backend(
 def get_records_from_backend(limit: int = 10) -> List[dict]:
     """Get records from backend via API."""
     logger.info(f"Requesting {limit} records from backend")
-    
+
     try:
         response = requests.get(
             f"{BACKEND_URL}/records", params={"limit": limit}, timeout=10
@@ -97,20 +102,25 @@ def get_records_from_backend(limit: int = 10) -> List[dict]:
 def get_stats_from_backend() -> dict:
     """Get statistics from backend via API."""
     logger.info("Requesting statistics from backend")
-    
+
     try:
         response = requests.get(f"{BACKEND_URL}/stats", timeout=10)
         response.raise_for_status()
         stats = response.json()
         logger.info(
             f"Backend statistics: {stats.get('total_records', 0)} records, "
-            f"{stats.get('total_words', 0)} words, {stats.get('total_characters', 0)} chars"
+            f"{stats.get('total_words', 0)} words, "
+            f"{stats.get('total_characters', 0)} chars"
         )
         return stats
     except Exception as e:
         logger.error(f"Error fetching statistics from backend: {e}")
         st.error(f"Error fetching statistics: {str(e)}")
-        return {"total_records": 0, "total_words": 0, "total_characters": 0}
+        return {
+            "total_records": 0,
+            "total_words": 0,
+            "total_characters": 0,
+        }
 
 
 def display_database_records():
@@ -120,7 +130,9 @@ def display_database_records():
     if records:
         st.subheader("Recent Processed Files")
         for record in records:
-            with st.expander(f"{record['filename']} - {record['created_timestamp']}"):
+            with st.expander(
+                f"{record['filename']} - {record['created_timestamp']}"
+            ):
                 col1, col2 = st.columns(2)
                 with col1:
                     st.metric("Word Count", record["word_count"] or 0)
@@ -136,16 +148,19 @@ def main():
     """Main Streamlit application."""
     logger.info("Main application page loaded")
     logger.info("Setting up page configuration")
-    
-    st.set_page_config(page_title="PDF OCR Processor", page_icon="📄", layout="wide")
+
+    st.set_page_config(
+        page_title="PDF OCR Processor", page_icon="📄", layout="wide"
+    )
 
     st.title("📄 PDF OCR Text Extractor")
     st.markdown(
-        "Extract text from PDF files using Tesseract OCR and store via FastAPI backend"
+        "Extract text from PDF files using Tesseract OCR and store "
+        "via FastAPI backend"
     )
 
     logger.info("Testing backend connectivity...")
-    
+
     # Check backend connectivity
     try:
         response = requests.get(f"{BACKEND_URL}/", timeout=5)
@@ -182,7 +197,10 @@ def main():
 
             # Process files button
             if st.button("Process All PDF Files", type="primary"):
-                logger.info(f"Starting batch processing of {len(pdf_files)} PDF files")
+                logger.info(
+                    f"Starting batch processing of "
+                    f"{len(pdf_files)} PDF files"
+                )
                 progress_bar = st.progress(0)
                 status_text = st.empty()
 
@@ -192,7 +210,10 @@ def main():
                 for i, pdf_file in enumerate(pdf_files):
                     filename = os.path.basename(pdf_file)
                     status_text.text(f"Processing: {filename}")
-                    logger.info(f"Processing file {i+1}/{len(pdf_files)}: {filename}")
+                    logger.info(
+                        f"Processing file {i+1}/{len(pdf_files)}: "
+                        f"{filename}"
+                    )
 
                     try:
                         # Extract text from PDF
@@ -203,19 +224,31 @@ def main():
                         word_count, character_length = calculate_text_metrics(
                             extracted_text
                         )
-                        logger.info(f"Text metrics for {filename}: {word_count} words, {character_length} chars")
+                        logger.info(
+                            f"Text metrics for {filename}: "
+                            f"{word_count} words, {character_length} chars"
+                        )
 
                         # Save to backend
                         if save_extracted_text_to_backend(
-                            filename, extracted_text, word_count, character_length
+                            filename,
+                            extracted_text,
+                            word_count,
+                            character_length,
                         ):
                             successful_processes += 1
-                            logger.info(f"Successfully processed: {filename}")
+                            logger.info(
+                                f"Successfully processed: {filename}"
+                            )
                             st.success(f"Processed: {filename}")
                         else:
                             failed_processes += 1
-                            logger.error(f"Backend save failed for: {filename}")
-                            st.error(f"Backend save failed: {filename}")
+                            logger.error(
+                                f"Backend save failed for: {filename}"
+                            )
+                            st.error(
+                                f"Backend save failed: {filename}"
+                            )
 
                     except Exception as e:
                         failed_processes += 1
@@ -230,7 +263,8 @@ def main():
                 # Final status
                 status_text.text("Processing completed!")
                 logger.info(
-                    f"Batch processing complete: {successful_processes} successful, "
+                    f"Batch processing complete: "
+                    f"{successful_processes} successful, "
                     f"{failed_processes} failed"
                 )
                 st.success(

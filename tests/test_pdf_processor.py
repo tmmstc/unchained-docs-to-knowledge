@@ -2,7 +2,6 @@
 Tests for PDF processor functionality.
 """
 
-import pytest
 from shared.pdf_processor import calculate_text_metrics
 
 

@@ -4,7 +4,6 @@ This tests the calculate_text_metrics function that extracts word count
 and character length from processed PDF text.
 """
 
-import pytest
 from shared.pdf_processor import calculate_text_metrics
 
 
@@ -53,8 +52,9 @@ class TestTextMetrics:
         """Test text with numbers mixed in"""
         text = "There are 123 items and 456 more"
         word_count, character_length = calculate_text_metrics(text)
-        assert word_count == 7  # "There", "are", "123", "items", "and", "456", "more"
-        assert character_length == len(text)  # Should match actual string length
+        # "There", "are", "123", "items", "and", "456", "more"
+        assert word_count == 7
+        assert character_length == len(text)
 
     def test_only_punctuation(self):
         """Test with only punctuation marks"""
@@ -75,11 +75,11 @@ class TestTextMetrics:
         text = """
         --- Page 1 ---
         This is the first page with some content.
-        
+
         --- Page 2 ---
         This is the second page with more content.
         """
         word_count, character_length = calculate_text_metrics(text)
         # Should count all words including "Page", "1", "2", etc.
-        assert word_count > 10  # Exact count may vary but should be substantial
+        assert word_count > 10
         assert character_length == len(text)

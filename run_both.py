@@ -12,6 +12,7 @@ import sys
 import os
 from pathlib import Path
 
+
 class ServiceRunner:
     def __init__(self):
         self.processes = []
@@ -25,26 +26,36 @@ class ServiceRunner:
             if not venv_python.exists():
                 print("Virtual environment not found. Run: py -m venv venv")
                 return
-            
+
             env = os.environ.copy()
             env['PYTHONIOENCODING'] = 'utf-8'
-            
+
             process = subprocess.Popen(
-                [str(venv_python), "-m", "uvicorn", "app.main:app", "--reload", "--host", "127.0.0.1", "--port", "8000"],
+                [
+                    str(venv_python),
+                    "-m",
+                    "uvicorn",
+                    "app.main:app",
+                    "--reload",
+                    "--host",
+                    "127.0.0.1",
+                    "--port",
+                    "8000",
+                ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True,
-                env=env
+                env=env,
             )
             self.processes.append(process)
-            
+
             # Stream output
             for line in process.stdout:
                 if self.running:
                     print(f"[FastAPI] {line.strip()}")
                 else:
                     break
-                    
+
         except Exception as e:
             print(f"Error starting FastAPI: {e}")
 
@@ -54,28 +65,38 @@ class ServiceRunner:
             # Wait a bit for FastAPI to start
             time.sleep(3)
             print("Starting Streamlit frontend on http://localhost:8501")
-            
+
             venv_python = Path("venv/Scripts/python.exe")
-            
+
             env = os.environ.copy()
             env['PYTHONIOENCODING'] = 'utf-8'
-            
+
             process = subprocess.Popen(
-                [str(venv_python), "-m", "streamlit", "run", "frontend/streamlit_app.py", "--server.address", "0.0.0.0", "--server.port", "8501"],
+                [
+                    str(venv_python),
+                    "-m",
+                    "streamlit",
+                    "run",
+                    "frontend/streamlit_app.py",
+                    "--server.address",
+                    "0.0.0.0",
+                    "--server.port",
+                    "8501",
+                ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True,
-                env=env
+                env=env,
             )
             self.processes.append(process)
-            
+
             # Stream output
             for line in process.stdout:
                 if self.running:
                     print(f"[Streamlit] {line.strip()}")
                 else:
                     break
-                    
+
         except Exception as e:
             print(f"Error starting Streamlit: {e}")
 
@@ -83,14 +104,14 @@ class ServiceRunner:
         """Handle Ctrl+C gracefully"""
         print("\nShutting down services...")
         self.running = False
-        
+
         for process in self.processes:
             try:
                 process.terminate()
                 process.wait(timeout=5)
-            except:
+            except Exception:
                 process.kill()
-        
+
         print("Services stopped")
         sys.exit(0)
 
@@ -98,24 +119,29 @@ class ServiceRunner:
         """Start both services"""
         # Set up signal handler for graceful shutdown
         signal.signal(signal.SIGINT, self.signal_handler)
-        
+
         print("Starting FastAPI + Streamlit Development Environment")
         print("Press Ctrl+C to stop both services\n")
-        
+
         # Start FastAPI in background thread
-        fastapi_thread = threading.Thread(target=self.run_fastapi, daemon=True)
+        fastapi_thread = threading.Thread(
+            target=self.run_fastapi, daemon=True
+        )
         fastapi_thread.start()
-        
+
         # Start Streamlit in background thread
-        streamlit_thread = threading.Thread(target=self.run_streamlit, daemon=True)
+        streamlit_thread = threading.Thread(
+            target=self.run_streamlit, daemon=True
+        )
         streamlit_thread.start()
-        
+
         # Keep main thread alive
         try:
             while self.running:
                 time.sleep(1)
         except KeyboardInterrupt:
             self.signal_handler(signal.SIGINT, None)
+
 
 if __name__ == "__main__":
     runner = ServiceRunner()
