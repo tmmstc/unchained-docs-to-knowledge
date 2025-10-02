@@ -22,18 +22,44 @@ class ApplicationLauncher:
     def __init__(self):
         self.processes = []
         self.running = True
-        self.venv_python = Path("venv/Scripts/python.exe")
+        # Cross-platform virtualenv python path. On Windows venv uses Scripts, on POSIX it uses bin.
+        win_path = Path("venv") / "Scripts" / "python.exe"
+        posix_path = Path("venv") / "bin" / "python"
+        # Prefer the venv python if it exists, otherwise fall back to whichever is present.
+        if win_path.exists():
+            self.venv_python = win_path
+        elif posix_path.exists():
+            self.venv_python = posix_path
+        else:
+            # Last-resort: use system python (may not have required deps)
+            self.venv_python = Path(sys.executable)
 
     def verify_environment(self):
-        """Verify that the virtual environment exists."""
-        if not self.venv_python.exists():
+        """Verify that the virtual environment exists (cross-platform).
+
+        Checks for a `venv` directory with either a Windows or POSIX python
+        executable. If missing, prints clear setup and activation steps for
+        both platforms.
+        """
+        venv_dir = Path("venv")
+        win_python = venv_dir / "Scripts" / "python.exe"
+        posix_python = venv_dir / "bin" / "python"
+
+        if not venv_dir.exists() or (not win_python.exists() and not posix_python.exists()):
             print("❌ ERROR: Virtual environment not found")
             print("\nSetup required:")
             print("1. Create virtual environment:")
+            print("   # Windows")
             print("   py -m venv venv")
-            print("\n2. Install dependencies:")
-            pip_cmd = ".\\venv\\Scripts\\python.exe -m pip install -r"
-            print(f"   {pip_cmd} requirements.txt")
+            print("   # POSIX (Linux/macOS)")
+            print("   python3 -m venv venv")
+            print("\n2. Activate the virtual environment:")
+            print("   # Windows PowerShell")
+            print("   .\\venv\\Scripts\\Activate.ps1")
+            print("   # POSIX (bash/zsh)")
+            print("   source venv/bin/activate")
+            print("\n3. Install dependencies:")
+            print("   python -m pip install -r requirements.txt")
             return False
 
         print("✅ Virtual environment found")
