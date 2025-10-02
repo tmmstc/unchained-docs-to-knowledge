@@ -4,7 +4,7 @@ Tests for PDF processor functionality.
 
 import tempfile
 import os
-from shared.pdf_processor import calculate_text_metrics, calculate_md5_hash
+from app.pdf_processor import calculate_text_metrics, calculate_md5_hash
 
 
 class TestTextMetrics:

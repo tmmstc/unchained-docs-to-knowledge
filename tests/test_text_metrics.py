@@ -4,7 +4,7 @@ This tests the calculate_text_metrics function that extracts word count
 and character length from processed PDF text.
 """
 
-from shared.pdf_processor import calculate_text_metrics
+from app.pdf_processor import calculate_text_metrics
 
 
 class TestTextMetrics:

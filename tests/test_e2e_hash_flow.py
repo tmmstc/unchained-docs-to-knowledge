@@ -8,7 +8,7 @@ import tempfile
 import pytest
 import httpx
 from app.main import app
-from shared.pdf_processor import calculate_md5_hash, calculate_text_metrics
+from app.pdf_processor import calculate_md5_hash, calculate_text_metrics
 
 
 @pytest.fixture

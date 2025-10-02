@@ -1,7 +1,7 @@
 import logging
 import traceback
 from typing import List
-from shared.pdf_processor import (
+from app.pdf_processor import (
     extract_text_from_pdf,
     calculate_text_metrics,
     calculate_md5_hash,

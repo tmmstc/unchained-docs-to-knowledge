@@ -17,7 +17,7 @@ from app.database import (
     check_duplicate_by_hash,
     DATABASE_PATH,
 )
-from shared.pdf_processor import calculate_text_metrics
+from app.pdf_processor import calculate_text_metrics
 
 
 @pytest.fixture

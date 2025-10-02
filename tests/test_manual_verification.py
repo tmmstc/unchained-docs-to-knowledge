@@ -68,7 +68,7 @@ startxref
 
 def test_hash_in_database():
     """Test that hash values are correctly stored in database"""
-    from shared.pdf_processor import calculate_md5_hash, calculate_text_metrics
+    from app.pdf_processor import calculate_md5_hash, calculate_text_metrics
     from app.database import init_database, save_extracted_text, get_recent_records
     import app.database
 
