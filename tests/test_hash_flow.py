@@ -6,6 +6,7 @@ This test verifies that PDF processing correctly calculates and stores MD5 hashe
 import os
 import tempfile
 import pytest
+from pathlib import Path
 from app.pdf_processor import (
     calculate_md5_hash,
     calculate_text_metrics,
