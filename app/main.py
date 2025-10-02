@@ -314,3 +314,37 @@ async def update_record_summary(record_id: int, generate: bool = True):
     except Exception as e:
         logger.error(f"Error updating summary for record {record_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/records/{record_id}")
+def delete_record(record_id: int):
+    """
+    Delete a specific document record.
+
+    Args:
+        record_id: ID of the record to delete
+
+    Returns:
+        Success status and message
+    """
+    logger.info(f"Deleting record ID: {record_id}")
+
+    try:
+        from .database import delete_record
+
+        success = delete_record(record_id)
+        if success:
+            logger.info(f"Successfully deleted record {record_id}")
+            return {
+                "success": True,
+                "message": "Record deleted successfully",
+            }
+        else:
+            logger.warning(f"Record not found: {record_id}")
+            raise HTTPException(status_code=404, detail="Record not found")
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting record {record_id}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

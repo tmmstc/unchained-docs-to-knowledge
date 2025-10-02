@@ -198,3 +198,33 @@ def test_process_duplicate_pdf():
     assert response2.json()["success"] is True
     assert response2.json()["skipped"] is True
     assert "already exists" in response2.json()["message"]
+
+
+def test_delete_record():
+    """Test deleting a record."""
+    test_data = {
+        "filename": "test_delete.pdf",
+        "extracted_text": "This is test text for deletion",
+        "word_count": 6,
+        "character_length": 31,
+        "generate_summary": False,
+    }
+
+    response = client.post("/process-pdf", json=test_data)
+    assert response.status_code == 200
+
+    records_response = client.get("/records?limit=1")
+    records = records_response.json()
+    if records:
+        record_id = records[0]["id"]
+
+        delete_response = client.delete(f"/records/{record_id}")
+        assert delete_response.status_code == 200
+        result = delete_response.json()
+        assert result["success"] is True
+
+
+def test_delete_nonexistent_record():
+    """Test deleting a non-existent record."""
+    response = client.delete("/records/999999")
+    assert response.status_code == 404

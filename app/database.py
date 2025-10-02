@@ -423,3 +423,39 @@ def update_record_summary(record_id: int, summary: str) -> bool:
             f"Error updating summary for record {record_id}: {e}"
         )
         return False
+
+
+def delete_record(record_id: int) -> bool:
+    """
+    Delete a specific record from the database.
+
+    Args:
+        record_id: ID of the record to delete
+
+    Returns:
+        True if successful, False otherwise
+    """
+    logger.info(f"Deleting record ID: {record_id}")
+
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                DELETE FROM pdf_extracts
+                WHERE id = ?
+            """,
+                (record_id,),
+            )
+            conn.commit()
+
+            if cursor.rowcount > 0:
+                logger.info(f"Successfully deleted record {record_id}")
+                return True
+            else:
+                logger.warning(f"No record found with ID: {record_id}")
+                return False
+
+    except Exception as e:
+        logger.error(f"Error deleting record {record_id}: {e}")
+        return False

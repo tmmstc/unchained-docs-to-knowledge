@@ -310,6 +310,76 @@ def display_database_records():
             else:
                 st.info("No summary available for this record.")
 
+            st.markdown("---")
+            st.markdown("### Actions")
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                has_summary = bool(selected_record.get("summary"))
+                button_label = (
+                    "Regenerate Summary" if has_summary
+                    else "Generate Summary"
+                )
+
+                generate_btn = st.button(
+                    button_label,
+                    type="secondary",
+                    key="generate_summary_btn"
+                )
+                if generate_btn:
+                    with st.spinner("Generating summary..."):
+                        try:
+                            record_id = selected_record['id']
+                            response = requests.put(
+                                f"{BACKEND_URL}/records/{record_id}/summary",
+                                params={"generate": True},
+                                timeout=60,
+                            )
+                            response.raise_for_status()
+                            result = response.json()
+
+                            if result.get("success"):
+                                st.success("Summary generated successfully!")
+                                st.rerun()
+                            else:
+                                st.error("Failed to generate summary")
+                        except Exception as e:
+                            st.error(f"Error generating summary: {str(e)}")
+
+            with col2:
+                delete_btn = st.button(
+                    "Delete Record",
+                    type="primary",
+                    key="delete_record_btn"
+                )
+                if delete_btn:
+                    confirm_id = st.session_state.get("confirm_delete")
+                    if confirm_id != selected_record["id"]:
+                        st.session_state.confirm_delete = selected_record["id"]
+                        st.warning(
+                            "Click Delete Record again to confirm deletion."
+                        )
+                    else:
+                        try:
+                            record_id = selected_record['id']
+                            response = requests.delete(
+                                f"{BACKEND_URL}/records/{record_id}",
+                                timeout=10,
+                            )
+                            response.raise_for_status()
+                            result = response.json()
+
+                            if result.get("success"):
+                                st.success("Record deleted successfully!")
+                                if "confirm_delete" in st.session_state:
+                                    del st.session_state.confirm_delete
+                                st.rerun()
+                            else:
+                                st.error("Failed to delete record")
+                        except Exception as e:
+                            st.error(f"Error deleting record: {str(e)}")
+
 
 def main():
     """Main Streamlit application."""
