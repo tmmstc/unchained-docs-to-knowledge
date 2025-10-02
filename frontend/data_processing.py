@@ -6,7 +6,10 @@ from shared.pdf_processor import (
     calculate_text_metrics,
     calculate_md5_hash,
 )
-from frontend.api_client import save_extracted_text_to_backend
+from frontend.api_client import (
+    save_extracted_text_to_backend,
+    check_duplicate_hash,
+)
 from frontend.file_operations import create_temp_file_from_upload, cleanup_temp_file
 
 logger = logging.getLogger(__name__)
@@ -20,6 +23,15 @@ def process_single_pdf(
 
         logger.info(f"Calculating MD5 hash for: {filename}")
         md5_hash = calculate_md5_hash(pdf_path)
+
+        logger.info(f"Checking for duplicate with hash: {md5_hash}")
+        if check_duplicate_hash(md5_hash):
+            logger.info(f"Duplicate detected, skipping: {filename}")
+            return {
+                "success": True,
+                "skipped": True,
+                "message": f"File {filename} already exists (duplicate)",
+            }
 
         logger.info(f"Extracting text from: {filename}")
         extracted_text = extract_text_from_pdf(pdf_path)

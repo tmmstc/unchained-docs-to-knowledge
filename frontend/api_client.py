@@ -6,6 +6,24 @@ logger = logging.getLogger(__name__)
 BACKEND_URL = "http://localhost:8000"
 
 
+def check_duplicate_hash(md5_hash: str) -> bool:
+    logger.info(f"Checking duplicate hash with backend: {md5_hash}")
+
+    try:
+        response = requests.get(
+            f"{BACKEND_URL}/check-duplicate/{md5_hash}",
+            timeout=10,
+        )
+        response.raise_for_status()
+        result = response.json()
+        is_duplicate = result.get("is_duplicate", False)
+        logger.info(f"Duplicate check result: {is_duplicate}")
+        return is_duplicate
+    except Exception as e:
+        logger.error(f"Error checking duplicate hash: {e}")
+        return False
+
+
 def save_extracted_text_to_backend(
     filename: str,
     extracted_text: str,

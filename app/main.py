@@ -191,6 +191,28 @@ def get_records(limit: int = 10):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.get("/check-duplicate/{md5_hash}")
+def check_duplicate(md5_hash: str):
+    """
+    Check if a document with the given MD5 hash already exists.
+
+    Args:
+        md5_hash: MD5 hash of the PDF file
+
+    Returns:
+        Dictionary with is_duplicate boolean
+    """
+    logger.info(f"Checking for duplicate hash: {md5_hash}")
+
+    try:
+        is_duplicate = check_duplicate_by_hash(md5_hash)
+        logger.info(f"Duplicate check result: {is_duplicate}")
+        return {"is_duplicate": is_duplicate, "md5_hash": md5_hash}
+    except Exception as e:
+        logger.error(f"Error checking duplicate: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/stats", response_model=DatabaseStats)
 def get_stats():
     """

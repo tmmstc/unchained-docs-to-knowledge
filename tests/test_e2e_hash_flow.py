@@ -7,7 +7,6 @@ import os
 import tempfile
 import pytest
 import httpx
-from pathlib import Path
 from app.main import app
 from shared.pdf_processor import calculate_md5_hash, calculate_text_metrics
 

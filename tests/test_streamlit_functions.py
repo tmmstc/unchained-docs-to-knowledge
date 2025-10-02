@@ -135,11 +135,13 @@ def test_data_processing_single_pdf():
     from frontend.data_processing import process_single_pdf
 
     with mock.patch("frontend.data_processing.calculate_md5_hash") as mock_hash, \
+         mock.patch("frontend.data_processing.check_duplicate_hash") as mock_check, \
          mock.patch("frontend.data_processing.extract_text_from_pdf") as mock_extract, \
          mock.patch("frontend.data_processing.calculate_text_metrics") as mock_metrics, \
          mock.patch("frontend.data_processing.save_extracted_text_to_backend") as mock_save:
 
         mock_hash.return_value = "abc123"
+        mock_check.return_value = False
         mock_extract.return_value = "Extracted text"
         mock_metrics.return_value = (2, 14)
         mock_save.return_value = {"success": True, "skipped": False}
@@ -148,9 +150,30 @@ def test_data_processing_single_pdf():
 
         assert result["success"] is True
         mock_hash.assert_called_once()
+        mock_check.assert_called_once_with("abc123")
         mock_extract.assert_called_once()
         mock_metrics.assert_called_once()
         mock_save.assert_called_once()
+
+
+def test_data_processing_single_pdf_duplicate():
+    """Test single PDF processing logic with duplicate detection."""
+    from frontend.data_processing import process_single_pdf
+
+    with mock.patch("frontend.data_processing.calculate_md5_hash") as mock_hash, \
+         mock.patch("frontend.data_processing.check_duplicate_hash") as mock_check, \
+         mock.patch("frontend.data_processing.extract_text_from_pdf") as mock_extract:
+
+        mock_hash.return_value = "abc123"
+        mock_check.return_value = True
+
+        result = process_single_pdf("/path/to/test.pdf", "test.pdf", True)
+
+        assert result["success"] is True
+        assert result["skipped"] is True
+        mock_hash.assert_called_once()
+        mock_check.assert_called_once_with("abc123")
+        mock_extract.assert_not_called()
 
 
 def test_process_uploaded_files():
@@ -204,6 +227,7 @@ def test_api_client_functions():
         save_extracted_text_to_backend,
         get_records_from_backend,
         get_stats_from_backend,
+        check_duplicate_hash,
     )
 
     with mock.patch("frontend.api_client.requests.post") as mock_post, \
@@ -233,3 +257,15 @@ def test_api_client_functions():
 
         stats = get_stats_from_backend()
         assert stats["total_records"] == 5
+
+        mock_response.json.return_value = {"is_duplicate": False}
+        mock_get.return_value = mock_response
+
+        is_dup = check_duplicate_hash("hash123")
+        assert is_dup is False
+
+        mock_response.json.return_value = {"is_duplicate": True}
+        mock_get.return_value = mock_response
+
+        is_dup = check_duplicate_hash("hash123")
+        assert is_dup is True
