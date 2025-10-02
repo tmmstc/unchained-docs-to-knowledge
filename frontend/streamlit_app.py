@@ -140,7 +140,9 @@ def shorten_hash(hash_str: str, prefix_length: int = 8) -> str:
 
 
 def display_database_records():
-    """Display records from the backend in a tabular format."""
+    """Display records from the backend in a tabular format with clickable selection."""
+    import pandas as pd
+
     records = get_records_from_backend(limit=100)
 
     if not records:
@@ -155,28 +157,36 @@ def display_database_records():
         filename_filter = st.text_input(
             "Filter by filename",
             placeholder="Enter text to filter...",
-            key="filename_filter"
+            key="filename_filter",
         )
 
     with col2:
         summary_filter = st.selectbox(
             "Filter by summary",
             options=["All", "With Summary", "Without Summary"],
-            key="summary_filter"
+            key="summary_filter",
         )
 
     with col3:
         sort_by = st.selectbox(
             "Sort by",
-            options=["ID (Desc)", "ID (Asc)", "Filename", "Words (Desc)",
-                     "Chars (Desc)", "Date (Recent)"],
-            key="sort_by"
+            options=[
+                "ID (Desc)",
+                "ID (Asc)",
+                "Filename",
+                "Words (Desc)",
+                "Chars (Desc)",
+                "Date (Recent)",
+            ],
+            key="sort_by",
         )
 
     filtered_records = []
     for record in records:
-        if filename_filter and filename_filter.lower() not in \
-                record.get("filename", "").lower():
+        if (
+            filename_filter
+            and filename_filter.lower() not in record.get("filename", "").lower()
+        ):
             continue
 
         has_summary = bool(record.get("summary"))
@@ -194,42 +204,23 @@ def display_database_records():
     elif sort_by == "Filename":
         filtered_records.sort(key=lambda x: x.get("filename", ""))
     elif sort_by == "Words (Desc)":
-        filtered_records.sort(key=lambda x: x.get("word_count", 0),
-                              reverse=True)
+        filtered_records.sort(key=lambda x: x.get("word_count", 0), reverse=True)
     elif sort_by == "Chars (Desc)":
-        filtered_records.sort(key=lambda x: x.get("character_length", 0),
-                              reverse=True)
+        filtered_records.sort(key=lambda x: x.get("character_length", 0), reverse=True)
 
-    st.markdown(f"**Showing {len(filtered_records)} of "
-                f"{len(records)} records**")
+    st.markdown(f"**Showing {len(filtered_records)} of " f"{len(records)} records**")
 
     st.markdown("### Records Table")
+    st.markdown(
+        "Click on a row to view full details including extracted text and summary"
+    )
 
-    header_cols = st.columns([1, 1, 3, 1, 1, 2, 1])
-    with header_cols[0]:
-        st.markdown("**ID**")
-    with header_cols[1]:
-        st.markdown("**Hash**")
-    with header_cols[2]:
-        st.markdown("**Filename**")
-    with header_cols[3]:
-        st.markdown("**Words**")
-    with header_cols[4]:
-        st.markdown("**Chars**")
-    with header_cols[5]:
-        st.markdown("**Processed**")
-    with header_cols[6]:
-        st.markdown("**Summary**")
-
-    st.markdown("---")
-
+    df_data = []
     for record in filtered_records:
         created_dt = record.get("created_timestamp", "")
         if isinstance(created_dt, str):
             try:
-                created_dt = datetime.fromisoformat(
-                    created_dt.replace('Z', '+00:00')
-                )
+                created_dt = datetime.fromisoformat(created_dt.replace("Z", "+00:00"))
                 created_str = created_dt.strftime("%Y-%m-%d %H:%M")
             except Exception:
                 created_str = created_dt
@@ -239,103 +230,85 @@ def display_database_records():
         md5_hash = record.get("md5_hash")
         has_summary = "Yes" if record.get("summary") else "No"
 
-        cols = st.columns([1, 1, 3, 1, 1, 2, 1])
-        with cols[0]:
-            st.text(str(record.get("id", "")))
-        with cols[1]:
-            st.text(shorten_hash(md5_hash))
-        with cols[2]:
-            st.text(record.get("filename", ""))
-        with cols[3]:
-            st.text(str(record.get("word_count", 0)))
-        with cols[4]:
-            st.text(str(record.get("character_length", 0)))
-        with cols[5]:
-            st.text(created_str)
-        with cols[6]:
-            st.text(has_summary)
-
-    st.markdown("---")
-    st.markdown("### View Record Details")
-    st.markdown(
-        "Enter a record ID to view full details including text and summary:"
-    )
-
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        selected_id = st.number_input(
-            "Record ID",
-            min_value=1,
-            step=1,
-            key="selected_record_id",
-            help="Enter the ID from the table above"
+        df_data.append(
+            {
+                "ID": record.get("id", ""),
+                "Hash": shorten_hash(md5_hash),
+                "Filename": record.get("filename", ""),
+                "Words": record.get("word_count", 0),
+                "Chars": record.get("character_length", 0),
+                "Processed": created_str,
+                "Summary": has_summary,
+            }
         )
 
-    with col2:
-        if st.button("View Details", type="primary"):
-            selected_record = next(
-                (r for r in records if r.get("id") == selected_id), None
-            )
+    if df_data:
+        df = pd.DataFrame(df_data)
 
-            if selected_record:
-                st.markdown(f"#### Details for: {selected_record['filename']}")
+        selection = st.dataframe(
+            df,
+            use_container_width=True,
+            hide_index=True,
+            on_select="rerun",
+            selection_mode="single-row",
+            key="records_table",
+        )
 
-                col1, col2, col3, col4 = st.columns(4)
-                with col1:
-                    st.metric("Word Count",
-                              selected_record.get("word_count", 0))
-                with col2:
-                    st.metric(
-                        "Characters",
-                        selected_record.get("character_length", 0)
+        if selection and selection.selection.rows:
+            selected_row_idx = selection.selection.rows[0]
+            selected_record = filtered_records[selected_row_idx]
+
+            st.markdown("---")
+            st.markdown(f"### Details for: {selected_record['filename']}")
+
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Word Count", selected_record.get("word_count", 0))
+            with col2:
+                st.metric("Characters", selected_record.get("character_length", 0))
+            with col3:
+                st.metric(
+                    "Has Summary", "Yes" if selected_record.get("summary") else "No"
+                )
+            with col4:
+                full_hash = selected_record.get("md5_hash", "N/A")
+                st.metric("Hash", shorten_hash(full_hash))
+
+            if full_hash != "N/A":
+                with st.expander("View Full MD5 Hash"):
+                    st.code(full_hash)
+
+            extracted_text = selected_record.get("extracted_text", "")
+            if extracted_text:
+                with st.expander("View Extracted Text", expanded=False):
+                    st.text_area(
+                        "Full Extracted Text",
+                        extracted_text,
+                        height=300,
+                        key=f"text_{selected_record.get('id')}",
                     )
-                with col3:
-                    st.metric(
-                        "Has Summary",
-                        "Yes" if selected_record.get("summary") else "No"
-                    )
-                with col4:
-                    full_hash = selected_record.get("md5_hash", "N/A")
-                    st.metric("Hash", shorten_hash(full_hash))
-
-                if full_hash != "N/A":
-                    with st.expander("View Full MD5 Hash"):
-                        st.code(full_hash)
-
-                extracted_text = selected_record.get("extracted_text", "")
-                if extracted_text:
-                    with st.expander("View Extracted Text", expanded=False):
-                        st.text_area(
-                            "Full Extracted Text",
-                            extracted_text,
-                            height=300,
-                            key=f"text_{selected_id}"
-                        )
-                else:
-                    preview = selected_record.get("preview", "")
-                    if preview:
-                        with st.expander("View Text Preview",
-                                         expanded=False):
-                            st.text_area(
-                                "Text Preview",
-                                preview,
-                                height=150,
-                                key=f"preview_{selected_id}"
-                            )
-
-                summary = selected_record.get("summary")
-                if summary:
-                    with st.expander("View Summary", expanded=True):
-                        st.text_area(
-                            "Summary",
-                            summary,
-                            height=200,
-                            key=f"summary_{selected_id}"
-                        )
-                else:
-                    st.info("No summary available for this record.")
             else:
-                st.warning(f"No record found with ID {selected_id}")
+                preview = selected_record.get("preview", "")
+                if preview:
+                    with st.expander("View Text Preview", expanded=False):
+                        st.text_area(
+                            "Text Preview",
+                            preview,
+                            height=150,
+                            key=f"preview_{selected_record.get('id')}",
+                        )
+
+            summary = selected_record.get("summary")
+            if summary:
+                with st.expander("View Summary", expanded=True):
+                    st.text_area(
+                        "Summary",
+                        summary,
+                        height=200,
+                        key=f"summary_{selected_record.get('id')}",
+                    )
+            else:
+                st.info("No summary available for this record.")
 
 
 def main():
@@ -343,8 +316,7 @@ def main():
     logger.info("Main application page loaded")
     logger.info("Setting up page configuration")
 
-    st.set_page_config(page_title="PDF OCR Processor", page_icon="📄",
-                       layout="wide")
+    st.set_page_config(page_title="PDF OCR Processor", page_icon="📄", layout="wide")
 
     st.title("📄 PDF OCR Text Extractor")
     st.markdown(
@@ -394,9 +366,7 @@ def main():
             )
 
             if st.button("Process All PDF Files", type="primary"):
-                logger.info(
-                    f"Starting batch processing of {len(pdf_files)} PDF files"
-                )
+                logger.info(f"Starting batch processing of {len(pdf_files)} PDF files")
                 progress_bar = st.progress(0)
                 status_text = st.empty()
 
@@ -407,9 +377,7 @@ def main():
                 for i, pdf_file in enumerate(pdf_files):
                     filename = os.path.basename(pdf_file)
                     status_text.text(f"Processing: {filename}")
-                    logger.info(
-                        f"Processing file {i+1}/{len(pdf_files)}: {filename}"
-                    )
+                    logger.info(f"Processing file {i+1}/{len(pdf_files)}: {filename}")
 
                     try:
                         logger.info(f"Calculating MD5 hash for: {filename}")
