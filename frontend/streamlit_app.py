@@ -10,6 +10,7 @@ import traceback
 import requests
 import logging
 import sys
+import tempfile
 from typing import List
 from datetime import datetime
 from shared.pdf_processor import (
@@ -139,6 +140,174 @@ def shorten_hash(hash_str: str, prefix_length: int = 8) -> str:
     return hash_str[:prefix_length]
 
 
+def process_pdf_batch(pdf_files: List[str], generate_summary: bool):
+    """Process a batch of PDF files from disk."""
+    logger.info(f"Starting batch processing of {len(pdf_files)} PDF files")
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+
+    successful_processes = 0
+    failed_processes = 0
+    skipped_processes = 0
+
+    for i, pdf_file in enumerate(pdf_files):
+        filename = os.path.basename(pdf_file)
+        status_text.text(f"Processing: {filename}")
+        logger.info(f"Processing file {i+1}/{len(pdf_files)}: {filename}")
+
+        try:
+            logger.info(f"Calculating MD5 hash for: {filename}")
+            md5_hash = calculate_md5_hash(pdf_file)
+
+            logger.info(f"Extracting text from: {filename}")
+            extracted_text = extract_text_from_pdf(pdf_file)
+
+            word_count, character_length = calculate_text_metrics(extracted_text)
+            logger.info(
+                f"Text metrics for {filename}: "
+                f"{word_count} words, {character_length} chars"
+            )
+
+            result = save_extracted_text_to_backend(
+                filename,
+                extracted_text,
+                word_count,
+                character_length,
+                generate_summary,
+                md5_hash,
+            )
+
+            if result.get("success"):
+                if result.get("skipped"):
+                    skipped_processes += 1
+                    logger.info(f"Skipped duplicate: {filename}")
+                    st.info(f"Skipped (duplicate): {filename}")
+                else:
+                    successful_processes += 1
+                    logger.info(f"Successfully processed: {filename}")
+                    st.success(f"Processed: {filename}")
+            else:
+                failed_processes += 1
+                logger.error(f"Backend save failed for: {filename}")
+                st.error(f"Backend save failed: {filename}")
+
+        except Exception as e:
+            failed_processes += 1
+            logger.error(f"Processing failed for {filename}: {e}")
+            st.error(f"Failed for {filename}: {str(e)}")
+            with st.expander(f"Error details for {filename}", expanded=False):
+                st.code(traceback.format_exc())
+
+        progress_bar.progress((i + 1) / len(pdf_files))
+
+    status_text.text("Processing complete!")
+    logger.info(
+        f"Batch processing complete: "
+        f"{successful_processes} successful, "
+        f"{skipped_processes} skipped, "
+        f"{failed_processes} failed"
+    )
+
+    st.info(
+        f"**Summary:** {successful_processes} processed, "
+        f"{skipped_processes} skipped (duplicates), "
+        f"{failed_processes} failed"
+    )
+
+
+def process_uploaded_files(uploaded_files, generate_summary: bool):
+    """Process uploaded PDF files."""
+    logger.info(f"Starting processing of {len(uploaded_files)} uploaded files")
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+
+    successful_processes = 0
+    failed_processes = 0
+    skipped_processes = 0
+
+    for i, uploaded_file in enumerate(uploaded_files):
+        filename = uploaded_file.name
+        status_text.text(f"Processing: {filename}")
+        logger.info(
+            f"Processing uploaded file {i+1}/{len(uploaded_files)}: {filename}"
+        )
+
+        temp_file_path = None
+        try:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+                temp_file.write(uploaded_file.getbuffer())
+                temp_file_path = temp_file.name
+                logger.info(f"Saved uploaded file to temp path: {temp_file_path}")
+
+            logger.info(f"Calculating MD5 hash for: {filename}")
+            md5_hash = calculate_md5_hash(temp_file_path)
+
+            logger.info(f"Extracting text from: {filename}")
+            extracted_text = extract_text_from_pdf(temp_file_path)
+
+            word_count, character_length = calculate_text_metrics(extracted_text)
+            logger.info(
+                f"Text metrics for {filename}: "
+                f"{word_count} words, {character_length} chars"
+            )
+
+            result = save_extracted_text_to_backend(
+                filename,
+                extracted_text,
+                word_count,
+                character_length,
+                generate_summary,
+                md5_hash,
+            )
+
+            if result.get("success"):
+                if result.get("skipped"):
+                    skipped_processes += 1
+                    logger.info(f"Skipped duplicate: {filename}")
+                    st.info(f"Skipped (duplicate): {filename}")
+                else:
+                    successful_processes += 1
+                    logger.info(f"Successfully processed: {filename}")
+                    st.success(f"Processed: {filename}")
+            else:
+                failed_processes += 1
+                logger.error(f"Backend save failed for: {filename}")
+                st.error(f"Backend save failed: {filename}")
+
+        except Exception as e:
+            failed_processes += 1
+            logger.error(f"Processing failed for {filename}: {e}")
+            st.error(f"Failed for {filename}: {str(e)}")
+            with st.expander(f"Error details for {filename}", expanded=False):
+                st.code(traceback.format_exc())
+
+        finally:
+            if temp_file_path and os.path.exists(temp_file_path):
+                try:
+                    os.unlink(temp_file_path)
+                    logger.info(f"Cleaned up temp file: {temp_file_path}")
+                except Exception as e:
+                    logger.warning(
+                        f"Failed to clean up temp file {temp_file_path}: {e}"
+                    )
+
+        progress_bar.progress((i + 1) / len(uploaded_files))
+
+    status_text.text("Processing complete!")
+    logger.info(
+        f"Upload processing complete: "
+        f"{successful_processes} successful, "
+        f"{skipped_processes} skipped, "
+        f"{failed_processes} failed"
+    )
+
+    st.info(
+        f"**Summary:** {successful_processes} processed, "
+        f"{skipped_processes} skipped (duplicates), "
+        f"{failed_processes} failed"
+    )
+
+
 def display_database_records():
     """Display records from the backend in a tabular format with clickable selection."""
     import pandas as pd
@@ -208,7 +377,9 @@ def display_database_records():
     elif sort_by == "Chars (Desc)":
         filtered_records.sort(key=lambda x: x.get("character_length", 0), reverse=True)
 
-    st.markdown(f"**Showing {len(filtered_records)} of " f"{len(records)} records**")
+    st.markdown(
+        f"**Showing {len(filtered_records)} of {len(records)} records**"
+    )
 
     st.markdown("### Records Table")
     st.markdown(
@@ -444,114 +615,77 @@ def main():
         st.error("Cannot connect to backend API. Please ensure it's running.")
         return
 
-    st.header("Select Directory")
-    directory_path = st.text_input(
-        "Enter directory path containing PDF files:",
-        placeholder="C:/path/to/pdf/directory",
-    )
+    st.header("Document Ingestion")
 
-    if directory_path and os.path.exists(directory_path):
-        logger.info(f"User selected directory: {directory_path}")
-        pdf_files = get_pdf_files_from_directory(directory_path)
+    tab1, tab2 = st.tabs(["📁 Select Directory", "📤 Upload Files"])
 
-        if pdf_files:
-            st.success(f"Found {len(pdf_files)} PDF files")
+    with tab1:
+        directory_path = st.text_input(
+            "Enter directory path containing PDF files:",
+            placeholder="C:/path/to/pdf/directory",
+        )
 
-            with st.expander("PDF Files Found"):
-                for idx, pdf_file in enumerate(pdf_files):
-                    st.text(os.path.basename(pdf_file))
+        if directory_path and os.path.exists(directory_path):
+            logger.info(f"User selected directory: {directory_path}")
+            pdf_files = get_pdf_files_from_directory(directory_path)
+
+            if pdf_files:
+                st.success(f"Found {len(pdf_files)} PDF files")
+
+                with st.expander("PDF Files Found"):
+                    for idx, pdf_file in enumerate(pdf_files):
+                        st.text(os.path.basename(pdf_file))
+
+                st.subheader("Summarization Options")
+                generate_summary_dir = st.checkbox(
+                    "Generate AI summaries for processed files",
+                    value=True,
+                    key="summary_dir",
+                    help="Use OpenAI to generate summaries of extracted text. "
+                    "Requires OPENAI_API_KEY environment variable.",
+                )
+
+                if st.button(
+                    "Process All PDF Files", type="primary", key="process_dir"
+                ):
+                    process_pdf_batch(pdf_files, generate_summary_dir)
+
+            else:
+                logger.info(f"No PDF files found in directory: {directory_path}")
+                st.warning("No PDF files found in the specified directory")
+
+        elif directory_path:
+            logger.warning(f"Invalid directory path: {directory_path}")
+            st.error("Directory does not exist. Please enter a valid path.")
+
+    with tab2:
+        uploaded_files = st.file_uploader(
+            "Upload PDF files",
+            type=["pdf"],
+            accept_multiple_files=True,
+            help="Select one or more PDF files to process",
+        )
+
+        if uploaded_files:
+            st.success(f"Selected {len(uploaded_files)} PDF files")
+
+            with st.expander("Uploaded Files"):
+                for uploaded_file in uploaded_files:
+                    st.text(uploaded_file.name)
 
             st.subheader("Summarization Options")
-            generate_summary = st.checkbox(
+            generate_summary_upload = st.checkbox(
                 "Generate AI summaries for processed files",
                 value=True,
+                key="summary_upload",
                 help="Use OpenAI to generate summaries of extracted text. "
                 "Requires OPENAI_API_KEY environment variable.",
             )
 
-            if st.button("Process All PDF Files", type="primary"):
-                logger.info(f"Starting batch processing of {len(pdf_files)} PDF files")
-                progress_bar = st.progress(0)
-                status_text = st.empty()
-
-                successful_processes = 0
-                failed_processes = 0
-                skipped_processes = 0
-
-                for i, pdf_file in enumerate(pdf_files):
-                    filename = os.path.basename(pdf_file)
-                    status_text.text(f"Processing: {filename}")
-                    logger.info(f"Processing file {i+1}/{len(pdf_files)}: {filename}")
-
-                    try:
-                        logger.info(f"Calculating MD5 hash for: {filename}")
-                        md5_hash = calculate_md5_hash(pdf_file)
-
-                        logger.info(f"Extracting text from: {filename}")
-                        extracted_text = extract_text_from_pdf(pdf_file)
-
-                        word_count, character_length = calculate_text_metrics(
-                            extracted_text
-                        )
-                        logger.info(
-                            f"Text metrics for {filename}: "
-                            f"{word_count} words, {character_length} chars"
-                        )
-
-                        result = save_extracted_text_to_backend(
-                            filename,
-                            extracted_text,
-                            word_count,
-                            character_length,
-                            generate_summary,
-                            md5_hash,
-                        )
-
-                        if result.get("success"):
-                            if result.get("skipped"):
-                                skipped_processes += 1
-                                logger.info(f"Skipped duplicate: {filename}")
-                                st.info(f"Skipped (duplicate): {filename}")
-                            else:
-                                successful_processes += 1
-                                logger.info(f"Successfully processed: {filename}")
-                                st.success(f"Processed: {filename}")
-                        else:
-                            failed_processes += 1
-                            logger.error(f"Backend save failed for: {filename}")
-                            st.error(f"Backend save failed: {filename}")
-
-                    except Exception as e:
-                        failed_processes += 1
-                        logger.error(f"Processing failed for {filename}: {e}")
-                        st.error(f"Failed for {filename}: {str(e)}")
-                        with st.expander(
-                            f"Error details for {filename}", expanded=False
-                        ):
-                            st.code(traceback.format_exc())
-
-                    progress_bar.progress((i + 1) / len(pdf_files))
-
-                status_text.text("Processing completed!")
-                logger.info(
-                    f"Batch processing complete: "
-                    f"{successful_processes} successful, "
-                    f"{skipped_processes} skipped, "
-                    f"{failed_processes} failed"
-                )
-                st.success(
-                    f"Processing complete! {successful_processes} "
-                    f"successful, {skipped_processes} skipped (duplicates), "
-                    f"{failed_processes} failed"
-                )
-
-        else:
-            logger.info(f"No PDF files found in directory: {directory_path}")
-            st.warning("No PDF files found in the specified directory")
-
-    elif directory_path:
-        logger.warning(f"Invalid directory path: {directory_path}")
-        st.error("Directory does not exist. Please enter a valid path.")
+            if st.button(
+                "Process Uploaded Files", type="primary", key="process_upload"
+            ):
+                process_uploaded_files(uploaded_files, generate_summary_upload)
 
     st.header("Database Records")
     logger.info("Loading database records section")
