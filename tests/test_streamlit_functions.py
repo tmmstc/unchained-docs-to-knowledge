@@ -4,218 +4,158 @@ Tests for Streamlit app utility functions.
 
 import sys
 import os
-import sqlite3
 import tempfile
 import unittest.mock as mock
+from unittest.mock import MagicMock
 
-# Add parent directory to path to allow imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import functions from streamlit_app
-# Note: We need to be careful with imports since streamlit_app uses st commands
+
+def test_shorten_hash():
+    """Test hash shortening function."""
+    from frontend.data_transforms import shorten_hash
+
+    full_hash = "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+    short = shorten_hash(full_hash, 8)
+    assert short == "a1b2c3d4"
+
+    assert shorten_hash(None) == "N/A"
+    assert shorten_hash("") == "N/A"
 
 
-def test_calculate_text_metrics():
-    """Test text metrics calculation function."""
-    # Import the function directly from the deprecated standalone app
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "streamlit_app",
-        os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            "deprecated",
-            "streamlit_app.py"
-        )
-    )
-    module = importlib.util.module_from_spec(spec)
+def test_filter_records():
+    """Test record filtering."""
+    from frontend.data_transforms import filter_records
 
-    # Mock streamlit to avoid errors
-    sys.modules['streamlit'] = type(sys)('streamlit')
-    sys.modules['streamlit'].set_page_config = lambda **kwargs: None
+    records = [
+        {"filename": "test1.pdf", "summary": "Summary 1"},
+        {"filename": "test2.pdf", "summary": None},
+        {"filename": "document.pdf", "summary": "Summary 2"},
+    ]
 
-    spec.loader.exec_module(module)
+    filtered = filter_records(records, filename_filter="test")
+    assert len(filtered) == 2
 
-    # Test empty text
-    word_count, char_length = module.calculate_text_metrics("")
-    assert word_count == 0
-    assert char_length == 0
+    filtered = filter_records(records, summary_filter="With Summary")
+    assert len(filtered) == 2
 
-    # Test simple text
-    word_count, char_length = module.calculate_text_metrics("Hello world")
-    assert word_count == 2
-    assert char_length == 11
-
-    # Test text with punctuation
-    text = "Hello, world! How are you?"
-    word_count, char_length = module.calculate_text_metrics(text)
-    assert word_count == 5
-    assert char_length == len(text)
+    filtered = filter_records(records, summary_filter="Without Summary")
+    assert len(filtered) == 1
 
 
-def test_update_document_summary():
-    """Test update_document_summary function."""
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "streamlit_app",
-        os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            "deprecated",
-            "streamlit_app.py"
-        )
-    )
-    module = importlib.util.module_from_spec(spec)
+def test_sort_records():
+    """Test record sorting."""
+    from frontend.data_transforms import sort_records
 
-    # Mock streamlit to avoid errors
-    sys.modules['streamlit'] = type(sys)('streamlit')
-    sys.modules['streamlit'].set_page_config = lambda **kwargs: None
+    records = [
+        {"id": 3, "filename": "c.pdf", "word_count": 100},
+        {"id": 1, "filename": "a.pdf", "word_count": 300},
+        {"id": 2, "filename": "b.pdf", "word_count": 200},
+    ]
 
-    spec.loader.exec_module(module)
+    sorted_records = sort_records(records.copy(), "ID (Asc)")
+    assert sorted_records[0]["id"] == 1
 
-    # Create a temporary database
-    temp_db_fd, temp_db_path = tempfile.mkstemp(suffix=".db")
-    os.close(temp_db_fd)
+    sorted_records = sort_records(records.copy(), "ID (Desc)")
+    assert sorted_records[0]["id"] == 3
 
-    # Override DATABASE_PATH
-    original_db_path = module.DATABASE_PATH
-    module.DATABASE_PATH = temp_db_path
+    sorted_records = sort_records(records.copy(), "Filename")
+    assert sorted_records[0]["filename"] == "a.pdf"
 
-    try:
-        # Initialize database
-        module.init_database()
-
-        # Insert a test record
-        conn = sqlite3.connect(temp_db_path)
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            INSERT INTO pdf_extracts
-            (filename, extracted_text, word_count, character_length)
-            VALUES (?, ?, ?, ?)
-            """,
-            ("test.pdf", "Test text", 2, 9)
-        )
-        conn.commit()
-        record_id = cursor.lastrowid
-        conn.close()
-
-        # Update the summary
-        result = module.update_document_summary(
-            record_id,
-            "This is a test summary"
-        )
-        assert result is True
-
-        # Verify the update
-        conn = sqlite3.connect(temp_db_path)
-        cursor = conn.cursor()
-        cursor.execute(
-            "SELECT summary FROM pdf_extracts WHERE id = ?",
-            (record_id,)
-        )
-        summary = cursor.fetchone()[0]
-        conn.close()
-
-        assert summary == "This is a test summary"
-
-    finally:
-        # Restore original path and cleanup
-        module.DATABASE_PATH = original_db_path
-        os.unlink(temp_db_path)
+    sorted_records = sort_records(records.copy(), "Words (Desc)")
+    assert sorted_records[0]["word_count"] == 300
 
 
-def test_delete_button_state_management():
-    """Test delete button two-step confirmation state management."""
-    mock_st = mock.MagicMock()
+def test_state_manager_init():
+    """Test state manager initialization."""
+    from frontend.state_manager import init_delete_confirmation_state
 
-    mock_st.session_state = {}
+    mock_session = {}
+    init_delete_confirmation_state(mock_session)
 
-    class SessionState(dict):
-        def __getattr__(self, key):
-            return self.get(key)
-
-        def __setattr__(self, key, value):
-            self[key] = value
-
-    mock_st.session_state = SessionState()
-
-    selected_record = {"id": 123}
-
-    if "delete_confirmation_id" not in mock_st.session_state:
-        mock_st.session_state.delete_confirmation_id = None
-
-    if "last_selected_record_id" not in mock_st.session_state:
-        mock_st.session_state.last_selected_record_id = None
-
-    current_record_id = selected_record["id"]
-
-    if mock_st.session_state.last_selected_record_id != current_record_id:
-        mock_st.session_state.delete_confirmation_id = None
-        mock_st.session_state.last_selected_record_id = current_record_id
-
-    assert mock_st.session_state.delete_confirmation_id is None
-    assert mock_st.session_state.last_selected_record_id == 123
-
-    in_confirmation_mode = (
-        mock_st.session_state.delete_confirmation_id == current_record_id
-    )
-    assert in_confirmation_mode is False
-
-    mock_st.session_state.delete_confirmation_id = current_record_id
-    in_confirmation_mode = (
-        mock_st.session_state.delete_confirmation_id == current_record_id
-    )
-    assert in_confirmation_mode is True
-
-    new_record = {"id": 456}
-    current_record_id = new_record["id"]
-    if mock_st.session_state.last_selected_record_id != current_record_id:
-        mock_st.session_state.delete_confirmation_id = None
-        mock_st.session_state.last_selected_record_id = current_record_id
-
-    assert mock_st.session_state.delete_confirmation_id is None
-    assert mock_st.session_state.last_selected_record_id == 456
+    assert "delete_confirmation_id" in mock_session
+    assert "last_selected_record_id" in mock_session
+    assert mock_session["delete_confirmation_id"] is None
+    assert mock_session["last_selected_record_id"] is None
 
 
-def test_delete_button_label_changes():
-    """Test delete button label changes based on confirmation state."""
-    mock_st_session = {"delete_confirmation_id": None, "last_selected_record_id": None}
-
-    current_record_id = 100
-
-    in_confirmation_mode = (
-        mock_st_session["delete_confirmation_id"] == current_record_id
+def test_state_manager_confirmation_mode():
+    """Test confirmation mode checking."""
+    from frontend.state_manager import (
+        is_in_confirmation_mode,
+        set_confirmation_mode,
     )
 
-    if in_confirmation_mode:
-        button_label = "⚠️ Click again to confirm"
-        button_type = "secondary"
-    else:
-        button_label = "Delete Record"
-        button_type = "primary"
+    mock_session = {"delete_confirmation_id": None}
 
-    assert button_label == "Delete Record"
-    assert button_type == "primary"
+    assert is_in_confirmation_mode(mock_session, 123) is False
 
-    mock_st_session["delete_confirmation_id"] = current_record_id
-    in_confirmation_mode = (
-        mock_st_session["delete_confirmation_id"] == current_record_id
+    set_confirmation_mode(mock_session, 123)
+    assert is_in_confirmation_mode(mock_session, 123) is True
+
+
+def test_state_manager_reset_on_change():
+    """Test state reset on selection change."""
+    from frontend.state_manager import (
+        reset_delete_confirmation_on_selection_change,
     )
 
-    if in_confirmation_mode:
-        button_label = "⚠️ Click again to confirm"
-        button_type = "secondary"
-    else:
-        button_label = "Delete Record"
-        button_type = "primary"
+    mock_session = {
+        "delete_confirmation_id": 100,
+        "last_selected_record_id": 100,
+    }
 
-    assert button_label == "⚠️ Click again to confirm"
-    assert button_type == "secondary"
+    reset_delete_confirmation_on_selection_change(mock_session, 200)
+
+    assert mock_session["delete_confirmation_id"] is None
+    assert mock_session["last_selected_record_id"] == 200
+
+
+def test_file_operations_get_pdf_files():
+    """Test getting PDF files from directory."""
+    from frontend.file_operations import get_pdf_files_from_directory
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        test_file1 = os.path.join(temp_dir, "test1.pdf")
+        test_file2 = os.path.join(temp_dir, "test2.pdf")
+        other_file = os.path.join(temp_dir, "test.txt")
+
+        open(test_file1, "w").close()
+        open(test_file2, "w").close()
+        open(other_file, "w").close()
+
+        pdf_files = get_pdf_files_from_directory(temp_dir)
+
+        assert len(pdf_files) == 2
+        assert all(f.endswith(".pdf") for f in pdf_files)
+
+
+def test_data_processing_single_pdf():
+    """Test single PDF processing logic."""
+    from frontend.data_processing import process_single_pdf
+
+    with mock.patch("frontend.data_processing.calculate_md5_hash") as mock_hash, \
+         mock.patch("frontend.data_processing.extract_text_from_pdf") as mock_extract, \
+         mock.patch("frontend.data_processing.calculate_text_metrics") as mock_metrics, \
+         mock.patch("frontend.data_processing.save_extracted_text_to_backend") as mock_save:
+
+        mock_hash.return_value = "abc123"
+        mock_extract.return_value = "Extracted text"
+        mock_metrics.return_value = (2, 14)
+        mock_save.return_value = {"success": True, "skipped": False}
+
+        result = process_single_pdf("/path/to/test.pdf", "test.pdf", True)
+
+        assert result["success"] is True
+        mock_hash.assert_called_once()
+        mock_extract.assert_called_once()
+        mock_metrics.assert_called_once()
+        mock_save.assert_called_once()
 
 
 def test_process_uploaded_files():
     """Test that uploaded files can be processed through tempfile workflow."""
-    from frontend.streamlit_app import process_uploaded_files
-    from unittest.mock import MagicMock
+    from frontend.data_processing import process_uploaded_files
 
     mock_uploaded_file = MagicMock()
     mock_uploaded_file.name = "test.pdf"
@@ -224,83 +164,72 @@ def test_process_uploaded_files():
 
     uploaded_files = [mock_uploaded_file]
 
-    mock_patches = [
-        mock.patch('frontend.streamlit_app.st'),
-        mock.patch('frontend.streamlit_app.extract_text_from_pdf'),
-        mock.patch('frontend.streamlit_app.calculate_text_metrics'),
-        mock.patch('frontend.streamlit_app.save_extracted_text_to_backend')
-    ]
+    with mock.patch("frontend.data_processing.create_temp_file_from_upload") as mock_create, \
+         mock.patch("frontend.data_processing.process_single_pdf") as mock_process, \
+         mock.patch("frontend.data_processing.cleanup_temp_file") as mock_cleanup:
 
-    with mock_patches[0] as mock_st, mock_patches[1] as mock_ex, \
-         mock_patches[2] as mock_met, mock_patches[3] as mock_s:
+        mock_create.return_value = "/tmp/test.pdf"
+        mock_process.return_value = {"success": True, "skipped": False}
 
-        mock_st.progress = MagicMock(return_value=MagicMock())
-        mock_st.empty = MagicMock(return_value=MagicMock())
-        mock_st.info = MagicMock()
-        mock_st.success = MagicMock()
-        mock_st.error = MagicMock()
-        mock_st.expander = MagicMock()
+        result = process_uploaded_files(uploaded_files, generate_summary=True)
 
-        mock_ex.return_value = "Extracted text from PDF"
-        mock_met.return_value = (4, 24)
-        mock_s.return_value = {"success": True, "skipped": False}
+        assert result["successful"] == 1
+        assert result["failed"] == 0
+        assert result["skipped"] == 0
 
-        process_uploaded_files(uploaded_files, generate_summary=True)
-
-        assert mock_ex.called
-        assert mock_met.called
-        assert mock_s.called
-
-        call_args = mock_s.call_args
-        assert call_args[0][0] == "test.pdf"
-        assert call_args[0][1] == "Extracted text from PDF"
-        assert call_args[0][2] == 4
-        assert call_args[0][3] == 24
-        assert call_args[0][4] is True
-        assert call_args[0][5] is not None
+        mock_create.assert_called_once()
+        mock_process.assert_called_once()
+        mock_cleanup.assert_called_once()
 
 
 def test_temp_file_cleanup():
     """Test that temporary files are cleaned up after processing."""
-    from unittest.mock import MagicMock, patch
-    from frontend.streamlit_app import process_uploaded_files
-    import os
+    from frontend.file_operations import create_temp_file_from_upload, cleanup_temp_file
 
     mock_uploaded_file = MagicMock()
-    mock_uploaded_file.name = "test.pdf"
     mock_uploaded_file.getbuffer.return_value = b"%PDF-1.4"
 
-    uploaded_files = [mock_uploaded_file]
+    temp_path = create_temp_file_from_upload(mock_uploaded_file)
 
-    created_temp_files = []
+    assert os.path.exists(temp_path)
 
-    def track_temp_creation(*args, **kwargs):
-        temp = tempfile.NamedTemporaryFile(*args, **kwargs)
-        created_temp_files.append(temp.name)
-        return temp
+    cleanup_temp_file(temp_path)
 
-    patches = [
-        patch('frontend.streamlit_app.st'),
-        patch('frontend.streamlit_app.extract_text_from_pdf'),
-        patch('frontend.streamlit_app.calculate_text_metrics'),
-        patch('frontend.streamlit_app.save_extracted_text_to_backend'),
-        patch('frontend.streamlit_app.tempfile.NamedTemporaryFile',
-              side_effect=track_temp_creation)
-    ]
+    assert not os.path.exists(temp_path)
 
-    with patches[0] as mock_st, patches[1] as mock_ex, patches[2] as mock_met, \
-         patches[3] as mock_s, patches[4]:
 
-        mock_st.progress = MagicMock(return_value=MagicMock())
-        mock_st.empty = MagicMock(return_value=MagicMock())
-        mock_st.info = MagicMock()
-        mock_st.success = MagicMock()
+def test_api_client_functions():
+    """Test API client wrapper functions."""
+    from frontend.api_client import (
+        save_extracted_text_to_backend,
+        get_records_from_backend,
+        get_stats_from_backend,
+    )
 
-        mock_ex.return_value = "Test"
-        mock_met.return_value = (1, 4)
-        mock_s.return_value = {"success": True}
+    with mock.patch("frontend.api_client.requests.post") as mock_post, \
+         mock.patch("frontend.api_client.requests.get") as mock_get:
 
-        process_uploaded_files(uploaded_files, generate_summary=False)
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"success": True}
+        mock_post.return_value = mock_response
 
-        for temp_file in created_temp_files:
-            assert not os.path.exists(temp_file)
+        result = save_extracted_text_to_backend(
+            "test.pdf", "text", 1, 4, True, "hash123"
+        )
+        assert result["success"] is True
+
+        mock_response.json.return_value = []
+        mock_get.return_value = mock_response
+
+        records = get_records_from_backend(10)
+        assert records == []
+
+        mock_response.json.return_value = {
+            "total_records": 5,
+            "total_words": 100,
+            "total_characters": 500,
+        }
+        mock_get.return_value = mock_response
+
+        stats = get_stats_from_backend()
+        assert stats["total_records"] == 5
