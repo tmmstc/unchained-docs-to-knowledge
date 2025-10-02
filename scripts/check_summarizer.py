@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
 """
 Check if summarizer module can be imported
 """
 import sys
-import os
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
 print("Python path:")
 for p in sys.path:
@@ -14,11 +16,12 @@ print("\nTrying to import summarizer...")
 
 try:
     from app.summarizer import summarize_document
+
     print("SUCCESS: Summarizer imported correctly")
     print(f"  summarize_document function: {summarize_document}")
     SUMMARIZER_AVAILABLE = True
 except ImportError as e:
-    print(f"FAILED: Could not import summarizer")
+    print("FAILED: Could not import summarizer")
     print(f"  Error: {e}")
     SUMMARIZER_AVAILABLE = False
 

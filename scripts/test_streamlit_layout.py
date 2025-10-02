@@ -16,7 +16,7 @@ st.markdown("The checkbox below should be visible immediately:")
 enable_test = st.checkbox(
     "Enable summarization during processing",
     value=False,
-    help="Generate AI-powered summaries of extracted text (requires API key)"
+    help="Generate AI-powered summaries of extracted text (requires API key)",
 )
 
 st.write(f"Checkbox state: {enable_test}")
@@ -35,13 +35,13 @@ with st.expander("Sample Document - 2024-01-01 12:00:00"):
         st.metric("Word Count", 100)
     with col2:
         st.metric("Characters", 500)
-    
+
     st.markdown("**No Summary Available**")
-    
+
     if st.button("Generate Summary", key="test_button_1"):
         st.success("✅ Button clicked!")
         st.balloons()
-    
+
     st.text_area("Preview:", "This is a test preview...", height=100, key="preview_1")
 
 st.header("Test 3: Conditional Rendering")
@@ -51,9 +51,9 @@ show_button = st.checkbox("Show Generate Summary button", value=True)
 
 with st.expander("Conditional Test Document"):
     st.metric("Word Count", 200)
-    
+
     has_summary = st.checkbox("Simulate record HAS summary", value=False)
-    
+
     if has_summary:
         st.markdown("**Summary:**")
         st.write("This is a sample summary that was already generated.")
@@ -69,7 +69,7 @@ st.markdown("Testing multiple buttons with unique keys:")
 
 for i in range(3):
     with st.expander(f"Document {i+1}"):
-        if st.button(f"Generate Summary", key=f"gen_summary_{i+1}"):
+        if st.button("Generate Summary", key=f"gen_summary_{i+1}"):
             st.success(f"✅ Clicked button for document {i+1}")
 
 st.header("Test 5: Layout Order")

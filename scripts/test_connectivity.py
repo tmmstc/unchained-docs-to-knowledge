@@ -24,21 +24,12 @@ def test_backend_connection():
             print(f"OK Version: {data.get('version', 'N/A')}")
             return True
         else:
-            print(
-                f"ERROR Backend returned status code: "
-                f"{response.status_code}"
-            )
+            print(f"ERROR Backend returned status code: " f"{response.status_code}")
             return False
 
     except requests.exceptions.ConnectionError:
-        print(
-            "ERROR Cannot connect to backend at "
-            "http://127.0.0.1:8000"
-        )
-        print(
-            "ERROR Make sure the backend is running with: "
-            "py -m uvicorn app.main:app --reload"
-        )
+        print("ERROR Cannot connect to backend at " "http://127.0.0.1:8000")
+        print("ERROR Make sure the backend is running with: " "py -m uvicorn app.main:app --reload")
         return False
 
     except Exception as e:

@@ -11,7 +11,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         """Handle GET requests."""
         self.send_response(200)
-        self.send_header('Content-type', 'application/json')
+        self.send_header("Content-type", "application/json")
         self.end_headers()
 
         response = {
@@ -20,7 +20,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
             "path": self.path,
         }
 
-        self.wfile.write(json.dumps(response).encode('utf-8'))
+        self.wfile.write(json.dumps(response).encode("utf-8"))
 
     def log_message(self, format, *args):
         """Suppress log messages."""
@@ -33,7 +33,7 @@ def run_server():
     print("Server running on http://127.0.0.1:8080")
     print("Press Ctrl+C to stop\n")
 
-    server_address = ('127.0.0.1', 8080)
+    server_address = ("127.0.0.1", 8080)
     httpd = HTTPServer(server_address, SimpleHandler)
 
     try:

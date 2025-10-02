@@ -2,11 +2,12 @@
 """
 Test script to verify backend functionality works.
 """
-import os
 import sys
 import logging
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
 from app.main import app  # noqa: E402
 from app.database import init_database  # noqa: E402

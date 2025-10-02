@@ -4,14 +4,14 @@ Test script to verify summarization controls are present in Streamlit app.
 """
 
 import re
-import os
+import sys
+from pathlib import Path
 
 
 def test_summarization_controls():
     """Verify summarization controls exist in streamlit_app.py."""
-    script_dir = os.path.dirname(__file__)
-    file_path = os.path.join(script_dir, "..", "frontend", "streamlit_app.py")
-    
+    file_path = Path(__file__).parent.parent / "frontend" / "streamlit_app.py"
+
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -59,4 +59,4 @@ def test_summarization_controls():
 
 if __name__ == "__main__":
     success = test_summarization_controls()
-    exit(0 if success else 1)
+    sys.exit(0 if success else 1)
