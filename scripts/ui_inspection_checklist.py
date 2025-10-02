@@ -4,8 +4,14 @@ UI Inspection Script - Analyzes streamlit_app.py for rendering issues
 
 import re
 import sys
+import os
 
-def analyze_ui_structure(file_path="streamlit_app.py"):
+
+def analyze_ui_structure(file_path=None):
+    if file_path is None:
+        script_dir = os.path.dirname(__file__)
+        file_path = os.path.join(script_dir, "..", "frontend", "streamlit_app.py")
+    
     sys.stdout.reconfigure(encoding='utf-8')
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -204,6 +210,7 @@ def analyze_ui_structure(file_path="streamlit_app.py"):
     print("4. Test checkbox state changes")
     print("5. Test Generate Summary button click behavior")
     print()
+
 
 if __name__ == "__main__":
     analyze_ui_structure()

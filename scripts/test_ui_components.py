@@ -5,9 +5,14 @@ This script checks the streamlit_app.py for UI component issues.
 
 import re
 import sys
+import os
 
-def check_ui_components(file_path="streamlit_app.py"):
+
+def check_ui_components(file_path=None):
     """Check if UI components are properly defined in the Streamlit app."""
+    if file_path is None:
+        script_dir = os.path.dirname(__file__)
+        file_path = os.path.join(script_dir, "..", "frontend", "streamlit_app.py")
     
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -133,6 +138,7 @@ def check_ui_components(file_path="streamlit_app.py"):
     print(f"  - Conditional logic: {'FOUND' if 'enable_summarization' in content else 'MISSING'}")
     print(f"  - Summarizer import: {'FOUND' if 'from app.summarizer import' in content else 'MISSING'}")
     print("\n")
+
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding='utf-8')

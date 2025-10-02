@@ -5,8 +5,16 @@
 - **Build**: No build step required for Python project
 - **Lint**: `.\venv\Scripts\python.exe -m flake8 app/ tests/`
 - **Tests**: `.\venv\Scripts\python.exe -m pytest tests/`
-- **Dev server**: `.\venv\Scripts\python.exe -m uvicorn app.main:app --reload`
+- **Dev server**: `python run.py` (runs both FastAPI and Streamlit)
 - **Format**: `.\venv\Scripts\python.exe -m black app/ tests/`
+
+## Project Structure
+- **app/**: FastAPI backend
+- **frontend/**: Streamlit frontend  
+- **shared/**: Shared utilities (PDF processing, OCR)
+- **tests/**: Test suite
+- **scripts/**: Utility scripts for development and testing
+- **docs/**: Project documentation
 
 ## Tech Stack & Architecture
 - **Python 3.13** with virtual environment (venv)

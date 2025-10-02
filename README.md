@@ -507,7 +507,7 @@ Before starting development, verify:
 
 **Quick verification script:**
 ```bash
-python test_connectivity.py
+python scripts\test_connectivity.py
 ```
 
 This will test all components and report any issues.
