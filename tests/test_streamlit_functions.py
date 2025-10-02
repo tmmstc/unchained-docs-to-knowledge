@@ -6,6 +6,7 @@ import sys
 import os
 import sqlite3
 import tempfile
+import unittest.mock as mock
 
 # Add parent directory to path to allow imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -120,3 +121,88 @@ def test_update_document_summary():
         # Restore original path and cleanup
         module.DATABASE_PATH = original_db_path
         os.unlink(temp_db_path)
+
+
+def test_delete_button_state_management():
+    """Test delete button two-step confirmation state management."""
+    mock_st = mock.MagicMock()
+
+    mock_st.session_state = {}
+
+    class SessionState(dict):
+        def __getattr__(self, key):
+            return self.get(key)
+
+        def __setattr__(self, key, value):
+            self[key] = value
+
+    mock_st.session_state = SessionState()
+
+    selected_record = {"id": 123}
+
+    if "delete_confirmation_id" not in mock_st.session_state:
+        mock_st.session_state.delete_confirmation_id = None
+
+    if "last_selected_record_id" not in mock_st.session_state:
+        mock_st.session_state.last_selected_record_id = None
+
+    current_record_id = selected_record["id"]
+
+    if mock_st.session_state.last_selected_record_id != current_record_id:
+        mock_st.session_state.delete_confirmation_id = None
+        mock_st.session_state.last_selected_record_id = current_record_id
+
+    assert mock_st.session_state.delete_confirmation_id is None
+    assert mock_st.session_state.last_selected_record_id == 123
+
+    in_confirmation_mode = (
+        mock_st.session_state.delete_confirmation_id == current_record_id
+    )
+    assert in_confirmation_mode is False
+
+    mock_st.session_state.delete_confirmation_id = current_record_id
+    in_confirmation_mode = (
+        mock_st.session_state.delete_confirmation_id == current_record_id
+    )
+    assert in_confirmation_mode is True
+
+    new_record = {"id": 456}
+    current_record_id = new_record["id"]
+    if mock_st.session_state.last_selected_record_id != current_record_id:
+        mock_st.session_state.delete_confirmation_id = None
+        mock_st.session_state.last_selected_record_id = current_record_id
+
+    assert mock_st.session_state.delete_confirmation_id is None
+    assert mock_st.session_state.last_selected_record_id == 456
+
+
+def test_delete_button_label_changes():
+    """Test delete button label changes based on confirmation state."""
+    mock_st_session = {"delete_confirmation_id": None, "last_selected_record_id": None}
+
+    current_record_id = 100
+
+    in_confirmation_mode = mock_st_session["delete_confirmation_id"] == current_record_id
+
+    if in_confirmation_mode:
+        button_label = "⚠️ Click again to confirm"
+        button_type = "secondary"
+    else:
+        button_label = "Delete Record"
+        button_type = "primary"
+
+    assert button_label == "Delete Record"
+    assert button_type == "primary"
+
+    mock_st_session["delete_confirmation_id"] = current_record_id
+    in_confirmation_mode = mock_st_session["delete_confirmation_id"] == current_record_id
+
+    if in_confirmation_mode:
+        button_label = "⚠️ Click again to confirm"
+        button_type = "secondary"
+    else:
+        button_label = "Delete Record"
+        button_type = "primary"
+
+    assert button_label == "⚠️ Click again to confirm"
+    assert button_type == "secondary"

@@ -318,19 +318,16 @@ def display_database_records():
             with col1:
                 has_summary = bool(selected_record.get("summary"))
                 button_label = (
-                    "Regenerate Summary" if has_summary
-                    else "Generate Summary"
+                    "Regenerate Summary" if has_summary else "Generate Summary"
                 )
 
                 generate_btn = st.button(
-                    button_label,
-                    type="secondary",
-                    key="generate_summary_btn"
+                    button_label, type="secondary", key="generate_summary_btn"
                 )
                 if generate_btn:
                     with st.spinner("Generating summary..."):
                         try:
-                            record_id = selected_record['id']
+                            record_id = selected_record["id"]
                             response = requests.put(
                                 f"{BACKEND_URL}/records/{record_id}/summary",
                                 params={"generate": True},
@@ -348,21 +345,45 @@ def display_database_records():
                             st.error(f"Error generating summary: {str(e)}")
 
             with col2:
-                delete_btn = st.button(
-                    "Delete Record",
-                    type="primary",
-                    key="delete_record_btn"
+                if "delete_confirmation_id" not in st.session_state:
+                    st.session_state.delete_confirmation_id = None
+
+                if "last_selected_record_id" not in st.session_state:
+                    st.session_state.last_selected_record_id = None
+
+                current_record_id = selected_record["id"]
+
+                if st.session_state.last_selected_record_id != current_record_id:
+                    st.session_state.delete_confirmation_id = None
+                    st.session_state.last_selected_record_id = current_record_id
+
+                in_confirmation_mode = (
+                    st.session_state.delete_confirmation_id == current_record_id
                 )
+
+                if in_confirmation_mode:
+                    button_label = "⚠️ Click again to confirm"
+                    button_type = "secondary"
+                    button_help = "This will permanently delete the record"
+                else:
+                    button_label = "Delete Record"
+                    button_type = "primary"
+                    button_help = "Click to delete this record"
+
+                delete_btn = st.button(
+                    button_label,
+                    type=button_type,
+                    key="delete_record_btn",
+                    help=button_help,
+                )
+
                 if delete_btn:
-                    confirm_id = st.session_state.get("confirm_delete")
-                    if confirm_id != selected_record["id"]:
-                        st.session_state.confirm_delete = selected_record["id"]
-                        st.warning(
-                            "Click Delete Record again to confirm deletion."
-                        )
+                    if not in_confirmation_mode:
+                        st.session_state.delete_confirmation_id = current_record_id
+                        st.rerun()
                     else:
                         try:
-                            record_id = selected_record['id']
+                            record_id = selected_record["id"]
                             response = requests.delete(
                                 f"{BACKEND_URL}/records/{record_id}",
                                 timeout=10,
@@ -372,13 +393,15 @@ def display_database_records():
 
                             if result.get("success"):
                                 st.success("Record deleted successfully!")
-                                if "confirm_delete" in st.session_state:
-                                    del st.session_state.confirm_delete
+                                st.session_state.delete_confirmation_id = None
+                                st.session_state.last_selected_record_id = None
                                 st.rerun()
                             else:
                                 st.error("Failed to delete record")
+                                st.session_state.delete_confirmation_id = None
                         except Exception as e:
                             st.error(f"Error deleting record: {str(e)}")
+                            st.session_state.delete_confirmation_id = None
 
 
 def main():
@@ -387,6 +410,17 @@ def main():
     logger.info("Setting up page configuration")
 
     st.set_page_config(page_title="PDF OCR Processor", page_icon="📄", layout="wide")
+
+    st.markdown(
+        """
+        <style>
+        button[kind="secondary"] p {
+            color: #ff4b4b !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
     st.title("📄 PDF OCR Text Extractor")
     st.markdown(
