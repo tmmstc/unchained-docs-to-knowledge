@@ -211,7 +211,7 @@ def get_recent_records(limit: int = 10) -> List[Dict]:
                 SELECT id, filename, created_timestamp, word_count,
                        character_length,
                        SUBSTR(extracted_text, 1, 200) || '...' as preview,
-                       summary
+                       summary, md5_hash
                 FROM pdf_extracts
                 ORDER BY created_timestamp DESC
                 LIMIT ?
@@ -302,7 +302,7 @@ def get_records_without_summary(limit: int = 100) -> List[Dict]:
                 SELECT id, filename, created_timestamp, word_count,
                        character_length,
                        SUBSTR(extracted_text, 1, 200) || '...' as preview,
-                       summary
+                       summary, md5_hash
                 FROM pdf_extracts
                 WHERE summary IS NULL OR summary = ''
                 ORDER BY created_timestamp DESC
@@ -362,7 +362,7 @@ def get_record_by_id(record_id: int) -> Dict:
             cursor.execute(
                 """
                 SELECT id, filename, extracted_text, word_count,
-                       character_length, summary, created_timestamp
+                       character_length, summary, created_timestamp, md5_hash
                 FROM pdf_extracts
                 WHERE id = ?
             """,

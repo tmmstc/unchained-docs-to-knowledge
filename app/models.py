@@ -29,6 +29,7 @@ class PDFRecord(BaseModel):
     created_timestamp: datetime
     preview: Optional[str] = None
     summary: Optional[str] = None
+    md5_hash: Optional[str] = None
 
 
 class DatabaseStats(BaseModel):
