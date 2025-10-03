@@ -60,3 +60,6 @@ pdf_ocr_database_test.db
 
 # Deprecated files (archived)
 deprecated/
+
+# LLM Config
+config/llm_config.json

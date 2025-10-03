@@ -4,8 +4,10 @@ Uses OpenAI-compatible API endpoint for generating summaries.
 """
 
 import os
+import json
 import logging
 from typing import List
+from pathlib import Path
 import httpx
 from dotenv import load_dotenv
 
@@ -13,13 +15,52 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-OPENAI_API_BASE_URL = os.getenv(
-    "OPENAI_API_BASE_URL", "https://api.openai.com/v1"
-)
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-MODEL_NAME = os.getenv("SUMMARIZATION_MODEL", "gpt-3.5-turbo")
+CONFIG_DIR = Path("config")
+CONFIG_FILE = CONFIG_DIR / "llm_config.json"
+
 MAX_TOKENS_PER_CHUNK = 8000
 SUMMARY_MAX_TOKENS = 500
+
+
+def load_llm_config():
+    """Load LLM configuration from config file or environment variables."""
+    config = {
+        "base_url": os.getenv(
+            "OPENAI_API_BASE_URL", "https://api.openai.com/v1"
+        ),
+        "api_key": os.getenv("OPENAI_API_KEY", ""),
+        "model": os.getenv("SUMMARIZATION_MODEL", "gpt-3.5-turbo"),
+    }
+
+    if CONFIG_FILE.exists():
+        try:
+            with open(CONFIG_FILE, "r") as f:
+                file_config = json.load(f)
+                config.update(file_config)
+                logger.info("Loaded LLM config from file")
+        except Exception as e:
+            logger.warning(f"Error loading config file: {e}, using defaults")
+
+    return config
+
+
+def get_llm_config():
+    """Get current LLM config, checking session state first if available."""
+    try:
+        import streamlit as st
+        if (hasattr(st, "session_state")
+                and st.session_state.get("llm_config_loaded")):
+            return {
+                "base_url": st.session_state.get(
+                    "llm_base_url", "https://api.openai.com/v1"
+                ),
+                "api_key": st.session_state.get("llm_api_key", ""),
+                "model": st.session_state.get("llm_model", "gpt-3.5-turbo"),
+            }
+    except (ImportError, RuntimeError):
+        pass
+
+    return load_llm_config()
 
 
 def count_tokens(text: str) -> int:
@@ -95,22 +136,27 @@ async def summarize_chunk(chunk: str) -> str:
     Returns:
         Summary of the chunk
     """
-    if not OPENAI_API_KEY:
+    config = get_llm_config()
+    api_key = config["api_key"]
+    base_url = config["base_url"]
+    model = config["model"]
+
+    if not api_key:
         logger.warning(
-            "OPENAI_API_KEY not set, returning truncated text as summary"
+            "API key not set, returning truncated text as summary"
         )
         return chunk[:500] + "..." if len(chunk) > 500 else chunk
 
     try:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"{OPENAI_API_BASE_URL}/chat/completions",
+                f"{base_url}/chat/completions",
                 headers={
-                    "Authorization": f"Bearer {OPENAI_API_KEY}",
+                    "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json",
                 },
                 json={
-                    "model": MODEL_NAME,
+                    "model": model,
                     "messages": [
                         {
                             "role": "system",
