@@ -83,9 +83,9 @@ try:
     logger.info("Importing streamlit...")
     import streamlit as st
 
-    logger.info(f"✓ streamlit imported successfully (version: {st.__version__})")
+    logger.info(f"streamlit imported successfully (version: {st.__version__})")
 except ImportError as e:
-    logger.error(f"✗ CRITICAL: Failed to import streamlit: {e}")
+    logger.error(f"CRITICAL: Failed to import streamlit: {e}")
     logger.error(traceback.format_exc())
     print(f"\n{'=' * 80}")
     print("CRITICAL ERROR: Failed to import streamlit")
@@ -93,7 +93,7 @@ except ImportError as e:
     print(traceback.format_exc())
     sys.exit(1)
 except Exception as e:
-    logger.error(f"✗ CRITICAL: Unexpected error importing streamlit: {e}")
+    logger.error(f"CRITICAL: Unexpected error importing streamlit: {e}")
     logger.error(traceback.format_exc())
     print(f"\n{'=' * 80}")
     print("CRITICAL ERROR: Unexpected error importing streamlit")
@@ -105,9 +105,9 @@ try:
     logger.info("Importing frontend.api_client...")
     from frontend.api_client import get_stats_from_backend
 
-    logger.info("✓ frontend.api_client imported successfully")
+    logger.info("frontend.api_client imported successfully")
 except ImportError as e:
-    logger.error(f"✗ CRITICAL: Failed to import frontend.api_client: {e}")
+    logger.error(f"CRITICAL: Failed to import frontend.api_client: {e}")
     logger.error(traceback.format_exc())
     print(f"\n{'=' * 80}")
     print("CRITICAL ERROR: Failed to import frontend.api_client")
@@ -115,7 +115,7 @@ except ImportError as e:
     print(traceback.format_exc())
     sys.exit(1)
 except Exception as e:
-    logger.error(f"✗ CRITICAL: Unexpected error importing frontend.api_client: {e}")
+    logger.error(f"CRITICAL: Unexpected error importing frontend.api_client: {e}")
     logger.error(traceback.format_exc())
     print(f"\n{'=' * 80}")
     print("CRITICAL ERROR: Unexpected error importing frontend.api_client")
@@ -151,25 +151,25 @@ def check_backend_health():
         logger.info(f"Health check response - Body: {response.text}")
 
         if response.status_code == 200:
-            logger.info("✓ Backend health check PASSED")
+            logger.info("Backend health check PASSED")
             return True
         else:
             logger.warning(
-                f"✗ Backend health check returned non-200 status: {response.status_code}"
+                f"Backend health check returned non-200 status: {response.status_code}"
             )
             return False
 
     except requests.exceptions.ConnectionError as e:
-        logger.error(f"✗ Backend health check FAILED - Connection Error: {e}")
+        logger.error(f"Backend health check FAILED - Connection Error: {e}")
         logger.error(f"Could not connect to {BACKEND_URL}")
         logger.error("This may indicate the backend is not running or unreachable")
         return False
     except requests.exceptions.Timeout as e:
-        logger.error(f"✗ Backend health check FAILED - Timeout: {e}")
+        logger.error(f"Backend health check FAILED - Timeout: {e}")
         logger.error(f"Backend at {BACKEND_URL} did not respond within timeout")
         return False
     except Exception as e:
-        logger.error(f"✗ Backend health check FAILED - Unexpected error: {e}")
+        logger.error(f"Backend health check FAILED - Unexpected error: {e}")
         logger.error(traceback.format_exc())
         return False
 
@@ -193,9 +193,9 @@ try:
         "Attempting to fetch statistics from backend (tests database connectivity)..."
     )
     test_stats = get_stats_from_backend()
-    logger.info(f"✓ Database connectivity verified - Stats: {test_stats}")
+    logger.info(f"Database connectivity verified - Stats: {test_stats}")
 except Exception as e:
-    logger.error(f"✗ Database connectivity check failed: {e}")
+    logger.error(f"Database connectivity check failed: {e}")
     logger.error(traceback.format_exc())
 
 logger.info("=" * 80)
@@ -210,7 +210,7 @@ if pages_dir.exists():
     page_files = list(pages_dir.glob("*.py"))
     logger.info(f"Found {len(page_files)} page module(s):")
     for page_file in sorted(page_files):
-        logger.info(f"  - {page_file.name}")
+        logger.info(f"  - {page_file.name}")  # Remove emoji if present in filename
 else:
     logger.warning("Pages directory not found!")
 
@@ -224,15 +224,15 @@ logger.info(f"Backend Status: {'CONNECTED' if backend_healthy else 'DISCONNECTED
 logger.info("=" * 80)
 
 print("\n" + "=" * 80)
-print("📄 PDF OCR PROCESSOR - STREAMLIT FRONTEND")
+print("PDF OCR PROCESSOR - STREAMLIT FRONTEND")
 print("=" * 80)
-print(f"✓ Startup timestamp: {datetime.now().isoformat()}")
-print(f"✓ Entry point: streamlit_app.py (Main Dashboard)")
-print(f"✓ Backend URL: {BACKEND_URL}")
-print(f"✓ Backend health: {'CONNECTED ✓' if backend_healthy else 'DISCONNECTED ✗'}")
-print(f"✓ Streamlit version: {st.__version__}")
-print(f"✓ Python version: {sys.version.split()[0]}")
-print(f"✓ Pages discovered: {len(page_files) if pages_dir.exists() else 0}")
+print(f"Startup timestamp: {datetime.now().isoformat()}")
+print(f"Entry point: streamlit_app.py (Main Dashboard)")
+print(f"Backend URL: {BACKEND_URL}")
+print(f"Backend health: {'CONNECTED' if backend_healthy else 'DISCONNECTED'}")
+print(f"Streamlit version: {st.__version__}")
+print(f"Python version: {sys.version.split()[0]}")
+print(f"Pages discovered: {len(page_files) if pages_dir.exists() else 0}")
 print("=" * 80)
 print()
 
@@ -245,18 +245,19 @@ def main():
         logger.info("Setting page configuration...")
         st.set_page_config(
             page_title="PDF OCR Processor - Dashboard",
-            page_icon="🏠",
+            page_icon=None,
             layout="wide",
         )
-        logger.info("✓ Page configuration set successfully")
+        logger.info("Page configuration set successfully")
 
+        # Render header and statistics
         logger.info("Rendering page title and header...")
-        st.title("🏠 PDF OCR Processor Dashboard")
+        st.title("PDF OCR Processor Dashboard")
         st.markdown("Welcome to the PDF OCR Processing Application")
         st.markdown("---")
 
         logger.info("Rendering dashboard statistics section...")
-        st.subheader("📈 System Statistics")
+        st.subheader("System Statistics")
 
         logger.info("Fetching statistics from backend...")
         stats = get_stats_from_backend()
@@ -272,7 +273,7 @@ def main():
 
         st.markdown("---")
 
-        st.subheader("📖 Getting Started")
+        st.subheader("Getting Started")
 
         st.markdown("""
         This application helps you process PDF documents with OCR
@@ -280,94 +281,59 @@ def main():
         database. Follow the steps below to get started:
         """)
 
-        st.markdown("#### 📤 Step 1: Ingest Documents")
+        st.markdown("#### Step 1: Ingest Documents")
         with st.container():
             col1, col2 = st.columns([1, 4])
             with col1:
-                st.markdown("### 📤")
+                st.markdown("###")
             with col2:
                 st.markdown("""
-                Navigate to the **Ingest Documents** page from the sidebar
-                to add PDFs to the system.
+                Navigate to the Ingest Documents page from the sidebar to add PDFs.
 
-                **Two ways to add documents:**
-                - **Process from Folder**: Enter a directory path containing
-                  PDF files
-                - **Upload Files**: Directly upload one or more PDF files
-
-                **Features:**
-                - Automatic OCR text extraction from PDF images
-                - Optional AI-powered summarization for each document
-                - Duplicate detection (MD5 hash-based) to avoid reprocessing
-                - Batch processing with progress tracking
+                Two ways to add documents:
+                - Process from Folder: Enter a directory path containing PDF files
+                - Upload Files: Directly upload one or more PDF files
                 """)
 
         st.markdown("---")
 
-        st.markdown("#### 📊 Step 2: View and Manage Documents")
+        st.markdown("#### Step 2: View and Manage Documents")
         with st.container():
             col1, col2 = st.columns([1, 4])
             with col1:
-                st.markdown("### 📊")
+                st.markdown("###")
             with col2:
                 st.markdown("""
-                Navigate to the **View Database** page to browse and manage
-                your processed documents.
-
-                **Capabilities:**
-                - View all processed documents in a searchable table
-                - Filter by filename or summary status
-                - Sort by ID, name, word count, or date
-                - View full extracted text and summaries
-                - Generate or regenerate AI summaries for any document
-                - Delete records from the database
+                Navigate to the View Database page to browse and manage your processed documents.
                 """)
 
         st.markdown("---")
 
-        st.subheader("💡 Quick Tips")
-
+        st.subheader("Quick Tips")
         tip_col1, tip_col2 = st.columns(2)
-
         with tip_col1:
-            st.info("""
-            **🎯 Processing Tips**
-            - Enable "Generate Summaries" for automatic AI analysis
-            - Duplicate files are automatically detected and skipped
-            - Large batches may take time to process
-            """)
-
+            st.info("Enable Generate Summaries for automatic AI analysis. Duplicate files are detected and skipped.")
         with tip_col2:
-            st.success("""
-            **🔍 Viewing Tips**
-            - Use filters to quickly find specific documents
-            - Click any row in the table to view full details
-            - Summaries can be generated or updated at any time
-            """)
+            st.success("Use filters to quickly find specific documents.")
 
         st.markdown("---")
 
-        st.markdown("### 🚀 Ready to Start?")
-        st.markdown(
-            "Use the **sidebar navigation** to access the Ingest Documents "
-            "or View Database pages."
-        )
+        st.markdown("Ready to Start?")
+        st.markdown("Use the sidebar navigation to access Ingest Documents or View Database pages.")
 
-        logger.info("✓ Main page rendered successfully")
+        logger.info("Main page rendered successfully")
 
     except Exception as e:
-        logger.error(f"✗ CRITICAL ERROR in main() function: {e}")
+        logger.error(f"CRITICAL ERROR in main() function: {e}")
         logger.error(traceback.format_exc())
 
-        st.error("⚠️ Application Error")
+        st.error("Application Error")
         st.error(f"An error occurred while loading the application: {str(e)}")
 
         with st.expander("View Error Details", expanded=True):
             st.code(traceback.format_exc())
 
-        st.warning(
-            "Please check the logs for more details and contact support if the issue persists."
-        )
+        st.warning("Please check the logs for more details and contact support if the issue persists.")
 
 
 if __name__ == "__main__":
