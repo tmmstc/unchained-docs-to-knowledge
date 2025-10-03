@@ -1,3 +1,8 @@
 [server]
 address = "0.0.0.0"
 port = 8501
+
+[browser]
+# Browser will not auto-launch when serverAddress is localhost
+# This is overridden via command-line args in executable mode
+gatherUsageStats = false

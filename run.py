@@ -16,18 +16,20 @@ import os
 import webbrowser
 import urllib.request
 import urllib.error
+import argparse
 from pathlib import Path
 
 
 class ApplicationLauncher:
     """Manages startup and shutdown of FastAPI and Streamlit services."""
 
-    def __init__(self):
+    def __init__(self, executable_mode=False):
         self.processes = []
         self.running = True
         self.browser_launched = False
         self.shutdown_timeout = 300  # 5 minutes timeout
         self.start_time = None
+        self.executable_mode = executable_mode or self._is_frozen()
 
         # Cross-platform virtualenv python path.
         # On Windows venv uses Scripts, on POSIX it uses bin.
@@ -42,6 +44,10 @@ class ApplicationLauncher:
         else:
             # Last-resort: use system python (may not have required deps)
             self.venv_python = Path(sys.executable)
+
+    def _is_frozen(self):
+        """Detect if running as a frozen executable (PyInstaller, etc.)."""
+        return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
 
     def verify_environment(self):
         """Verify that the virtual environment exists (cross-platform).
@@ -110,7 +116,7 @@ class ApplicationLauncher:
 
     def launch_browser(self, url, max_retries=5, initial_delay=2):
         """Launch browser with retry logic and exponential backoff."""
-        if self.browser_launched:
+        if self.browser_launched or self.executable_mode:
             return
 
         print("\n🌐 Attempting to launch browser...")
@@ -197,20 +203,34 @@ class ApplicationLauncher:
             env = os.environ.copy()
             env["PYTHONIOENCODING"] = "utf-8"
 
+            # Build command with base arguments
+            cmd = [
+                str(self.venv_python),
+                "-m",
+                "streamlit",
+                "run",
+                "frontend/streamlit_app.py",
+                "--server.address",
+                "0.0.0.0",
+                "--server.port",
+                "8501",
+                "--server.headless",
+                "true",
+            ]
+
+            # Add executable-specific configuration
+            if self.executable_mode:
+                cmd.extend([
+                    "--browser.serverAddress",
+                    "localhost",
+                    "--server.enableCORS",
+                    "false",
+                    "--server.enableXsrfProtection",
+                    "false",
+                ])
+
             process = subprocess.Popen(
-                [
-                    str(self.venv_python),
-                    "-m",
-                    "streamlit",
-                    "run",
-                    "frontend/streamlit_app.py",
-                    "--server.address",
-                    "0.0.0.0",
-                    "--server.port",
-                    "8501",
-                    "--server.headless",
-                    "true",
-                ],
+                cmd,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True,
@@ -270,6 +290,9 @@ class ApplicationLauncher:
         print("=" * 70)
         print("PDF OCR Processing Application")
         print("=" * 70)
+
+        if self.executable_mode:
+            print("🔧 Running in executable mode (browser auto-launch disabled)")
 
         # Verify environment
         if not self.verify_environment():
@@ -336,6 +359,26 @@ class ApplicationLauncher:
             self.signal_handler(signal.SIGINT, None)
 
 
+def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(
+        description="PDF OCR Processing Application Launcher"
+    )
+    parser.add_argument(
+        "--executable-mode",
+        action="store_true",
+        help="Run in executable mode (disables browser auto-launch)",
+    )
+    parser.add_argument(
+        "--no-browser",
+        action="store_true",
+        help="Disable browser auto-launch",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    launcher = ApplicationLauncher()
+    args = parse_args()
+    executable_mode = args.executable_mode or args.no_browser
+    launcher = ApplicationLauncher(executable_mode=executable_mode)
     launcher.run()
