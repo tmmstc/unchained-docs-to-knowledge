@@ -90,6 +90,8 @@ class ApplicationLauncher:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True,
+                encoding='utf-8',
+                errors='replace',
                 env=env,
             )
             self.processes.append(process)
@@ -131,6 +133,8 @@ class ApplicationLauncher:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True,
+                encoding='utf-8',
+                errors='replace',
                 env=env,
             )
             self.processes.append(process)

@@ -26,9 +26,16 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler("streamlit_startup.log", mode="a"),
+        logging.FileHandler("streamlit_startup.log", mode="a", encoding="utf-8"),
     ],
 )
+
+for handler in logging.root.handlers:
+    if isinstance(handler, logging.StreamHandler) and hasattr(handler.stream, 'reconfigure'):
+        try:
+            handler.stream.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
 
 logger = logging.getLogger(__name__)
 
