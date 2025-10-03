@@ -1,0 +1,407 @@
+Microsoft Windows [Version 10.0.26100.6584]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Ed\OneDrive\unchained>C:/Users/Ed/OneDrive/unchained/venv/Scripts/activate.bat
+
+(venv) C:\Users\Ed\OneDrive\unchained>python run.py   
+======================================================================
+PDF OCR Processing Application
+======================================================================
+✅ Virtual environment found
+
+📋 Starting application services...
+   Press Ctrl+C to stop
+
+
+🚀 Starting FastAPI backend...
+   URL: http://localhost:8000
+   API Docs: http://localhost:8000/docs
+[FastAPI] INFO:     Will watch for changes in these directories: ['C:\\Users\\Ed\\OneDrive\\unchained']
+[FastAPI] INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[FastAPI] INFO:     Started reloader process [1152] using StatReload
+[FastAPI] INFO:     Started server process [20996]
+[FastAPI] INFO:     Waiting for application startup.
+[FastAPI] 2025-10-02 22:28:17,542 - app.main - INFO - Starting PDF OCR Processing API
+[FastAPI] 2025-10-02 22:28:17,542 - app.main - INFO - Application version: 1.0.0
+[FastAPI] 2025-10-02 22:28:17,542 - app.main - INFO - Initializing database...
+[FastAPI] 2025-10-02 22:28:17,542 - app.database - INFO - Initializing SQLite database
+[FastAPI] 2025-10-02 22:28:17,542 - app.database - INFO - Database location: pdf_ocr_database.db
+[FastAPI] 2025-10-02 22:28:17,545 - app.database - INFO - Database schema initialized successfully
+[FastAPI] 2025-10-02 22:28:17,545 - app.main - INFO - Database initialized successfully
+[FastAPI] 2025-10-02 22:28:17,545 - app.main - INFO - FastAPI application startup complete
+[FastAPI] INFO:     Application startup complete.
+
+🎨 Starting Streamlit frontend...
+   URL: http://localhost:8501
+[Streamlit] 
+[Streamlit] You can now view your Streamlit app in your browser.
+[Streamlit]
+[Streamlit] URL: http://0.0.0.0:8501
+[Streamlit]
+[Streamlit] ================================================================================
+[Streamlit] STREAMLIT APP STARTUP INITIATED
+[Streamlit] ================================================================================
+[Streamlit] Timestamp: 2025-10-02T22:28:21.530181
+[Streamlit] Python Version: 3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]     
+[Streamlit] Python Executable: C:\Users\Ed\OneDrive\unchained\venv\Scripts\python.exe
+[Streamlit] Working Directory: C:\Users\Ed\OneDrive\unchained
+[Streamlit] Script Path: C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py
+[Streamlit] ================================================================================
+[Streamlit] 2025-10-02 22:28:21,538 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,546 - __main__ - INFO - INITIALIZATION: Configuring logging system
+[Streamlit] 2025-10-02 22:28:21,547 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,547 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,549 - __main__ - INFO - ENVIRONMENT VARIABLES - Deployment Configuration
+[Streamlit] 2025-10-02 22:28:21,551 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,551 - __main__ - INFO - ENV: OPENAI_API_BASE_URL = <not set>
+[Streamlit] 2025-10-02 22:28:21,551 - __main__ - INFO - ENV: SUMMARIZATION_MODEL = <not set>
+[Streamlit] 2025-10-02 22:28:21,552 - __main__ - INFO - ENV: DATABASE_URL = <not set>
+[Streamlit] 2025-10-02 22:28:21,552 - __main__ - INFO - ENV: BACKEND_URL = <not set>
+[Streamlit] 2025-10-02 22:28:21,552 - __main__ - INFO - ENV: HOST = <not set>
+[Streamlit] 2025-10-02 22:28:21,552 - __main__ - INFO - ENV: PORT = <not set>
+[Streamlit] 2025-10-02 22:28:21,552 - __main__ - INFO - ENV: STREAMLIT_SERVER_PORT = <not set>
+[Streamlit] 2025-10-02 22:28:21,552 - __main__ - INFO - ENV: STREAMLIT_SERVER_ADDRESS = <not set>
+[Streamlit] 2025-10-02 22:28:21,552 - __main__ - INFO - ENV: STREAMLIT_SERVER_HEADLESS = <not set>
+[Streamlit] 2025-10-02 22:28:21,552 - __main__ - INFO - ENV: PATH = C:\Users\Ed\OneDrive\unchained\venv\Scripts;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\Ed\AppData\Local\Programs\Python\Launcher\;C:\Users\Ed\AppData\Local\Microsoft\WindowsApps;C:\Users\Ed\AppData\Local\Programs\Microsoft VS Code\bin;C:\poppler-25.07.0\Library\bin;C:\Program Files\Tesseract-OCR;;c:\Users\Ed\.vscode\extensions\ms-python.debugpy-2025.10.0-win32-arm64\bundled\scripts\noConfigScripts
+[Streamlit] 2025-10-02 22:28:21,553 - __main__ - INFO - ENV: PYTHONPATH = <not set>
+[Streamlit] 2025-10-02 22:28:21,553 - __main__ - INFO - ENV: HOME = <not set>
+[Streamlit] 2025-10-02 22:28:21,553 - __main__ - INFO - ENV: USER = <not set>
+[Streamlit] 2025-10-02 22:28:21,553 - __main__ - INFO - ENV: VIRTUAL_ENV = C:\Users\Ed\OneDrive\unchained\venv   
+[Streamlit] 2025-10-02 22:28:21,553 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,553 - __main__ - INFO - Security Check - OPENAI_API_KEY is NOT SET
+[Streamlit] 2025-10-02 22:28:21,554 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,554 - __main__ - INFO - IMPORTING: Core dependencies
+[Streamlit] 2025-10-02 22:28:21,554 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,554 - __main__ - INFO - Importing streamlit...
+[Streamlit] 2025-10-02 22:28:21,554 - __main__ - INFO - âœ“ streamlit imported successfully (version: 1.39.0)    
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 86, in <module>
+[Streamlit] logger.info(f"âœ“ streamlit imported successfully (version: {st.__version__})")
+[Streamlit] Message: 'âœ“ streamlit imported successfully (version: 1.39.0)'
+[Streamlit] Arguments: ()
+[Streamlit] 2025-10-02 22:28:21,589 - __main__ - INFO - Importing frontend.api_client...
+[Streamlit] 2025-10-02 22:28:21,854 - __main__ - INFO - âœ“ frontend.api_client imported successfully
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 108, in <module>
+[Streamlit] logger.info("âœ“ frontend.api_client imported successfully")
+[Streamlit] Message: 'âœ“ frontend.api_client imported successfully'
+[Streamlit] Arguments: ()
+[Streamlit] 2025-10-02 22:28:21,855 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,855 - __main__ - INFO - CONFIGURATION: Setting up application constants
+[Streamlit] 2025-10-02 22:28:21,855 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,855 - __main__ - INFO - Backend URL configured: http://localhost:8000
+[Streamlit] 2025-10-02 22:28:21,855 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,855 - __main__ - INFO - HEALTH CHECK: Testing backend connectivity
+[Streamlit] 2025-10-02 22:28:21,855 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:21,856 - __main__ - INFO - Health check initiated at 2025-10-02T22:28:21.856089     
+[Streamlit] 2025-10-02 22:28:21,856 - __main__ - INFO - Target URL: http://localhost:8000
+[Streamlit] 2025-10-02 22:28:21,856 - __main__ - INFO - Attempting connection to http://localhost:8000/health... 
+[Streamlit] 2025-10-02 22:28:21,864 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+[FastAPI] 2025-10-02 22:28:23,978 - app.main - INFO - Incoming request: GET /health from 127.0.0.1
+[FastAPI] 2025-10-02 22:28:23,983 - app.main - INFO - ================================================================================
+[FastAPI] 2025-10-02 22:28:23,983 - app.main - INFO - HEALTH CHECK REQUEST
+[FastAPI] 2025-10-02 22:28:23,983 - app.main - INFO - ================================================================================
+[FastAPI] 2025-10-02 22:28:23,983 - app.main - INFO - Timestamp: 2025-10-03T05:28:23.983539+00:00
+[FastAPI] 2025-10-02 22:28:23,984 - app.main - INFO - Client Host: 127.0.0.1
+[FastAPI] 2025-10-02 22:28:23,984 - app.main - INFO - Method: GET
+[FastAPI] 2025-10-02 22:28:23,984 - app.main - INFO - URL: http://localhost:8000/health
+[FastAPI] 2025-10-02 22:28:23,984 - app.main - INFO - Path: /health
+[FastAPI] 2025-10-02 22:28:23,985 - app.main - INFO - Headers: {'host': 'localhost:8000', 'user-agent': 'python-requests/2.32.5', 'accept-encoding': 'gzip, deflate', 'accept': '*/*', 'connection': 'keep-alive'}
+[FastAPI] 2025-10-02 22:28:23,985 - app.main - INFO - Query Params: {}
+[FastAPI] 2025-10-02 22:28:23,985 - app.main - INFO - Checking database connectivity...
+[FastAPI] 2025-10-02 22:28:23,985 - app.database - INFO - Retrieving database statistics
+[FastAPI] 2025-10-02 22:28:23,992 - app.database - INFO - Database statistics: 1 records, 7544 words, 47934 characters
+[FastAPI] 2025-10-02 22:28:23,993 - app.main - INFO - âœ“ Database accessible - 1 records
+[FastAPI] 2025-10-02 22:28:23,993 - app.main - INFO - Health check response: {'status': 'healthy', 'timestamp': '2025-10-03T05:28:23.983539+00:00', 'service': 'PDF OCR Processing API', 'version': '1.0.0', 'database': 'connected', 'request_info': {'client_host': '127.0.0.1', 'user_agent': 'python-requests/2.32.5'}}
+[FastAPI] 2025-10-02 22:28:23,993 - app.main - INFO - ================================================================================
+[FastAPI] 2025-10-02 22:28:23,995 - app.main - INFO - Response: 200 for GET /health (0.017s)
+[FastAPI] INFO:     127.0.0.1:51255 - "GET /health HTTP/1.1" 200 OK
+[Streamlit] 2025-10-02 22:28:23,997 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /health HTTP/1.1" 200 224
+[Streamlit] 2025-10-02 22:28:23,998 - __main__ - INFO - Health check response - Status Code: 200
+[Streamlit] 2025-10-02 22:28:23,998 - __main__ - INFO - Health check response - Headers: {'date': 'Fri, 03 Oct 2025 05:28:23 GMT', 'server': 'uvicorn', 'content-length': '224', 'content-type': 'application/json'}
+[Streamlit] 2025-10-02 22:28:23,998 - __main__ - INFO - Health check response - Body: {"status":"healthy","timestamp":"2025-10-03T05:28:23.983539+00:00","service":"PDF OCR Processing API","version":"1.0.0","database":"connected","request_info":{"client_host":"127.0.0.1","user_agent":"python-requests/2.32.5"}}
+[Streamlit] 2025-10-02 22:28:23,998 - __main__ - INFO - âœ“ Backend health check PASSED
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 178, in <module>
+[Streamlit] backend_healthy = check_backend_health()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 154, in check_backend_health   
+[Streamlit] logger.info("âœ“ Backend health check PASSED")
+[Streamlit] Message: 'âœ“ Backend health check PASSED'
+[Streamlit] Arguments: ()
+[Streamlit] 2025-10-02 22:28:24,000 - __main__ - INFO - Backend health status: HEALTHY
+[Streamlit] 2025-10-02 22:28:24,000 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:24,000 - __main__ - INFO - DATABASE: Checking database connectivity
+[Streamlit] 2025-10-02 22:28:24,001 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:24,001 - __main__ - INFO - Attempting to fetch statistics from backend (tests database connectivity)...
+[Streamlit] 2025-10-02 22:28:24,001 - frontend.api_client - INFO - Requesting statistics from backend
+[Streamlit] 2025-10-02 22:28:24,003 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+[Streamlit] ================================================================================
+[Streamlit] STREAMLIT APP STARTUP INITIATED
+[Streamlit] ================================================================================
+[Streamlit] Timestamp: 2025-10-02T22:28:25.597555
+[Streamlit] Python Version: 3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]     
+[Streamlit] Python Executable: C:\Users\Ed\OneDrive\unchained\venv\Scripts\python.exe
+[Streamlit] Working Directory: C:\Users\Ed\OneDrive\unchained
+[Streamlit] Script Path: C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py
+[Streamlit] ================================================================================
+[Streamlit] 2025-10-02 22:28:25,602 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,602 - __main__ - INFO - INITIALIZATION: Configuring logging system
+[Streamlit] 2025-10-02 22:28:25,602 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,602 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,603 - __main__ - INFO - ENVIRONMENT VARIABLES - Deployment Configuration
+[Streamlit] 2025-10-02 22:28:25,603 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,603 - __main__ - INFO - ENV: OPENAI_API_BASE_URL = <not set>
+[Streamlit] 2025-10-02 22:28:25,603 - __main__ - INFO - ENV: SUMMARIZATION_MODEL = <not set>
+[Streamlit] 2025-10-02 22:28:25,603 - __main__ - INFO - ENV: DATABASE_URL = <not set>
+[Streamlit] 2025-10-02 22:28:25,603 - __main__ - INFO - ENV: BACKEND_URL = <not set>
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: HOST = <not set>
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: PORT = <not set>
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: STREAMLIT_SERVER_PORT = <not set>
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: STREAMLIT_SERVER_ADDRESS = <not set>
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: STREAMLIT_SERVER_HEADLESS = <not set>
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: PATH = C:\Users\Ed\OneDrive\unchained\venv\Scripts;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\Ed\AppData\Local\Programs\Python\Launcher\;C:\Users\Ed\AppData\Local\Microsoft\WindowsApps;C:\Users\Ed\AppData\Local\Programs\Microsoft VS Code\bin;C:\poppler-25.07.0\Library\bin;C:\Program Files\Tesseract-OCR;;c:\Users\Ed\.vscode\extensions\ms-python.debugpy-2025.10.0-win32-arm64\bundled\scripts\noConfigScripts
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: PYTHONPATH = <not set>
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: HOME = <not set>
+[Streamlit] 2025-10-02 22:28:25,604 - __main__ - INFO - ENV: USER = <not set>
+[Streamlit] 2025-10-02 22:28:25,605 - __main__ - INFO - ENV: VIRTUAL_ENV = C:\Users\Ed\OneDrive\unchained\venv   
+[Streamlit] 2025-10-02 22:28:25,605 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,605 - __main__ - INFO - Security Check - OPENAI_API_KEY is NOT SET
+[Streamlit] 2025-10-02 22:28:25,605 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,605 - __main__ - INFO - IMPORTING: Core dependencies
+[Streamlit] 2025-10-02 22:28:25,605 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,605 - __main__ - INFO - Importing streamlit...
+[Streamlit] 2025-10-02 22:28:25,605 - __main__ - INFO - âœ“ streamlit imported successfully (version: 1.39.0)    
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 86, in <module>
+[Streamlit] logger.info(f"âœ“ streamlit imported successfully (version: {st.__version__})")
+[Streamlit] Message: 'âœ“ streamlit imported successfully (version: 1.39.0)'
+[Streamlit] Arguments: ()
+[Streamlit] 2025-10-02 22:28:25,607 - __main__ - INFO - Importing frontend.api_client...
+[Streamlit] 2025-10-02 22:28:25,607 - __main__ - INFO - âœ“ frontend.api_client imported successfully
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 108, in <module>
+[Streamlit] logger.info("âœ“ frontend.api_client imported successfully")
+[Streamlit] Message: 'âœ“ frontend.api_client imported successfully'
+[Streamlit] Arguments: ()
+[Streamlit] 2025-10-02 22:28:25,609 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,609 - __main__ - INFO - CONFIGURATION: Setting up application constants
+[Streamlit] 2025-10-02 22:28:25,609 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,609 - __main__ - INFO - Backend URL configured: http://localhost:8000
+[Streamlit] 2025-10-02 22:28:25,609 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,609 - __main__ - INFO - HEALTH CHECK: Testing backend connectivity
+[Streamlit] 2025-10-02 22:28:25,609 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:25,609 - __main__ - INFO - Health check initiated at 2025-10-02T22:28:25.609883     
+[Streamlit] 2025-10-02 22:28:25,610 - __main__ - INFO - Target URL: http://localhost:8000
+[Streamlit] 2025-10-02 22:28:25,610 - __main__ - INFO - Attempting connection to http://localhost:8000/health... 
+[Streamlit] 2025-10-02 22:28:25,612 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+[FastAPI] 2025-10-02 22:28:26,038 - app.main - INFO - Incoming request: GET /stats from 127.0.0.1
+[FastAPI] 2025-10-02 22:28:26,039 - app.main - INFO - Retrieving database statistics
+[FastAPI] 2025-10-02 22:28:26,040 - app.database - INFO - Retrieving database statistics
+[FastAPI] 2025-10-02 22:28:26,041 - app.database - INFO - Database statistics: 1 records, 7544 words, 47934 characters
+[FastAPI] 2025-10-02 22:28:26,041 - app.main - INFO - Statistics: 1 records, 7544 words, 47934 characters        
+[FastAPI] 2025-10-02 22:28:26,046 - app.main - INFO - Response: 200 for GET /stats (0.008s)
+[FastAPI] INFO:     127.0.0.1:51259 - "GET /stats HTTP/1.1" 200 OK
+[Streamlit] 2025-10-02 22:28:26,047 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /stats HTTP/1.1" 200 63
+[Streamlit] 2025-10-02 22:28:26,048 - frontend.api_client - INFO - Backend statistics: 1 records, 7544 words, 47934 chars
+[Streamlit] 2025-10-02 22:28:26,048 - __main__ - INFO - âœ“ Database connectivity verified - Stats: {'total_records': 1, 'total_words': 7544, 'total_characters': 47934}
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 44: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 196, in <module>
+[Streamlit] logger.info(f"âœ“ Database connectivity verified - Stats: {test_stats}")
+[Streamlit] Message: "âœ“ Database connectivity verified - Stats: {'total_records': 1, 'total_words': 7544, 'total_characters': 47934}"
+[Streamlit] Arguments: ()
+[Streamlit] 2025-10-02 22:28:26,051 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:26,051 - __main__ - INFO - PAGE DISCOVERY: Scanning multipage app structure
+[Streamlit] 2025-10-02 22:28:26,051 - __main__ - INFO - ================================================================================
+[Streamlit] 2025-10-02 22:28:26,051 - __main__ - INFO - Pages directory: C:\Users\Ed\OneDrive\unchained\frontend\pages
+[Streamlit] 2025-10-02 22:28:26,052 - __main__ - INFO - Pages directory exists: True
+[Streamlit] 2025-10-02 22:28:26,052 - __main__ - INFO - Found 3 page module(s):
+[Streamlit] 2025-10-02 22:28:26,054 - __main__ - INFO -   - 1_ðŸ“¤_Ingest_Documents.py
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1154, in emit
+[Streamlit] stream.write(msg + self.terminator)
+[Streamlit] ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+[Streamlit] return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[Streamlit] ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[Streamlit] UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e4' in position 50: character maps to <undefined>
+[Streamlit] Call stack:
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1014, in _bootstrap
+[Streamlit] self._bootstrap_inner()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1043, in _bootstrap_inner
+[Streamlit] self.run()
+[Streamlit] File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 994, in run
+[Streamlit] self._target(*self._args, **self._kwargs)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 320, in _run_script_thread
+[Streamlit] self._run_script(request.rerun_data)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 595, in _run_script
+[Streamlit] ) = exec_func_with_error_handling(code_to_exec, ctx)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+[Streamlit] result = func()
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+[Streamlit] exec(code, module.__dict__)
+[Streamlit] File "C:\Users\Ed\OneDrive\unchained\frontend\streamlit_app.py", line 213, in <module>
+[Streamlit] logger.info(f"  - {page_file.name}")
+[Streamlit] Message: '  - 1_ðŸ“¤_Ingest_Documents.py'
+[Streamlit] Arguments: ()
+[Streamlit] 2025-10-02 22:28:26,055 - __main__ - INFO -   - 2_ðŸ“Š_View_Database.py
+[Streamlit] --- Logging error ---
+[Streamlit] Traceback (most recent call last):
+❌ ERROR starting Streamlit: 'charmap' codec can't decode byte 0x8f in position 2164: character maps to <undefined>
+[FastAPI] 2025-10-02 22:28:27,671 - app.main - INFO - Incoming request: GET /health from 127.0.0.1
+[FastAPI] 2025-10-02 22:28:27,674 - app.main - INFO - ================================================================================
+[FastAPI] 2025-10-02 22:28:27,674 - app.main - INFO - HEALTH CHECK REQUEST
+[FastAPI] 2025-10-02 22:28:27,674 - app.main - INFO - ================================================================================
+[FastAPI] 2025-10-02 22:28:27,674 - app.main - INFO - Timestamp: 2025-10-03T05:28:27.673993+00:00
+[FastAPI] 2025-10-02 22:28:27,674 - app.main - INFO - Client Host: 127.0.0.1
+[FastAPI] 2025-10-02 22:28:27,675 - app.main - INFO - Method: GET
+[FastAPI] 2025-10-02 22:28:27,675 - app.main - INFO - URL: http://localhost:8000/health
+[FastAPI] 2025-10-02 22:28:27,675 - app.main - INFO - Path: /health
+[FastAPI] 2025-10-02 22:28:27,676 - app.main - INFO - Headers: {'host': 'localhost:8000', 'user-agent': 'python-requests/2.32.5', 'accept-encoding': 'gzip, deflate', 'accept': '*/*', 'connection': 'keep-alive'}
+[FastAPI] 2025-10-02 22:28:27,676 - app.main - INFO - Query Params: {}
+[FastAPI] 2025-10-02 22:28:27,676 - app.main - INFO - Checking database connectivity...
+[FastAPI] 2025-10-02 22:28:27,677 - app.database - INFO - Retrieving database statistics
+[FastAPI] 2025-10-02 22:28:27,680 - app.database - INFO - Database statistics: 1 records, 7544 words, 47934 characters
+[FastAPI] 2025-10-02 22:28:27,680 - app.main - INFO - âœ“ Database accessible - 1 records
+[FastAPI] 2025-10-02 22:28:27,680 - app.main - INFO - Health check response: {'status': 'healthy', 'timestamp': '2025-10-03T05:28:27.673993+00:00', 'service': 'PDF OCR Processing API', 'version': '1.0.0', 'database': 'connected', 'request_info': {'client_host': '127.0.0.1', 'user_agent': 'python-requests/2.32.5'}}
+[FastAPI] 2025-10-02 22:28:27,681 - app.main - INFO - ================================================================================
+[FastAPI] 2025-10-02 22:28:27,683 - app.main - INFO - Response: 200 for GET /health (0.011s)
+[FastAPI] INFO:     127.0.0.1:51262 - "GET /health HTTP/1.1" 200 OK
