@@ -244,19 +244,19 @@ def main():
 
         logger.info("Setting page configuration...")
         st.set_page_config(
-            page_title="PDF OCR Processor",
-            page_icon="📄",
+            page_title="PDF OCR Processor - Dashboard",
+            page_icon="🏠",
             layout="wide",
         )
         logger.info("✓ Page configuration set successfully")
 
         logger.info("Rendering page title and header...")
-        st.title("📄 PDF OCR Processor")
-        st.markdown("Process PDF files with OCR and store results in a database")
+        st.title("🏠 PDF OCR Processor Dashboard")
+        st.markdown("Welcome to the PDF OCR Processing Application")
         st.markdown("---")
 
         logger.info("Rendering dashboard statistics section...")
-        st.subheader("📈 Dashboard Statistics")
+        st.subheader("📈 System Statistics")
 
         logger.info("Fetching statistics from backend...")
         stats = get_stats_from_backend()
@@ -272,14 +272,85 @@ def main():
 
         st.markdown("---")
 
-        logger.info("Rendering navigation section...")
-        st.markdown("### Navigation")
-        st.markdown("Use the sidebar to navigate between pages:")
+        st.subheader("📖 Getting Started")
+
+        st.markdown("""
+        This application helps you process PDF documents with OCR
+        (Optical Character Recognition) and manage them in a searchable
+        database. Follow the steps below to get started:
+        """)
+
+        st.markdown("#### 📤 Step 1: Ingest Documents")
+        with st.container():
+            col1, col2 = st.columns([1, 4])
+            with col1:
+                st.markdown("### 📤")
+            with col2:
+                st.markdown("""
+                Navigate to the **Ingest Documents** page from the sidebar
+                to add PDFs to the system.
+
+                **Two ways to add documents:**
+                - **Process from Folder**: Enter a directory path containing
+                  PDF files
+                - **Upload Files**: Directly upload one or more PDF files
+
+                **Features:**
+                - Automatic OCR text extraction from PDF images
+                - Optional AI-powered summarization for each document
+                - Duplicate detection (MD5 hash-based) to avoid reprocessing
+                - Batch processing with progress tracking
+                """)
+
+        st.markdown("---")
+
+        st.markdown("#### 📊 Step 2: View and Manage Documents")
+        with st.container():
+            col1, col2 = st.columns([1, 4])
+            with col1:
+                st.markdown("### 📊")
+            with col2:
+                st.markdown("""
+                Navigate to the **View Database** page to browse and manage
+                your processed documents.
+
+                **Capabilities:**
+                - View all processed documents in a searchable table
+                - Filter by filename or summary status
+                - Sort by ID, name, word count, or date
+                - View full extracted text and summaries
+                - Generate or regenerate AI summaries for any document
+                - Delete records from the database
+                """)
+
+        st.markdown("---")
+
+        st.subheader("💡 Quick Tips")
+
+        tip_col1, tip_col2 = st.columns(2)
+
+        with tip_col1:
+            st.info("""
+            **🎯 Processing Tips**
+            - Enable "Generate Summaries" for automatic AI analysis
+            - Duplicate files are automatically detected and skipped
+            - Large batches may take time to process
+            """)
+
+        with tip_col2:
+            st.success("""
+            **🔍 Viewing Tips**
+            - Use filters to quickly find specific documents
+            - Click any row in the table to view full details
+            - Summaries can be generated or updated at any time
+            """)
+
+        st.markdown("---")
+
+        st.markdown("### 🚀 Ready to Start?")
         st.markdown(
-            "- **📤 Ingest Documents**: Upload or process PDF files from a folder"
-        )
-        st.markdown(
-            "- **📊 View Database**: Browse, search, and manage processed documents"
+            "Use the **sidebar navigation** to access the Ingest Documents "
+            "or View Database pages."
         )
 
         logger.info("✓ Main page rendered successfully")
