@@ -12,3 +12,5 @@ python-dotenv==1.0.0
 streamlit
 pydantic==2.11.9
 selenium==4.27.1
+numpy
+pyinstaller

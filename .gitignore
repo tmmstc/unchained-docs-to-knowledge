@@ -14,6 +14,9 @@ __pycache__/
 dist/
 build/
 
+# PyInstaller
+*.spec
+
 # Test and coverage
 .pytest_cache/
 .coverage
