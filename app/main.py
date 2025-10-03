@@ -51,9 +51,7 @@ async def lifespan(app: FastAPI):
     logger.info("FastAPI application shutting down")
 
 
-app = FastAPI(
-    title="PDF OCR Processing API", version="1.0.0", lifespan=lifespan
-)
+app = FastAPI(title="PDF OCR Processing API", version="1.0.0", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -61,10 +59,9 @@ async def log_requests(request: Request, call_next):
     """Log all HTTP requests and responses."""
     start_time = time.time()
 
-    client_host = request.client.host if request.client else 'unknown'
+    client_host = request.client.host if request.client else "unknown"
     logger.info(
-        f"Incoming request: {request.method} {request.url.path} "
-        f"from {client_host}"
+        f"Incoming request: {request.method} {request.url.path} " f"from {client_host}"
     )
 
     response = await call_next(request)
@@ -86,6 +83,54 @@ def read_root():
     return {"message": "PDF OCR Processing API", "version": "1.0.0"}
 
 
+@app.get("/health")
+def health_check(request: Request):
+    """
+    Health check endpoint for monitoring and platform health checks.
+    """
+    from datetime import datetime, timezone
+
+    timestamp = datetime.now(timezone.utc).isoformat()
+    client_host = request.client.host if request.client else "unknown"
+
+    logger.info("=" * 80)
+    logger.info("HEALTH CHECK REQUEST")
+    logger.info("=" * 80)
+    logger.info(f"Timestamp: {timestamp}")
+    logger.info(f"Client Host: {client_host}")
+    logger.info(f"Method: {request.method}")
+    logger.info(f"URL: {request.url}")
+    logger.info(f"Path: {request.url.path}")
+    logger.info(f"Headers: {dict(request.headers)}")
+    logger.info(f"Query Params: {dict(request.query_params)}")
+
+    try:
+        logger.info("Checking database connectivity...")
+        total_records, total_words, total_chars = get_database_statistics()
+        logger.info(f"✓ Database accessible - {total_records} records")
+        db_status = "connected"
+    except Exception as e:
+        logger.error(f"✗ Database check failed: {e}")
+        db_status = "error"
+
+    health_data = {
+        "status": "healthy",
+        "timestamp": timestamp,
+        "service": "PDF OCR Processing API",
+        "version": "1.0.0",
+        "database": db_status,
+        "request_info": {
+            "client_host": client_host,
+            "user_agent": request.headers.get("user-agent", "unknown"),
+        },
+    }
+
+    logger.info(f"Health check response: {health_data}")
+    logger.info("=" * 80)
+
+    return health_data
+
+
 @app.post("/process-pdf", response_model=dict)
 async def process_pdf(request: PDFProcessRequest):
     """
@@ -100,16 +145,13 @@ async def process_pdf(request: PDFProcessRequest):
     """
     logger.info(f"Processing PDF: {request.filename}")
     logger.info(
-        f"PDF metrics: {request.word_count} words, "
-        f"{request.character_length} chars"
+        f"PDF metrics: {request.word_count} words, " f"{request.character_length} chars"
     )
 
     if request.md5_hash:
         logger.info(f"Checking for duplicate with hash: {request.md5_hash}")
         if check_duplicate_by_hash(request.md5_hash):
-            logger.info(
-                f"Duplicate file detected, skipping: {request.filename}"
-            )
+            logger.info(f"Duplicate file detected, skipping: {request.filename}")
             return {
                 "success": True,
                 "skipped": True,
@@ -140,20 +182,14 @@ async def process_pdf(request: PDFProcessRequest):
             response_data = {
                 "success": True,
                 "skipped": False,
-                "message": (
-                    f"Successfully processed {request.filename}"
-                ),
+                "message": (f"Successfully processed {request.filename}"),
             }
             if summary:
                 response_data["summary"] = summary
             return response_data
         else:
-            logger.error(
-                f"Database save failed for: {request.filename}"
-            )
-            raise HTTPException(
-                status_code=500, detail="Failed to save to database"
-            )
+            logger.error(f"Database save failed for: {request.filename}")
+            raise HTTPException(status_code=500, detail="Failed to save to database")
     except Exception as e:
         logger.error(f"Error processing PDF {request.filename}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -174,9 +210,7 @@ def get_records(limit: int = 10):
 
     try:
         if limit < 1:
-            logger.warning(
-                f"Invalid limit value: {limit}, using default 10"
-            )
+            logger.warning(f"Invalid limit value: {limit}, using default 10")
             limit = 10
         elif limit > 1000:
             logger.warning(f"Limit too high: {limit}, capping at 1000")
@@ -263,9 +297,7 @@ def get_records_without_summary(limit: int = 100):
             limit = 1000
 
         records = get_records_without_summary(limit=limit)
-        logger.info(
-            f"Retrieved {len(records)} records without summaries"
-        )
+        logger.info(f"Retrieved {len(records)} records without summaries")
         return records
     except Exception as e:
         logger.error(f"Error retrieving records without summary: {e}")
@@ -296,17 +328,13 @@ async def update_record_summary(record_id: int, generate: bool = True):
 
         if not generate:
             raise HTTPException(
-                status_code=400,
-                detail="Generate parameter must be True"
+                status_code=400, detail="Generate parameter must be True"
             )
 
         if not record.get("extracted_text"):
-            logger.warning(
-                f"No extracted text for record {record_id}"
-            )
+            logger.warning(f"No extracted text for record {record_id}")
             raise HTTPException(
-                status_code=400,
-                detail="No extracted text available for summarization"
+                status_code=400, detail="No extracted text available for summarization"
             )
 
         logger.info(f"Generating summary for record {record_id}")
@@ -314,22 +342,15 @@ async def update_record_summary(record_id: int, generate: bool = True):
 
         success = update_record_summary(record_id, summary)
         if success:
-            logger.info(
-                f"Successfully updated summary for record {record_id}"
-            )
+            logger.info(f"Successfully updated summary for record {record_id}")
             return {
                 "success": True,
                 "message": "Summary updated successfully",
                 "summary": summary,
             }
         else:
-            logger.error(
-                f"Failed to update summary for record {record_id}"
-            )
-            raise HTTPException(
-                status_code=500,
-                detail="Failed to update summary"
-            )
+            logger.error(f"Failed to update summary for record {record_id}")
+            raise HTTPException(status_code=500, detail="Failed to update summary")
 
     except HTTPException:
         raise

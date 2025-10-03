@@ -23,6 +23,19 @@ def test_read_root():
     assert "PDF OCR Processing API" in response.json()["message"]
 
 
+def test_health_check():
+    """Test the health check endpoint."""
+    response = client.get("/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "healthy"
+    assert data["service"] == "PDF OCR Processing API"
+    assert data["version"] == "1.0.0"
+    assert "timestamp" in data
+    assert "database" in data
+    assert "request_info" in data
+
+
 def test_process_pdf():
     """Test the PDF processing endpoint."""
     test_data = {

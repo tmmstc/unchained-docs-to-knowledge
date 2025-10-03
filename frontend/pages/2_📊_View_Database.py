@@ -4,59 +4,139 @@ Data Viewing and Querying Page - Display database records table,
 detail view with delete and summarize buttons.
 """
 
-import streamlit as st
-import pandas as pd
-from frontend.api_client import (
-    get_records_from_backend,
-    generate_summary_for_record,
-    delete_record,
-)
-from frontend.data_transforms import (
-    shorten_hash,
-    filter_records,
-    sort_records,
-    prepare_dataframe_data,
-)
-from frontend.state_manager import (
-    init_delete_confirmation_state,
-    reset_delete_confirmation_on_selection_change,
-    is_in_confirmation_mode,
-    set_confirmation_mode,
-    clear_delete_state,
-)
+import sys
+import os
+import traceback
+import logging
+from datetime import datetime
+
+print("=" * 80)
+print("PAGE MODULE LOADING: 2_📊_View_Database.py")
+print("=" * 80)
+print(f"Timestamp: {datetime.now().isoformat()}")
+print(f"Module: View Database (Record Browser & Management)")
+print("=" * 80)
+
+logger = logging.getLogger(__name__)
+
+logger.info("=" * 80)
+logger.info("PAGE MODULE: 2_📊_View_Database.py")
+logger.info("=" * 80)
+logger.info("Description: Database record viewing and management")
+logger.info("Features: Record browsing, filtering, sorting, deletion, summarization")
+logger.info("=" * 80)
+
+try:
+    logger.info("Importing streamlit...")
+    import streamlit as st
+
+    logger.info("✓ streamlit imported successfully")
+except Exception as e:
+    logger.error(f"✗ Failed to import streamlit: {e}")
+    logger.error(traceback.format_exc())
+    raise
+
+try:
+    logger.info("Importing pandas...")
+    import pandas as pd
+
+    logger.info("✓ pandas imported successfully")
+except Exception as e:
+    logger.error(f"✗ Failed to import pandas: {e}")
+    logger.error(traceback.format_exc())
+    raise
+
+try:
+    logger.info("Importing frontend.api_client...")
+    from frontend.api_client import (
+        get_records_from_backend,
+        generate_summary_for_record,
+        delete_record,
+    )
+
+    logger.info("✓ frontend.api_client imported successfully")
+except Exception as e:
+    logger.error(f"✗ Failed to import frontend.api_client: {e}")
+    logger.error(traceback.format_exc())
+    raise
+
+try:
+    logger.info("Importing frontend.data_transforms...")
+    from frontend.data_transforms import (
+        shorten_hash,
+        filter_records,
+        sort_records,
+        prepare_dataframe_data,
+    )
+
+    logger.info("✓ frontend.data_transforms imported successfully")
+except Exception as e:
+    logger.error(f"✗ Failed to import frontend.data_transforms: {e}")
+    logger.error(traceback.format_exc())
+    raise
+
+try:
+    logger.info("Importing frontend.state_manager...")
+    from frontend.state_manager import (
+        init_delete_confirmation_state,
+        reset_delete_confirmation_on_selection_change,
+        is_in_confirmation_mode,
+        set_confirmation_mode,
+        clear_delete_state,
+    )
+
+    logger.info("✓ frontend.state_manager imported successfully")
+except Exception as e:
+    logger.error(f"✗ Failed to import frontend.state_manager: {e}")
+    logger.error(traceback.format_exc())
+    raise
+
+logger.info("=" * 80)
+logger.info("✓ All imports successful - Page module ready")
+logger.info("=" * 80)
+
+print(f"✓ Page module loaded: 2_📊_View_Database.py")
+print("=" * 80)
+print()
 
 
 def render_generate_summary_button(selected_record: dict):
+    logger.info(f"Rendering summary button for record {selected_record['id']}")
+
     has_summary = bool(selected_record.get("summary"))
     button_label = "Regenerate Summary" if has_summary else "Generate Summary"
 
-    generate_btn = st.button(
-        button_label, type="secondary", key="generate_summary_btn"
-    )
+    generate_btn = st.button(button_label, type="secondary", key="generate_summary_btn")
     if generate_btn:
+        logger.info(
+            f"Generate summary button clicked for record {selected_record['id']}"
+        )
         with st.spinner("Generating summary..."):
             record_id = selected_record["id"]
             result = generate_summary_for_record(record_id)
 
             if result.get("success"):
                 st.success("Summary generated successfully!")
+                logger.info(f"Summary generated successfully for record {record_id}")
                 st.rerun()
             else:
-                st.error(f"Failed to generate summary: {result.get('error', '')}")
+                error_msg = result.get("error", "Unknown error")
+                st.error(f"Failed to generate summary: {error_msg}")
+                logger.error(
+                    f"Failed to generate summary for record {record_id}: {error_msg}"
+                )
 
 
 def render_delete_button(selected_record: dict):
+    logger.info(f"Rendering delete button for record {selected_record['id']}")
+
     init_delete_confirmation_state(st.session_state)
 
     current_record_id = selected_record["id"]
 
-    reset_delete_confirmation_on_selection_change(
-        st.session_state, current_record_id
-    )
+    reset_delete_confirmation_on_selection_change(st.session_state, current_record_id)
 
-    in_confirmation_mode = is_in_confirmation_mode(
-        st.session_state, current_record_id
-    )
+    in_confirmation_mode = is_in_confirmation_mode(st.session_state, current_record_id)
 
     if in_confirmation_mode:
         button_label = "⚠️ Click again to confirm"
@@ -76,21 +156,34 @@ def render_delete_button(selected_record: dict):
 
     if delete_btn:
         if not in_confirmation_mode:
+            logger.info(
+                f"Delete confirmation mode activated for record {current_record_id}"
+            )
             set_confirmation_mode(st.session_state, current_record_id)
             st.rerun()
         else:
+            logger.info(f"Delete confirmed for record {current_record_id}")
             with st.spinner("Deleting record..."):
                 result = delete_record(current_record_id)
 
                 if result.get("success"):
                     st.success("Record deleted successfully!")
+                    logger.info(f"Record {current_record_id} deleted successfully")
                     clear_delete_state(st.session_state)
                     st.rerun()
                 else:
-                    st.error(f"Failed to delete record: {result.get('error', '')}")
+                    error_msg = result.get("error", "Unknown error")
+                    st.error(f"Failed to delete record: {error_msg}")
+                    logger.error(
+                        f"Failed to delete record {current_record_id}: {error_msg}"
+                    )
 
 
 def render_record_details(selected_record: dict):
+    logger.info(
+        f"Rendering details for record {selected_record['id']}: {selected_record['filename']}"
+    )
+
     st.markdown("---")
     st.markdown(f"### Details for: {selected_record['filename']}")
 
@@ -154,10 +247,23 @@ def render_record_details(selected_record: dict):
 
 
 def render_database_records():
-    records = get_records_from_backend(limit=100)
+    logger.info("Rendering database records view")
+
+    try:
+        logger.info("Fetching records from backend...")
+        records = get_records_from_backend(limit=100)
+        logger.info(f"Retrieved {len(records)} records from backend")
+    except Exception as e:
+        logger.error(f"Error fetching records: {e}")
+        logger.error(traceback.format_exc())
+        st.error(f"Error fetching records: {str(e)}")
+        with st.expander("View Error Details"):
+            st.code(traceback.format_exc())
+        return
 
     if not records:
         st.info("No processed files found in database.")
+        logger.info("No records found in database")
         return
 
     st.subheader("Database Records")
@@ -192,8 +298,14 @@ def render_database_records():
             key="sort_by",
         )
 
+    logger.info(
+        f"Applying filters - Filename: '{filename_filter}', Summary: '{summary_filter}', Sort: '{sort_by}'"
+    )
+
     filtered_records = filter_records(records, filename_filter, summary_filter)
     filtered_records = sort_records(filtered_records, sort_by)
+
+    logger.info(f"Filtered results: {len(filtered_records)} records")
 
     st.markdown(f"**Showing {len(filtered_records)} of {len(records)} records**")
 
@@ -219,24 +331,57 @@ def render_database_records():
         if selection and selection.selection.rows:
             selected_row_idx = selection.selection.rows[0]
             selected_record = filtered_records[selected_row_idx]
+            logger.info(
+                f"Record selected: ID={selected_record['id']}, Filename={selected_record['filename']}"
+            )
 
             render_record_details(selected_record)
 
 
 def main():
-    st.set_page_config(
-        page_title="View Database - PDF OCR Processor",
-        page_icon="📊",
-        layout="wide",
-    )
+    """Main page function with comprehensive error handling."""
+    try:
+        logger.info("Executing main() function for View Database page")
 
-    st.title("📊 View Database")
-    st.markdown("Browse and manage processed PDF documents")
+        logger.info("Setting page configuration...")
+        st.set_page_config(
+            page_title="View Database - PDF OCR Processor",
+            page_icon="📊",
+            layout="wide",
+        )
+        logger.info("✓ Page configuration set successfully")
 
-    st.markdown("---")
+        logger.info("Rendering page header...")
+        st.title("📊 View Database")
+        st.markdown("Browse and manage processed PDF documents")
+        st.markdown("---")
 
-    render_database_records()
+        render_database_records()
+
+        logger.info("✓ View Database page rendered successfully")
+
+    except Exception as e:
+        logger.error(f"✗ CRITICAL ERROR in View Database page main(): {e}")
+        logger.error(traceback.format_exc())
+
+        st.error("⚠️ Page Error")
+        st.error(f"An error occurred while loading this page: {str(e)}")
+
+        with st.expander("View Error Details", expanded=True):
+            st.code(traceback.format_exc())
 
 
 if __name__ == "__main__":
-    main()
+    logger.info("=" * 80)
+    logger.info("EXECUTION: Running main() function for View Database page")
+    logger.info("=" * 80)
+
+    try:
+        main()
+    except Exception as e:
+        logger.error("=" * 80)
+        logger.error("FATAL ERROR: Uncaught exception in View Database page")
+        logger.error("=" * 80)
+        logger.error(f"Error: {e}")
+        logger.error(traceback.format_exc())
+        raise
