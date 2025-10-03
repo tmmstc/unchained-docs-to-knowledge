@@ -5,14 +5,29 @@ Database operations for PDF OCR processing.
 import sqlite3
 import datetime
 import logging
+import os
+import sys
 from typing import List, Dict, Tuple
 from contextlib import contextmanager
 
 # Configure module logger
 logger = logging.getLogger(__name__)
 
+
+def get_database_path():
+    """Get the database path, ensuring it's writable."""
+    # If running from PyInstaller bundle, use the exe directory
+    if getattr(sys, 'frozen', False):
+        exe_dir = os.path.dirname(sys.executable)
+        db_path = os.path.join(exe_dir, "pdf_ocr_database.db")
+    else:
+        db_path = "pdf_ocr_database.db"
+    
+    return db_path
+
+
 # Database configuration
-DATABASE_PATH = "pdf_ocr_database.db"
+DATABASE_PATH = get_database_path()
 
 
 @contextmanager

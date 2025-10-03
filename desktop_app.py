@@ -11,6 +11,17 @@ import threading
 import webbrowser
 
 
+def get_resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller."""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def is_port_in_use(port):
     """Check if a port is already in use."""
     import socket
@@ -24,6 +35,11 @@ def run_fastapi():
     try:
         env = os.environ.copy()
         env["PYTHONIOENCODING"] = "utf-8"
+
+        # Set working directory to the resource path for database access
+        app_path = get_resource_path("app")
+        if os.path.exists(app_path):
+            sys.path.insert(0, get_resource_path("."))
 
         subprocess.run(
             [
@@ -41,17 +57,41 @@ def run_fastapi():
         )
     except Exception as e:
         print(f"Error starting FastAPI: {e}")
+        import traceback
+
+        traceback.print_exc()
 
 
 def main():
     """Main entry point for desktop application."""
-    print("Starting PDF OCR Desktop Application...")
+    print("=" * 70)
+    print("PDF OCR Desktop Application")
+    print("=" * 70)
+
+    # Print environment info for debugging
+    print(f"Python executable: {sys.executable}")
+    print(f"Working directory: {os.getcwd()}")
+
+    # Handle PyInstaller bundle
+    if getattr(sys, "frozen", False):
+        print("Running from PyInstaller bundle")
+        print(f"Bundle directory: {sys._MEIPASS}")
+
+        # Change working directory to a writable location
+        # Use the directory where the exe is located for database and logs
+        exe_dir = os.path.dirname(sys.executable)
+        os.chdir(exe_dir)
+        print(f"Changed working directory to: {os.getcwd()}")
+    else:
+        print("Running from Python script")
+
+    print("=" * 70)
 
     # Start FastAPI in background thread
     if not is_port_in_use(8000):
+        print("Starting FastAPI backend on http://127.0.0.1:8000")
         fastapi_thread = threading.Thread(target=run_fastapi, daemon=True)
         fastapi_thread.start()
-        print("FastAPI backend started on http://127.0.0.1:8000")
         time.sleep(3)
     else:
         print("FastAPI backend already running on http://127.0.0.1:8000")
@@ -74,13 +114,23 @@ def main():
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"
 
+    # Get the correct path to streamlit_app.py
+    if getattr(sys, "frozen", False):
+        streamlit_app_path = get_resource_path(
+            os.path.join("frontend", "streamlit_app.py")
+        )
+    else:
+        streamlit_app_path = os.path.join("frontend", "streamlit_app.py")
+
+    print(f"Launching Streamlit from: {streamlit_app_path}")
+
     subprocess.run(
         [
             sys.executable,
             "-m",
             "streamlit",
             "run",
-            "frontend/streamlit_app.py",
+            streamlit_app_path,
             "--server.address",
             "127.0.0.1",
             "--server.port",
